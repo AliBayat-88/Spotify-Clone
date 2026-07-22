@@ -1,13 +1,10 @@
-import PhoneSearchBox from './PhoneSearchBox.jsx'
+import { Link } from 'react-router-dom'
 
-function Logo() {
+function Logo({size}) {
   return (
-    <div className="flex items-center">
-      <img className="w-14" src="spotifyLogo.png" alt="logo" />
-      <div className="md:hidden block">
-        <PhoneSearchBox/>
-      </div>
-    </div>
+    <Link to="/">
+      <img className={`w-${size}`} src="/spotifyLogo.png" alt="logo" />
+    </Link>
   );
 }
 

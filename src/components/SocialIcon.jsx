@@ -1,7 +1,8 @@
-function SocialIcon({ name, children }) {
+function SocialIcon({ name, children , link }) {
   return (
     <li className="relative group cursor-pointer">
       <a
+        href={link}
         aria-label={name}
         className="flex items-center justify-center w-14 h-14 rounded-full
                    bg-white/5 text-gray-400 backdrop-blur-md border border-white/10

@@ -1,21 +1,42 @@
-import React from 'react'
+import React from 'react';
 
-function BoxSong({song}) {
+function BoxSong({ info, isArtist, onClick, isPlaylist }) {
   return (
-    <div className="p-3.5 rounded-lg cursor-pointer hover:bg-[#262626] transition bg-transparent group">
-      <div className="relative overflow-hidden rounded-2xl">
+    <div
+      onClick={onClick}
+      className="p-3 rounded-xl cursor-pointer hover:bg-[#181818] bg-[#121212]/40 transition duration-300 group w-full flex flex-col h-full"
+    >
+      <div
+        className={`relative overflow-hidden w-full aspect-square shrink-0 ${
+          isArtist
+            ? "rounded-full"
+            : isPlaylist
+              ? "rounded-md"
+              : "rounded-lg shadow-md shadow-black/30"
+        }`}
+      >
         <img
-          src={song.img}
-          alt={song.title}
-          className="w-full aspect-square object-cover transform group-hover:scale-105 transition duration-300"
+          src={info.img}
+          alt={info.title || info.name}
+          className="w-full h-full object-cover transform group-hover:scale-[1.04] transition duration-300"
         />
       </div>
-      <h5 className="text-white text-lg font-semibold pt-3 truncate">
-        {song.title}
-      </h5>
-      <p className="text-gray-400 text-sm truncate">
-        {song.artist}
-      </p>
+
+      <div className="flex flex-col flex-grow pt-3 min-w-0">
+        <h5 className="text-white text-sm sm:text-base font-bold truncate leading-snug">
+          {info.title || info.name}
+        </h5>
+
+        {isPlaylist ? (
+          <p className="text-[#a7a7a7] text-xs mt-1 line-clamp-2 leading-5">
+            {info.description}
+          </p>
+        ) : (
+          <p className="text-[#a7a7a7] text-xs sm:text-sm truncate mt-1 font-medium">
+            {info.artist || "Artist"}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

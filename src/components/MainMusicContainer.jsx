@@ -1,38 +1,66 @@
-import EachAlbum from './EachAlbum.jsx'
-import SocialLinks from './SocialLinks.jsx'
+import EachAlbum from './EachAlbum.jsx';
+import { useNavigate } from 'react-router';
+import { useHomeSection } from '../features/useHomeSection.js';
+import Footer from './Footer.jsx';
 
 function MainMusicContainer() {
+  const { data: sections, isLoading } = useHomeSection();
+  const navigate = useNavigate();
+
+
+  const loadingSkeletons = Array.from({ length: 2 });
+
   return (
-    <div className="relative bg-[#171717] w-full rounded-xl p-2 sm:p-5 h-full overflow-y-auto">
-      <EachAlbum
-        songs={Array.from({ length: 10 }).map((_, index) => ({
-          id: index,
-          title: `Song Title ${index + 1}`,
-          artist: `Artist Name ${index + 1}`,
-          img: "I Had Some Help (Feat_ Morgan Wallen).jpeg"
-        }))}
-        headingText="Trending musics"
-      />
+    <div className="relative w-full rounded-xl p-2 sm:p-5 h-full overflow-y-auto select-none bg-[#121212] bg-gradient-to-b from-[#1e3224] via-[#121212]/90 to-[#121212] bg-[length:100%_500px] bg-no-repeat scrollbar-hide">
 
-      <EachAlbum
-        songs={Array.from({ length: 10 }).map((_, index) => ({
-          id: index,
-          title: `Song Title ${index + 1}`,
-          artist: `Artist Name ${index + 1}`,
-          img: "Pink Pony Club - Chappell Roan_ Song Lyrics, Music Videos & Concerts.jpeg"
-        }))}
-        headingText="Popular artists"
-      />
+      {isLoading ? (
+        loadingSkeletons.map((_, index) => (
+          <EachAlbum
+            key={`skeleton-section-${index}`}
+            variant="slider"
+            isLoading={true}
+          />
+        ))
+      ) : (
+        sections?.map((section) => {
+          const isSongType = section.type === "song";
 
+          const formattedInfos = section.section_items?.map((item) => {
+            if (isSongType) {
+              return {
+                id: item.songs?.id,
+                name: item.songs?.name,
+                img: item.songs?.cover_url,
+                artist: item.songs?.artists?.name,
+              };
+            } else {
+              return {
+                id: item.artists?.id,
+                name: item.artists?.name,
+                img: item.artists?.image_url,
+              };
+            }
+          }).filter(Boolean) || [];
 
-      {/* Divider */}
-      <div className="mx-auto mt-10 mb-16 w-[95%] h-[1px] bg-white/40 rounded-full"></div>
+          return (
+            <EachAlbum
+              key={section.id}
+              variant="slider"
+              sectionId={section.id}
+              isLoading={isLoading}
+              headingText={section.title}
+              isArtist={section.type === "artist"}
+              infos={formattedInfos}
+              onClick={(itemId) =>
+                navigate(isSongType ? `/track/${itemId}` : `/artist/${itemId}`)
+              }
+            />
+          );
+        })
+      )}
 
-      {/* Social Icons */}
-      <div className="flex items-center sm:justify-between flex-col sm:flex-row gap-y-8 sm:gap-y-0 mx-4">
-        <h1 className="font-black text-3xl">Contact with me</h1>
-        <SocialLinks/>
-      </div>
+      <Footer />
+      <div className="sm:mb-16"></div>
     </div>
   );
 }

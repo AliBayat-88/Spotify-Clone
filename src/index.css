@@ -34,7 +34,49 @@
 
     .music-swiper .swiper-button-next,
     .music-swiper .swiper-button-prev {
-        @apply text-[#1DB954] hover:text-[#1ed760];
+        @apply text-[#1DB954] w-12 h-12 hover:text-[#1ed760];
     }
+
+    .music-swiper .swiper-button-next,
+    .music-swiper .swiper-button-prev {
+        color: #1DB954;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 100%;
+        backdrop-filter: blur(10px);
+        display: flex;
+        padding: 12px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .music-swiper .swiper-button-next:hover,
+    .music-swiper .swiper-button-prev:hover {
+        background: rgba(29, 185, 84, 0.15);
+        color: #1ed760;
+    }
+
+    .back-gradient{
+        background: #171717;
+        background: linear-gradient(358deg,rgba(23, 23, 23, 1) 0%, rgba(23, 23, 23, 1) 90%, rgba(31, 112, 29, 1) 100%);
+    }
+
+    @font-face {
+        font-family: "nexa";
+        src: url("./assets/fonts/Nexa.light.otf");
+        font-weight: 300;
+    }
+
+    @font-face {
+        font-family: "nexaBold";
+        src: url("./assets/fonts/Nexa.bold.otf");
+        font-weight: 700;
+    }
+
+    @font-face {
+        font-family: "jazoor";
+        src: url("./assets/fonts/Jozoor.ttf");
+        font-weight: 700;
+    }
+
 
 }
