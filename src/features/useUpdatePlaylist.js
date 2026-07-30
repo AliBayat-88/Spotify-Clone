@@ -1,24 +1,26 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updatePlaylistApi } from '../services/apiPlayLists.js'
-import { useToaster } from '../context/ToastContext.jsx'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updatePlaylistApi } from '../services/apiPlayLists.js';
+import { useToaster } from '../context/ToastContext.jsx';
 
 export function useUpdatePlaylist(onSuccessCallback) {
   const queryClient = useQueryClient();
   const { showToast } = useToaster();
 
-  const { isLoading: isUpdating, mutate: updatePlaylist } = useMutation({
-    // 🟢 دریافت فایل عکس در کنار بقیه مشخصات
+  const { mutate: updatePlaylist, isLoading: isUpdating } = useMutation({
     mutationFn: ({ id, obj, image }) => updatePlaylistApi(id, obj, image),
+    onSuccess: (data) => {
+      showToast("Playlist updated", "Your playlist details have been updated", "success");
 
-    onSuccess: (_, variables) => {
-      onSuccessCallback?.()
-      queryClient.invalidateQueries({ queryKey: ["playLists"] });
-      showToast("Updated successfully", `The "${variables.obj.name}" playlist has changed`, "success");
+      queryClient.invalidateQueries({ queryKey: ['playLists'] });
+
+      queryClient.invalidateQueries({ queryKey: ['playlist', String(data.id)] });
+
+      onSuccessCallback?.();
     },
     onError: (err) => {
-      showToast("Error", err.message || "Error updating playlist", "error");
+      showToast("Error updating playlist", err.message, "error");
     }
   });
 
-  return { isUpdating, updatePlaylist };
+  return { updatePlaylist, isUpdating };
 }

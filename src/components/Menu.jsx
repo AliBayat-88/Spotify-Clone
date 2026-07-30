@@ -1,6 +1,6 @@
 import PlusIcon from './plusIcon.jsx'
 import SubMenu from './SubMenu.jsx'
-import { useNavigate, useOutletContext } from 'react-router-dom'
+import { useNavigate, useOutletContext, useParams, useLocation } from 'react-router-dom'
 import { useToaster } from '../context/ToastContext.jsx'
 import { usePlaylists } from '../features/usePlaylists.js'
 import { useAddSongToPlaylist } from '../features/useAddSongToPlaylist.js'
@@ -20,8 +20,12 @@ function Menu({
   onFollowToggle,
   onEditPlaylist,
   onDeletePlaylist,
+  onAddToLibrary,
+  isSavedInLibrary = false, // 🟢 پروپ جدید
 }) {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { id: routeId } = useParams()
   const { showToast } = useToaster()
   const { playlists } = usePlaylists()
   const { addSongToPlaylist } = useAddSongToPlaylist()
@@ -52,6 +56,9 @@ function Menu({
 
   const btnClass = "group relative flex items-center gap-3 w-full bg-transparent border-none py-2.5 px-2.5 text-[#b3b3b3] hover:text-white text-sm font-semibold rounded-md cursor-pointer transition-all duration-250 focus:outline-none hover:bg-[#3e3e3e]/60 active:scale-[0.99]";
 
+  const songArtistId = song?.artists?.id || song?.artist_id;
+  const isCurrentlyOnArtistPage = location.pathname.includes('/artist/') && Number(routeId) === Number(songArtistId);
+
   return (
     <div
       className={`
@@ -69,6 +76,39 @@ function Menu({
         backdrop-blur-md bg-opacity-95
       `}
     >
+      {/* 🟢 ۱. منوی هدر پلی‌لیست‌های پابلیک */}
+      {type === "public_playlist_page" && (
+        <>
+          {onAddToLibrary && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(false);
+                onAddToLibrary();
+              }}
+              className={`${btnClass} ${isSavedInLibrary ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : ''}`}
+            >
+              {isSavedInLibrary ? (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  Remove from Your Library
+                </>
+              ) : (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5 text-neutral-400 group-hover:text-white">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                  Add to Your Library
+                </>
+              )}
+            </button>
+          )}
+        </>
+      )}
+
+      {/* 🟢 ۲. منوی هدر پلی‌لیست‌های شخصی */}
       {type === "playlist_page" && (
         <>
           {onEditPlaylist && (
@@ -105,8 +145,8 @@ function Menu({
         </>
       )}
 
-      {/* 🔴 ۲. منوی عمومی آهنگ‌ها و آلبوم‌ها */}
-      {type !== "artist" && type !== "playlist_page" && (
+      {/* 🟢 ۳. منوی عمومی آهنگ‌ها */}
+      {type !== "artist" && type !== "playlist_page" && type !== "public_playlist_page" && (
         <>
           <button
             onClick={(e) => {
@@ -137,12 +177,12 @@ function Menu({
             )}
           </button>
 
-          {song?.artists?.id && (
+          {songArtistId && !isCurrentlyOnArtistPage && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 setOpen(false);
-                navigate(`/artist/${song?.artists?.id}`);
+                navigate(`/artist/${songArtistId}`);
               }}
               className={btnClass}
             >
@@ -194,7 +234,7 @@ function Menu({
         </>
       )}
 
-      {/* 🔴 ۳. منوی خواننده */}
+      {/* 🟢 ۴. منوی صفحه خواننده */}
       {type === "artist" && (
         <>
           <button
@@ -215,7 +255,7 @@ function Menu({
 
       <div className="h-[1px] bg-[#282828] my-1 w-[92%] mx-auto" />
 
-      {/* گزینه Share (مشترک برای همه) */}
+      {/* گزینه Share */}
       <button
         onClick={(e) => {
           e.stopPropagation();

@@ -22,7 +22,7 @@ function SongRow({
   song,
   onClick,
   playlistId,
-  songsList
+  songsList,
 }) {
   const [isOpen, setOpen] = useState(false);
   const [isSubOpen, setSubOpen] = useState(false);

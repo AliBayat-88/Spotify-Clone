@@ -1,19 +1,27 @@
 import PlayList from './PlayList.jsx'
+import FollowedArtist from './FollowedArtist.jsx'
 import IntroducingBox from './IntroducingBox.jsx'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { usePlaylists } from '../features/usePlaylists.js'
 import { useAuth } from '../context/Auth.jsx'
 import { useState } from 'react'
 import { useFollowArtist } from '../features/useFollowArtist.js'
+import { useSavedPublicPlaylists } from '../features/useSavedPublicPlaylists.js'
+import { useToggleSavePublicPlaylist } from '../features/useToggleSavePublicPlaylist.js'
+import { useDeleteFollowArtist } from '../features/useDeleteFollowArtist.js'
 
 function SideBar({ onOpenModal }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
-  const { playlists, isLoading } = usePlaylists();
-  const {data : followedArtistsData} = useFollowArtist()
-  console.log(followedArtistsData)
 
+  const { playlists, isLoading: isLoadingPlaylists } = usePlaylists();
+  const { data: followedArtistsData, isLoading: isLoadingArtists } = useFollowArtist();
+  const { savedPublicPlaylists, isLoading: isLoadingSavedPublic } = useSavedPublicPlaylists();
+  const { unsavePublicPlaylist, isUnsaving } = useToggleSavePublicPlaylist();
+  const { deleteFollowArtist , isDeleting } = useDeleteFollowArtist()
   const { user } = useAuth();
+
+  const isLoading = isLoadingPlaylists || isLoadingArtists || isLoadingSavedPublic;
 
   return (
     <aside
@@ -21,26 +29,22 @@ function SideBar({ onOpenModal }) {
         isCollapsed ? 'w-[72px] p-2 items-center' : 'w-[28%] xl:w-[23%] p-4'
       }`}
     >
-      {/* 🟢 هدر سایدبار */}
+      {/* هدر سایدبار */}
       <div
         className={`flex items-center mb-4 w-full h-10 ${
           isCollapsed ? 'justify-center' : 'justify-between'
         }`}
       >
+        {!isCollapsed && (
+          <span className="text-base font-semibold truncate text-white">
+            Your library
+          </span>
+        )}
 
-          {!isCollapsed && (
-            <span className="text-base font-semibold truncate text-white">
-              Your library
-            </span>
-          )}
-
-
-        {/* اکشن‌های هدر */}
         <div className="flex items-center gap-x-1 shrink-0">
-          {/* 🟢 آیکون باز/بسته شدن: فقط در زمان هاور سایدبار نمایش داده می‌شود */}
           <button
             onClick={() => setIsCollapsed((prev) => !prev)}
-            className={`${!isCollapsed  &&"invisible"} group-hover:visible transition-opacity duration-200 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-[#262626] cursor-pointer bg-transparent border-none outline-none flex items-center justify-center`}
+            className={`${!isCollapsed && "invisible"} group-hover:visible transition-opacity duration-200 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-[#262626] cursor-pointer bg-transparent border-none outline-none flex items-center justify-center`}
             title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           >
             <svg
@@ -61,7 +65,6 @@ function SideBar({ onOpenModal }) {
             </svg>
           </button>
 
-          {/* دکمه ساخت پلی‌لیست */}
           {!isCollapsed && (
             <button
               onClick={onOpenModal}
@@ -74,7 +77,7 @@ function SideBar({ onOpenModal }) {
         </div>
       </div>
 
-      {/* 🟢 آیتم ثابتی: Liked Songs */}
+      {/* آیتم ثابتی: Liked Songs */}
       <div
         onClick={() => navigate("/playList/likedSongs")}
         className={`p-2 hover:bg-[#262626] transition-colors rounded-xl flex items-center cursor-pointer w-full mb-0.5 ${
@@ -84,7 +87,7 @@ function SideBar({ onOpenModal }) {
       >
         <div className="flex items-center gap-3 min-w-0">
           <img
-            className="w-12 h-12 rounded-sm shrink-0 object-cover"
+            className="w-12 h-12 rounded-md shrink-0 object-cover"
             src="/liked%20songs.png"
             alt="liked-songs"
           />
@@ -98,24 +101,56 @@ function SideBar({ onOpenModal }) {
         </div>
       </div>
 
+      {/* لیست ترکیبی لایبرری */}
       <div className="w-full flex flex-col gap-y-0.5 items-center">
-        {user
-          ? isLoading
-            ? Array.from({ length: 4 }).map((_, index) => (
+        {user ? (
+          isLoading ? (
+            Array.from({ length: 4 }).map((_, index) => (
               <PlayList key={index} isLoading isCollapsed={isCollapsed} />
             ))
-            : playlists?.map((playlist) => (
-              <PlayList
-                key={playlist?.id}
-                playlist={playlist}
-                isCollapsed={isCollapsed}
-              />
-            ))
-          : null}
+          ) : (
+            <>
+              {/* ۱. رندر پلی‌لیست‌های شخصی */}
+              {playlists?.map((playlist) => (
+                <PlayList
+                  key={`user-playlist-${playlist?.id}`}
+                  playlist={playlist}
+                  isCollapsed={isCollapsed}
+                />
+              ))}
+
+              {/* ۲. رندر پلی‌لیست‌های عمومی ذخیره‌شده */}
+              {savedPublicPlaylists?.map((item) => (
+                <PlayList
+                  key={`public-playlist-${item?.public_playlist_id || item?.id}`}
+                  playlist={item?.public_playLists}
+                  isPublic={true}
+                  isCollapsed={isCollapsed}
+                  item={item}
+                  onUnsavePublic={unsavePublicPlaylist}
+                  isUnsaving={isUnsaving} // 🟢 پاس دادن لودینگ حذف
+                  user={user}
+                />
+              ))}
+
+              {/* ۳. رندر خواننده‌های فالوشده */}
+              {/* رندر خواننده‌های فالوشده */}
+              {followedArtistsData?.map((artistData) => (
+                <FollowedArtist
+                  key={`artist-${artistData?.id}`}
+                  artistData={artistData}
+                  isCollapsed={isCollapsed}
+                  onUnfollow={deleteFollowArtist}
+                  isUnfollowing={isDeleting} // وضعیت لودینگ آن‌فالو از هوور/کوئری
+                />
+              ))}
+            </>
+          )
+        ) : null}
       </div>
 
-      {/* 🟢 باکس‌های پیشنهادی (فقط در حالت باز) */}
-      {!isCollapsed && (
+      {/* باکس‌های پیشنهادی (در صورت لاگین نبودن) */}
+      {!isCollapsed && !user && (
         <div className="mt-4 flex flex-col gap-y-3 w-full">
           <IntroducingBox
             onClick={onOpenModal}

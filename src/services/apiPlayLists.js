@@ -171,3 +171,51 @@ export async function updatePlaylistApi(id , obj , imageFile) {
   if (error) throw new Error(error.message);
   return data;
 }
+
+
+// دریافت پلی‌لیست‌های عمومی ذخیره‌شده توسط کاربر
+export async function getSavedPublicPlaylistsApi(userId) {
+  if (!userId) return [];
+
+  const { data, error } = await supabase
+    .from("saved_public_playlists")
+    .select(`
+      id,
+      public_playlist_id,
+      public_playLists (
+        id,
+        title,
+        cover_url,
+        description
+      )
+    `)
+    .eq("user_id", userId);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+// ذخیره کردن پلی‌لیست عمومی
+export async function savePublicPlaylistApi({ user_id, public_playlist_id }) {
+  const { data, error } = await supabase
+    .from("saved_public_playlists")
+    .insert({ user_id: user_id, public_playlist_id: public_playlist_id });
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+// حذف پلی‌لیست عمومی از لایبرری
+export async function unsavePublicPlaylistApi({ user_id, public_playlist_id }) {
+  const { data, error } = await supabase
+    .from("saved_public_playlists")
+    .delete()
+    .eq("user_id", user_id)
+    .eq("public_playlist_id", public_playlist_id);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}

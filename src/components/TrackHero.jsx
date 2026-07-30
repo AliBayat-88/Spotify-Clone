@@ -1,52 +1,56 @@
-function TrackHero({ singer, songName, type, songPoster, backColor }) {
+import React from 'react';
+
+function TrackHero({ singer, songName, type, songPoster, ambientColor = "from-purple-900/80" }) {
   return (
     <>
-      <div className={`relative sm:hidden rounded-lg ${backColor} overflow-hidden`}>
-        <img
-          className="w-full aspect-square object-cover brightness-[0.70] rounded-sm saturate-110"
-          src={songPoster}
-          alt={songName}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to top, var(--tw-back) 35%, color-mix(in srgb, var(--tw-back) 50%, transparent) 65%, transparent 100%)`,
-          }}
-        />
-        <div className={`absolute inset-0 ${backColor} opacity-0`} />
-        <div className="absolute bottom-0 left-0 right-0 p-7">
-          <span className="inline-block bg-white/20 backdrop-blur-sm text-white/90 text-[10px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full mb-2">
+      {/* 📱 نسخه موبایل */}
+      <div className="relative sm:hidden rounded-t-2xl overflow-hidden bg-[#181818]">
+        <div className="relative w-full aspect-square">
+          <img
+            className="w-full h-full object-cover brightness-[0.85] saturate-110"
+            src={songPoster}
+            alt={songName}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#171717] via-[#171717]/30 to-transparent" />
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 p-5 z-10 flex flex-col gap-2">
+          <span className="self-start bg-white/10 backdrop-blur-md text-white/90 text-[10px] font-extrabold tracking-widest uppercase px-3 py-1 rounded-full">
             {type}
           </span>
-          <h1 className="text-[28px] font-black text-white leading-tight mb-1.5">
+          <h1 className="text-3xl font-black text-white leading-tight drop-shadow-md line-clamp-2">
             {songName}
           </h1>
-          <div className="flex items-center gap-2">
-            <img
-              src={songPoster}
-              alt={singer}
-              className="w-5 h-5 rounded-full object-cover border border-white/40"
-            />
-            <span className="text-white/80 text-xs font-medium">{singer}</span>
-          </div>
+          <span className="text-gray-300 text-xs font-semibold drop-shadow">
+            {singer}
+          </span>
         </div>
       </div>
 
-      <div className={`hidden sm:flex ${backColor} rounded-lg gap-x-4 items-center font-semibold w-full p-4`}>
-        <div>
+      {/* 💻 نسخه دسکتاپ: چسبیده به بدنه با گرادیان اسپاتیفایی */}
+      <div className={`hidden sm:flex relative overflow-hidden bg-gradient-to-b ${ambientColor} via-[#171717]/90 to-[#171717] p-8 gap-x-8 items-end w-full shadow-2xl rounded-t-2xl`}>
+
+        {/* کاور اصلی با سایه عمیق */}
+        <div className="shrink-0 relative group">
           <img
-            className="w-48 lg:w-60 h-52 lg:h-[248px] rounded-lg"
+            className="w-48 lg:w-56 xl:w-60 aspect-square object-cover rounded-md shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)]"
             src={songPoster}
-            alt={singer}
+            alt={songName}
           />
         </div>
-        <div className="flex flex-col gap-y-4">
-          <span className="text-sm">{type}</span>
-          <div className="flex flex-col gap-y-2">
-            <h1 className="text-[44px] lg:text-6xl xl:text-8xl font-black pb-5">
-              {songName}
-            </h1>
-            <span className="text-sm">{singer}</span>
+
+        {/* متون دسکتاپ */}
+        <div className="flex flex-col gap-y-3 z-10 min-w-0">
+          <span className="text-xs font-black uppercase tracking-widest text-white/90">
+            {type}
+          </span>
+
+          <h1 className="text-4xl lg:text-6xl xl:text-7xl font-black tracking-tight text-white drop-shadow-xl line-clamp-2 leading-none py-1">
+            {songName}
+          </h1>
+
+          <div className="flex items-center gap-x-2 text-xs sm:text-sm font-semibold text-gray-200 mt-2">
+            <span className="text-white font-bold">{singer}</span>
           </div>
         </div>
       </div>
@@ -54,4 +58,4 @@ function TrackHero({ singer, songName, type, songPoster, backColor }) {
   );
 }
 
-export default TrackHero;
+export default React.memo(TrackHero);

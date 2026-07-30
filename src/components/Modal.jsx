@@ -1,13 +1,12 @@
-import { useEffect, useState, useRef } from 'react' // 🟢 اضافه شدن useRef
+import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import ButtonLoader from './ButtonLoader.jsx'
 
-function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", type, explanation, playlist ,isLoading }) {
+function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", type, explanation, playlist, isLoading }) {
   const [value, setValue] = useState('')
-  const [imageFile, setImageFile] = useState(null) // 🟢 ذخیره فایل واقعی برای آپلود
-  const [imagePreview, setImagePreview] = useState('') // 🟢 ذخیره آدرس موقت برای پیش‌نمایش در UI
-  const fileInputRef = useRef(null) // 🟢 برای کنترل راحت‌تر اینپوت فایل با کلیک روی مداد یا کاور
-
+  const [imageFile, setImageFile] = useState(null)
+  const [imagePreview, setImagePreview] = useState('')
+  const fileInputRef = useRef(null)
 
   useEffect(() => {
     if (isOpen && type === "edit" && playlist) {
@@ -27,18 +26,24 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
     setImagePreview(URL.createObjectURL(file));
   }
 
-
-
   if (!isOpen) return null;
 
+  return createPortal(
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+    >
+      {/* بک‌دراپ تاریک مودال */}
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        className="absolute inset-0 bg-black/60 transition-opacity"
+      />
 
-  return createPortal (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div onClick={onClose} className="absolute inset-0 bg-black/60  transition-opacity" />
+      <div className="relative w-full max-w-md bg-[#181818] border border-[#282828] rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.8)] overflow-hidden transform transition-all select-none animate-[fadeIn_.2s_ease-out]">
 
-      <div  className="relative w-full max-w-md bg-[#181818] border border-[#282828] rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.8)] overflow-hidden transform transition-all select-none animate-[fadeIn_.2s_ease-out]">
-
-        {/* هاله نوری سبز محو در گوشه مودال برای یکپارچگی تم */}
         <div className="absolute -top-16 -left-16 w-32 h-32 bg-[#1ed760]/10 blur-[50px] rounded-full pointer-events-none" />
 
         <div className="relative z-10">
@@ -77,7 +82,10 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
               {/* بخش تغییر کاور */}
               <div className="relative group">
                 <div
-                  onClick={() => fileInputRef.current.click()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    fileInputRef.current?.click();
+                  }}
                   className="w-32 h-32 rounded-xl overflow-hidden border border-[#282828] shadow-xl bg-black cursor-pointer relative"
                 >
                   <img
@@ -90,10 +98,12 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
                   </div>
                 </div>
 
-                {/* آیکون مداد شناور */}
                 <button
                   type="button"
-                  onClick={() => fileInputRef.current.click()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    fileInputRef.current?.click();
+                  }}
                   className="absolute -bottom-1.5 -right-1.5 bg-[#1ed760] text-black p-2 rounded-full shadow-lg border-4 border-[#181818] hover:scale-110 active:scale-90 transition-all duration-200 flex items-center justify-center"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-3.5 h-3.5">
@@ -116,10 +126,7 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
                 <input
                   type="text"
                   value={value}
-                  onChange={e => {
-                    e.stopPropagation()
-                    setValue(e.target.value)
-                  }}
+                  onChange={e => setValue(e.target.value)}
                   placeholder="Name"
                   className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-[#282828] focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium"
                 />
@@ -130,8 +137,8 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
           <div className="flex justify-end gap-3 mt-8 border-t border-white/5 pt-4">
             <button
               onClick={(e) => {
-                e.stopPropagation()
-                onClose()
+                e.stopPropagation();
+                onClose();
               }}
               className="px-5 py-2.5 rounded-full bg-transparent hover:bg-white/5 text-gray-400 hover:text-white font-bold text-sm transition-all duration-200"
             >
@@ -140,20 +147,20 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
 
             <button
               onClick={(e) => {
-                console.log("clicked");
-                e.stopPropagation()
+                e.stopPropagation();
                 onConfirm(value, imageFile);
               }}
               disabled={isLoading}
               className={`px-6 py-2.5 rounded-full ${btnColor || 'bg-white text-black'} font-bold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50`}
             >
-              {isLoading ? <ButtonLoader/> : btnText}
+              {isLoading ? <ButtonLoader /> : btnText}
             </button>
           </div>
         </div>
 
       </div>
-    </div>, document.body
+    </div>,
+    document.body
   );
 }
 
