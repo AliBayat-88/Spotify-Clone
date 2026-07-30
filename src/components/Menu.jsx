@@ -3,27 +3,45 @@ import SubMenu from './SubMenu.jsx'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { useToaster } from '../context/ToastContext.jsx'
 import { usePlaylists } from '../features/usePlaylists.js'
+import { useAddSongToPlaylist } from '../features/useAddSongToPlaylist.js'
 
 function Menu({
   setSubOpen,
   isSubOpen,
-  position,
+  position = "right",
   isSubLeft,
-  type = "track",
+  type = "song",
   song,
   setOpen,
-  isOpen,
+  isLiked = false,
+  onToggleLike,
+  onRemoveFromPlaylist,
   isArtistsFollowed,
-  onFollowToggle
+  onFollowToggle,
+  onEditPlaylist,
+  onDeletePlaylist,
 }) {
   const navigate = useNavigate()
   const { showToast } = useToaster()
   const { playlists } = usePlaylists()
-  const { onOpenCreatePlaylist } = useOutletContext()
+  const { addSongToPlaylist } = useAddSongToPlaylist()
+  const { onOpenCreatePlaylist } = useOutletContext() || {}
 
   async function handleShare() {
     await navigator.clipboard.writeText(window.location.href)
     showToast("link copied on clipboard", '', "success")
+  }
+
+  function handleAddSongToPlaylist(selectedPlaylistId) {
+    if (!song?.id || !selectedPlaylistId) return;
+
+    addSongToPlaylist({
+      songId: song?.id,
+      playlistId: selectedPlaylistId,
+    });
+
+    if (setSubOpen) setSubOpen(false);
+    setOpen(false);
   }
 
   const positions = {
@@ -32,12 +50,11 @@ function Menu({
     center: "left-1/2 -translate-x-1/2"
   }
 
-  const btnClass = "group relative flex items-center gap-3 w-full bg-transparent border-none py-2.5 px-3 text-[#b3b3b3] hover:text-white text-sm font-semibold rounded-md cursor-pointer transition-all duration-250 focus:outline-none hover:bg-[#3e3e3e]/60 active:scale-[0.99]";
+  const btnClass = "group relative flex items-center gap-3 w-full bg-transparent border-none py-2.5 px-2.5 text-[#b3b3b3] hover:text-white text-sm font-semibold rounded-md cursor-pointer transition-all duration-250 focus:outline-none hover:bg-[#3e3e3e]/60 active:scale-[0.99]";
 
   return (
     <div
       className={`
-      z-10
         absolute top-9 mt-3
         ${positions[position]}
         flex flex-col w-[230px]
@@ -52,12 +69,49 @@ function Menu({
         backdrop-blur-md bg-opacity-95
       `}
     >
-      {type === "track" && (
+      {type === "playlist_page" && (
+        <>
+          {onEditPlaylist && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(false);
+                onEditPlaylist();
+              }}
+              className={btnClass}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5 text-neutral-400 group-hover:text-white">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+              </svg>
+              Edit details
+            </button>
+          )}
+
+          {onDeletePlaylist && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(false);
+                onDeletePlaylist();
+              }}
+              className={`${btnClass} text-red-400 hover:text-red-300 hover:bg-red-500/10`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+              </svg>
+              Delete playlist
+            </button>
+          )}
+        </>
+      )}
+
+      {/* 🔴 ۲. منوی عمومی آهنگ‌ها و آلبوم‌ها */}
+      {type !== "artist" && type !== "playlist_page" && (
         <>
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setSubOpen(!isSubOpen);
+              if (setSubOpen) setSubOpen(!isSubOpen);
             }}
             className={`group relative flex items-center justify-between gap-3 w-full bg-transparent border-none py-2.5 px-3 text-[#b3b3b3] hover:text-white text-sm font-semibold rounded-md cursor-pointer transition-all duration-250 focus:outline-none ${isSubOpen ? 'bg-[#3e3e3e] text-white' : 'hover:bg-[#3e3e3e]/60'}`}
           >
@@ -73,32 +127,81 @@ function Menu({
             </svg>
 
             {isSubOpen && (
-              <SubMenu onOpenCreatePlaylist={onOpenCreatePlaylist} playlists={playlists} isSubLeft={isSubLeft} setSubOpen={setSubOpen} />
+              <SubMenu
+                onSelectPlaylist={handleAddSongToPlaylist}
+                onOpenCreatePlaylist={onOpenCreatePlaylist}
+                playlists={playlists}
+                isSubLeft={isSubLeft}
+                setSubOpen={setSubOpen}
+              />
             )}
           </button>
 
-          <button onClick={() => navigate(`/artist/${song?.artists?.id}`)} className={btnClass}>
-            <svg viewBox="0 0 32 32" width="20" height="20" className="text-neutral-400 group-hover:text-white transition-colors" stroke="currentColor" fill="currentColor">
-              <path d="M16.7 8C16.3 8.8 16 9.7 16 10.7 16 13.6 18.4 16 21.3 16 22.3 16 23.3 15.7 24 15.3 22.4 14.5 20.8 13.3 19.7 12.3 18.7 11.2 17.5 9.6 16.7 8ZM18.8 6C19.2 7.2 20.6 9.4 21.6 10.4 22.6 11.4 24.7 12.8 26 13.2 26.4 12.4 26.7 11.6 26.7 10.7 26.7 7.7 24.3 5.3 21.3 5.3 20.4 5.3 19.5 5.6 18.8 6ZM18.5 18.1C16.4 17.3 14.7 15.6 13.9 13.5L5.7 25.2 6.8 26.3 18.5 18.1ZM22.6 18.6L6.5 29.7 2.3 25.5 13.4 9.4C14 5.6 17.3 2.7 21.3 2.7 25.8 2.7 29.3 6.2 29.3 10.7 29.3 14.7 26.4 18 22.6 18.6Z" fillRule="evenodd"/>
-            </svg>
-            Go to singer
-          </button>
+          {song?.artists?.id && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(false);
+                navigate(`/artist/${song?.artists?.id}`);
+              }}
+              className={btnClass}
+            >
+              <svg viewBox="0 0 32 32" width="20" height="20" className="text-neutral-400 group-hover:text-white transition-colors" stroke="currentColor" fill="currentColor">
+                <path d="M16.7 8C16.3 8.8 16 9.7 16 10.7 16 13.6 18.4 16 21.3 16 22.3 16 23.3 15.7 24 15.3 22.4 14.5 20.8 13.3 19.7 12.3 18.7 11.2 17.5 9.6 16.7 8ZM18.8 6C19.2 7.2 20.6 9.4 21.6 10.4 22.6 11.4 24.7 12.8 26 13.2 26.4 12.4 26.7 11.6 26.7 10.7 26.7 7.7 24.3 5.3 21.3 5.3 20.4 5.3 19.5 5.6 18.8 6ZM18.5 18.1C16.4 17.3 14.7 15.6 13.9 13.5L5.7 25.2 6.8 26.3 18.5 18.1ZM22.6 18.6L6.5 29.7 2.3 25.5 13.4 9.4C14 5.6 17.3 2.7 21.3 2.7 25.8 2.7 29.3 6.2 29.3 10.7 29.3 14.7 26.4 18 22.6 18.6Z" fillRule="evenodd"/>
+              </svg>
+              Go to singer
+            </button>
+          )}
 
-          <button className={btnClass}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5 text-neutral-400 group-hover:text-white transition-colors">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+              if (onToggleLike) onToggleLike();
+            }}
+            className={btnClass}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill={isLiked ? "#1ed760" : "none"}
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke={isLiked ? "#1ed760" : "currentColor"}
+              className="w-5 h-5 text-neutral-400 group-hover:text-white transition-colors"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
             </svg>
-            Add to Liked songs
+            <span className={isLiked ? "text-[#1ed760]" : ""}>
+              {isLiked ? "Remove from Liked songs" : "Add to Liked songs"}
+            </span>
           </button>
+
+          {type === "playlist" && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(false);
+                if (onRemoveFromPlaylist) onRemoveFromPlaylist();
+              }}
+              className={`${btnClass} text-red-400 hover:text-red-300 hover:bg-red-500/10`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+              </svg>
+              Remove from playlist
+            </button>
+          )}
         </>
       )}
 
+      {/* 🔴 ۳. منوی خواننده */}
       {type === "artist" && (
         <>
           <button
-            onClick={() => {
-              onFollowToggle();
-              setOpen(!isOpen);
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onFollowToggle) onFollowToggle();
+              setOpen(false);
             }}
             className={`${btnClass} ${isArtistsFollowed ? 'text-[#1ed760] hover:text-[#1fdf64]' : ''}`}
           >
@@ -107,22 +210,20 @@ function Menu({
             </svg>
             {isArtistsFollowed ? "Following" : "Follow Artist"}
           </button>
-
-          <button className={`${btnClass} hover:text-red-400 hover:bg-red-500/10`}>
-            <svg viewBox="0 0 32 32" width="20" strokeWidth={1} height="20" stroke="currentColor" fill="currentColor" className="text-neutral-400 group-hover:text-inherit transition-colors">
-              <path d="M27.3 4.7c-6.3-6.3-16.4-6.3-22.6 0-6.3 6.3-6.3 16.4 0 22.6 6.3 6.2 16.4 6.2 22.6 0 6.2-6.3 6.2-16.4 0-22.6z m-4.3 1.5L6.2 23c-3.3-4.7-2.9-11.2 1.3-15.5s10.8-4.6 15.5-1.3h0z m2.8 2.8c3.3 4.7 2.9 11.2-1.3 15.5-4.2 4.2-10.8 4.6-15.5 1.3l16.8-16.8h0z"/>
-            </svg>
-            Don&#39;t play this artist
-          </button>
         </>
       )}
 
       <div className="h-[1px] bg-[#282828] my-1 w-[92%] mx-auto" />
 
-      <button onClick={() => {
-        setOpen(!isOpen);
-        handleShare();
-      }} className={btnClass}>
+      {/* گزینه Share (مشترک برای همه) */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen(false);
+          handleShare();
+        }}
+        className={btnClass}
+      >
         <svg viewBox="0 0 32 32" width="20" height="20" stroke="currentColor" fill="currentColor" className="text-neutral-400 group-hover:text-white transition-colors">
           <path d="M19.2 8.8a4 4 0 1 1 0.8 2.5L12.7 15a4 4 0 0 1 0 2l7.4 3.7a4 4 0 1 1-0.8 1.5l-7.4-3.7a4 4 0 1 1 0-5l7.4-3.7A4 4 0 0 1 19.2 8.8ZM23.2 6.4a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Zm0 14.4a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8ZM6.4 16a2.4 2.4 0 1 0 4.8 0 2.4 2.4 0 0 0-4.8 0Z"/>
         </svg>

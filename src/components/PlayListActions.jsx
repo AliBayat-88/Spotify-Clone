@@ -4,11 +4,14 @@ import { useState } from 'react'
 import Modal from './Modal.jsx'
 import { useDeletePlaylist } from '../features/useDeletePlaylist.js'
 import { useUpdatePlaylist } from '../features/useUpdatePlaylist.js'
+import { useNavigate } from 'react-router-dom'
 
 function PlayListActions({playlist}) {
+  const navigate = useNavigate()
+
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-  const {deletePlaylist , isDeleting} = useDeletePlaylist(() => setIsModalDeleteOpen(false));
+  const {deletePlaylist , isDeleting} = useDeletePlaylist(() => navigate('/'))
   const { updatePlaylist , isUpdating } = useUpdatePlaylist(() => setIsModalEditOpen(false));
 
 
@@ -29,11 +32,17 @@ function PlayListActions({playlist}) {
   return (
 
     <div className="flex items-center">
-      <button onClick={() => {setIsModalEditOpen(!isModalEditOpen)}}
+      <button onClick={(e) => {
+        e.stopPropagation()
+        setIsModalEditOpen(!isModalEditOpen)
+      }}
         className="p-2 text-gray-500 hover:text-green-500  active:scale-90 rounded-full hover:bg-white/5 transition-all duration-150 shrink-0">
         <EditIcon/>
       </button>
-      <button onClick={() => {setIsModalDeleteOpen(!isModalDeleteOpen)}}
+      <button onClick={(e) => {
+        e.stopPropagation()
+        setIsModalDeleteOpen(!isModalDeleteOpen)
+      }}
         className="p-2 text-gray-500 hover:text-red-500 active:text-red-600 active:scale-90 rounded-full hover:bg-white/5 transition-all duration-150 shrink-0"
       >
         <GarbageIcon/>

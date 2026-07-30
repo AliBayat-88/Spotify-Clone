@@ -7,44 +7,22 @@ import PlayButton from './PlayButton.jsx'
 import { useToaster } from '../context/ToastContext.jsx'
 import { usePlayer } from '../context/PlayerContext.jsx'
 import PauseBtn from './PauseBtn.jsx'
-import { useAddLikedSongs } from '../features/useAddLikedSongs.js'
-import { useAuth } from '../context/Auth.jsx'
-import { useLikedSongs } from '../features/useLikedSongs.js'
-import { useDeleteLikedSong } from '../features/useDeleteLikedSong.js'
+import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js'
+
 
 function TrackActions({ audioUrl, songName, song }) {
   const { showToast } = useToaster()
   const { playSong, isPlaying } = usePlayer()
-  const { addLikedSongs } = useAddLikedSongs()
-  const { deleteLikedSong } = useDeleteLikedSong()
-  const { user } = useAuth()
+  const { isLiked, toggleLike } = useToggleLikeSong(song);
 
-  const { data: likedSongs = [] } = useLikedSongs()
+
+
   const [isDownloading, setIsDownloading] = useState(false);
 
   function handlePlay () {
     playSong(song)
   }
 
-  console.log(song?.id)
-
-  const isLiked = likedSongs.some((item) => {
-    if (typeof item === 'number' || typeof item === 'string') {
-      return Number(item) === Number(song?.id);
-    }
-    return Number(item?.id || item?.song_id) === Number(song?.id);
-  });
-
-
-  async function handleAddToLibrary () {
-    if (!user) return showToast("You need to login first", "Please login to use this feature", "error" , "link" , "/login");
-
-    if (isLiked) {
-      deleteLikedSong({ userId: user.id, likedSongId: song.id });
-    } else {
-      addLikedSongs({ userId: user.id, likedSongId: song.id });
-    }
-  }
 
     const handleDownload = async () => {
       if (!audioUrl) {
@@ -89,7 +67,7 @@ function TrackActions({ audioUrl, songName, song }) {
         </button>
 
 
-        <div onClick={handleAddToLibrary} className="cursor-pointer">
+        <div onClick={toggleLike} className="cursor-pointer">
           {isLiked ? (
             <AnimatedCheckIcon size="big"/>
           ) : (
@@ -102,14 +80,14 @@ function TrackActions({ audioUrl, songName, song }) {
 
         <button
           onClick={handleDownload}
-          disabled={isDownloading} // وقتی داره دانلود میشه دکمه غیرفعال بشه
+          disabled={isDownloading}
           className={`border-[2px] sm:border-[3px] inline-flex p-1 rounded-full 
           ${isDownloading ? 'opacity-50 cursor-not-allowed border-gray-500 text-gray-500' : 'border-gray-300 hover:border-gray-500 hover:text-white text-gray-300'}`}
         >
           <DownloadIcon className="w-6 sm:w-7 h-6 sm:h-7"/>
         </button>
 
-        <TrackDropdown song={song}/>
+        <TrackDropdown isLiked={isLiked} song={song}/>
       </div>
     );
   }

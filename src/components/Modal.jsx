@@ -116,7 +116,10 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
                 <input
                   type="text"
                   value={value}
-                  onChange={e => setValue(e.target.value)}
+                  onChange={e => {
+                    e.stopPropagation()
+                    setValue(e.target.value)
+                  }}
                   placeholder="Name"
                   className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-[#282828] focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium"
                 />
@@ -126,7 +129,10 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
 
           <div className="flex justify-end gap-3 mt-8 border-t border-white/5 pt-4">
             <button
-              onClick={onClose}
+              onClick={(e) => {
+                e.stopPropagation()
+                onClose()
+              }}
               className="px-5 py-2.5 rounded-full bg-transparent hover:bg-white/5 text-gray-400 hover:text-white font-bold text-sm transition-all duration-200"
             >
               Cancel

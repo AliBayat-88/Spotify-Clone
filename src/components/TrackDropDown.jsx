@@ -2,11 +2,31 @@ import { useRef, useState } from 'react'
 
 import Menu from './Menu.jsx'
 import { useOutsideClick } from '../hooks/useOutsideClick.js'
+import { useAuth } from '../context/Auth.jsx'
+import { useToaster } from '../context/ToastContext.jsx'
+import { useAddLikedSongs } from '../features/useAddLikedSongs.js'
+import { useDeleteLikedSong } from '../features/useDeleteLikedSong.js'
 
-function TrackDropdown({song}) {
+function TrackDropdown({song , isLiked}) {
   const [isOpen, setOpen] = useState(false);
   const [isSubOpen, setSubOpen] = useState(false);
+  const { addLikedSongs } = useAddLikedSongs()
+  const { deleteLikedSong } = useDeleteLikedSong()
   const menuRef = useRef(null);
+
+  const {user} = useAuth()
+  const showToast = useToaster()
+
+  async function handleAddToLibrary () {
+    if (!user) return showToast("You need to login first", "Please login to use this feature", "error" , "link" , "/login");
+
+    if (isLiked) {
+      deleteLikedSong({ userId: user.id, likedSongId: song.id });
+    } else {
+      addLikedSongs({ userId: user.id, likedSongId: song.id });
+    }
+  }
+
 
   useOutsideClick(menuRef , isOpen , () => setOpen(false))
 
@@ -22,7 +42,7 @@ function TrackDropdown({song}) {
       </button>
 
       {isOpen && (
-<Menu setOpen={setOpen} position="center" isOpen={isOpen} song={song} type="track" isSubOpen={isSubOpen} setSubOpen={setSubOpen} />
+<Menu setOpen={setOpen} onToggleLike={handleAddToLibrary} isLiked={isLiked} position="center" isOpen={isOpen} song={song} type="track" isSubOpen={isSubOpen} setSubOpen={setSubOpen} />
       )}
     </div>
   );

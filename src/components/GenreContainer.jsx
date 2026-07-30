@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useCategory, useSectionsCategory } from '../features/useCategory.js'
 import EachAlbum from './EachAlbum.jsx'
 import Footer from './Footer.jsx'
@@ -16,6 +16,7 @@ const COLOR_PALETTES = [
 
 function GenreContainer() {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const { category } = useCategory(id)
 const {sections , isLoading} = useSectionsCategory(id)
@@ -54,6 +55,7 @@ const {sections , isLoading} = useSectionsCategory(id)
           return (
             <>
               <EachAlbum
+                onClick={(id) => navigate(`/public-playlist/${id}`)}
                 variant="slider"
                 sectionId={section?.id}
                 isLoading={isLoading}

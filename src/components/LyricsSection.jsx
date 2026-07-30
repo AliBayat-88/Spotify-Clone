@@ -10,7 +10,7 @@ function LyricsSection({lyrics}) {
       <p className="text-gray-400 font-medium whitespace-pre-line my-5">
         {displayText}
 
-        <span onClick={() => setExpand(!expand)} className="text-white font-semibold cursor-pointer">{expand ? "show less" : "show more"}</span>
+        <span onClick={() => setExpand(!expand)} className="text-white font-semibold cursor-pointer">{expand ? "...show less" : "show more"}</span>
       </p>
     </div>
   );

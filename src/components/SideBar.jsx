@@ -4,11 +4,15 @@ import { useNavigate } from 'react-router'
 import { usePlaylists } from '../features/usePlaylists.js'
 import { useAuth } from '../context/Auth.jsx'
 import { useState } from 'react'
+import { useFollowArtist } from '../features/useFollowArtist.js'
 
 function SideBar({ onOpenModal }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   const { playlists, isLoading } = usePlaylists();
+  const {data : followedArtistsData} = useFollowArtist()
+  console.log(followedArtistsData)
+
   const { user } = useAuth();
 
   return (
@@ -73,14 +77,14 @@ function SideBar({ onOpenModal }) {
       {/* 🟢 آیتم ثابتی: Liked Songs */}
       <div
         onClick={() => navigate("/playList/likedSongs")}
-        className={`p-2 hover:bg-[#262626] transition-colors rounded-xl flex items-center cursor-pointer w-full mb-1 ${
+        className={`p-2 hover:bg-[#262626] transition-colors rounded-xl flex items-center cursor-pointer w-full mb-0.5 ${
           isCollapsed ? 'justify-center' : 'justify-between'
         }`}
         title={isCollapsed ? "Liked Songs" : ""}
       >
         <div className="flex items-center gap-3 min-w-0">
           <img
-            className="w-11 h-11 rounded-md shrink-0 object-cover"
+            className="w-12 h-12 rounded-sm shrink-0 object-cover"
             src="/liked%20songs.png"
             alt="liked-songs"
           />
@@ -94,8 +98,7 @@ function SideBar({ onOpenModal }) {
         </div>
       </div>
 
-      {/* 🟢 لیست پلی‌لیست‌های کاربر */}
-      <div className="w-full flex flex-col gap-y-1 items-center">
+      <div className="w-full flex flex-col gap-y-0.5 items-center">
         {user
           ? isLoading
             ? Array.from({ length: 4 }).map((_, index) => (

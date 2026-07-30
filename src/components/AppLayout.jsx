@@ -18,12 +18,10 @@ function AppLayout() {
   const [playlists] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useAuth();
-  console.log(user);
 
   const { createPlaylist , isCreating } = useCreatePlaylist(() => setIsModalOpen(false));
 
   function handleOpenCreatePlaylist() {
-    // اول منو بسته بشه
     setIsMobileMenuOpen(false);
 
     if (user) {
@@ -45,10 +43,9 @@ function AppLayout() {
       <Header />
 
       <main className="flex flex-1 gap-2 text-white overflow-hidden">
-        {/* 🟢 پاس دادن تابع هوشمند به جای استیت مستقیم */}
         <SideBar playlists={playlists} onOpenModal={handleOpenCreatePlaylist} />
 
-        <div className="flex-1 overflow-y-auto mb-10 lg:mb-4">
+        <div className="flex-1 overflow-y-auto lg:mb-4">
           <Outlet context={{ onOpenCreatePlaylist: handleOpenCreatePlaylist }} />
         </div>
       </main>

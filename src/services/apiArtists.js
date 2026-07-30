@@ -46,13 +46,25 @@ export async function deleteFollowArtistApi({ userId , artistId }){
 }
 
 
-export async function getFollowArtists(userId ){
-  const {data , error} = await supabase
+
+export async function getFollowArtists(userId) {
+  if (!userId) return [];
+
+  const { data, error } = await supabase
     .from('followed_artists')
-    .select("*")
-    .eq("user_id" , userId)
+    .select(`
+      id,
+      created_at,
+      artists (
+        id,
+        name,
+        image_url,
+        bio
+      )
+    `)
+    .eq("user_id", userId);
 
   if (error) throw new Error(error.message);
 
-  return data
+  return data;
 }

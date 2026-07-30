@@ -55,3 +55,26 @@ export function formatDaysAgo(dateString) {
     year: 'numeric',
   });
 }
+
+// src/utils/helpers.js
+
+export function calculateTotalDuration(songs = []) {
+  if (!Array.isArray(songs) || songs.length === 0) return '0 min';
+
+  const totalSeconds = songs.reduce((acc, song) => {
+    let sec = 0;
+    if (typeof song?.duration === 'number') {
+      sec = song.duration;
+    } else if (typeof song?.duration === 'string') {
+      const parts = song.duration.split(':').map(Number);
+      if (parts.length === 2) sec = parts[0] * 60 + parts[1];
+      if (parts.length === 3) sec = parts[0] * 3600 + parts[1] * 60 + parts[2];
+    }
+    return acc + (isNaN(sec) ? 0 : sec);
+  }, 0);
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+
+  return hours > 0 ? `${hours} hr ${minutes} min` : `${minutes} min`;
+}

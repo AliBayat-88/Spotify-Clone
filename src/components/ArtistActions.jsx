@@ -14,10 +14,10 @@ function ArtistActions({ artistId }) {
   const { addFollowArtist } = useAddFollowArtist()
   const { deleteFollowArtist } = useDeleteFollowArtist()
 
-  // سنک کردن وضعیت فالو با استفاده از متد some
-  const isArtistsFollowed = followedArtists.some(
-    (item) => String(item.artist_id) === String(artistId)
-  )
+  const isArtistsFollowed = followedArtists.some((item) => {
+    const followedArtistId = item?.artists?.id || item?.artist_id;
+    return Number(followedArtistId) === Number(artistId);
+  });
 
   // تابع مشترک برای هندل کردن فالو/آن‌فالو
   function handleFollowToggle() {

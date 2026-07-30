@@ -12,8 +12,18 @@ import { useToaster } from '../context/ToastContext.jsx'
 import { useAddLikedSongs } from '../features/useAddLikedSongs.js'
 import { useDeleteLikedSong } from '../features/useDeleteLikedSong.js'
 import { useAuth } from '../context/Auth.jsx'
+import { useSongDeleteFromPlaylist } from '../features/useSongDeleteFromPlaylist.js'
 
-function SongRow({ index, play, type , singer , song , onClick }) {
+function SongRow({
+  index,
+  play,
+  type = "song",
+  singer,
+  song,
+  onClick,
+  playlistId,
+  songsList
+}) {
   const [isOpen, setOpen] = useState(false);
   const [isSubOpen, setSubOpen] = useState(false);
   const menuRef = useRef(null);
@@ -22,6 +32,12 @@ function SongRow({ index, play, type , singer , song , onClick }) {
   const { deleteLikedSong } = useDeleteLikedSong()
   const { user } = useAuth()
   const { data: likedSongs = [] } = useLikedSongs()
+  const {deleteSongFromPlaylist} = useSongDeleteFromPlaylist()
+
+
+  function handleDeleteSongFromPlaylist() {
+    deleteSongFromPlaylist({playlistId : playlistId , songId : song?.id})
+  }
 
   const isLiked = likedSongs.some((item) => {
     if (typeof item === 'number' || typeof item === 'string') {
@@ -41,37 +57,33 @@ function SongRow({ index, play, type , singer , song , onClick }) {
   }
 
   const { playSong , isPlaying , currentSong} = usePlayer();
-
   const isCurrentSong = currentSong?.id === song?.id;
 
+  // در فایل components/SongRow.jsx
+
   function handlePlay() {
-    playSong(song);
+    if (!song) return;
+    // 🟢 پاس دادن آهنگ + صف پخش (اگر songsList نبود، خودش را در یک آرایه می‌فرستد)
+    playSong(song, songsList || [song]);
   }
 
   useOutsideClick(menuRef , isOpen , () => setOpen(false))
 
   return (
     <div className="flex lg:grid lg:grid-cols-[5fr_3fr_2fr_120px] items-center justify-between p-2 sm:p-3 font-medium rounded-lg hover:bg-white/10 transition-all group">
-
-      {/* 🟢 بخش چپ: کلیک روی این بخش در موبایل/تبلت باعث پخش آهنگ می‌شود */}
       <div className="flex items-center gap-x-4 sm:gap-x-3.5 min-w-0" onClick={handlePlay}>
 
-        {/* 🟢 ستون عدد/پلی: فقط در دسکتاپ (lg) نمایش داده می‌شود */}
+        {/* ستون شماره و پلی/پاز (فقط دسکتاپ) */}
         <div className="hidden lg:block w-5 text-center shrink-0 cursor-pointer">
-
-          {/* حالت اول: این آهنگ، آهنگِ در حال پخش فعلی نیست */}
           {!isCurrentSong && (
             <>
-              <span className="group-hover:hidden text-gray-400 text-sm">
-                {index}
-              </span>
+              <span className="group-hover:hidden text-gray-400 text-sm">{index}</span>
               <span className="hidden group-hover:flex justify-center">
                 <PlayBtn color={"#ffffff"} />
               </span>
             </>
           )}
 
-          {/* حالت دوم: این آهنگ انتخاب شده و در حال پخش است */}
           {isCurrentSong && isPlaying && (
             <>
               <span className="group-hover:hidden flex justify-center">
@@ -83,27 +95,22 @@ function SongRow({ index, play, type , singer , song , onClick }) {
             </>
           )}
 
-          {/* حالت سوم: این آهنگ انتخاب شده اما در وضعیت پاز قرار دارد */}
           {isCurrentSong && !isPlaying && (
             <>
-              <span className="group-hover:hidden font-semibold text-sm">
-                {index}
-              </span>
+              <span className="group-hover:hidden font-semibold text-sm">{index}</span>
               <span className="hidden group-hover:flex justify-center">
                 <PlayBtn color={"#ffffff"}/>
               </span>
             </>
           )}
-
         </div>
 
         <img className="w-11 h-11 rounded shrink-0 cursor-pointer" src={song?.cover_url} alt=""/>
-
         <div className="flex flex-col min-w-0">
           <span
             onClick={(e) => {
               if (onClick) {
-                e.stopPropagation(); // جلوگیری از تداخل جهت روتینگ
+                e.stopPropagation();
                 onClick();
               }
             }}
@@ -118,13 +125,13 @@ function SongRow({ index, play, type , singer , song , onClick }) {
       {type === "song" ? (
         <span className="hidden lg:block truncate text-gray-400 text-sm">{formatNumber(play)}</span>
       ) : (
-        <span className="hidden lg:block truncate text-gray-400 text-sm">flower mel</span>
+        <span className="hidden lg:block truncate text-gray-400 text-sm">flower</span>
       )}
 
       {type === "playlist" ? (
         <span className="text-gray-400 text-sm hidden lg:block truncate">
-          {formatDaysAgo(song?.added_at)}
-        </span>
+    {formatDaysAgo(song?.added_at || song?.created_at)}
+  </span>
       ) : (
         <span className="hidden lg:block"></span>
       )}
@@ -150,7 +157,7 @@ function SongRow({ index, play, type , singer , song , onClick }) {
           <button
             onClick={(e) => {
               e.preventDefault();
-              e.stopPropagation(); // جلوگیری از پخش شدن آهنگ موقع زدن ۳ نقطه
+              e.stopPropagation();
               setOpen(!isOpen);
             }}
             className="font-bold sm:text-xl text-white/60 hover:text-white leading-none pb-2 whitespace-nowrap tracking-widest bg-transparent border-none outline-none cursor-pointer"
@@ -158,7 +165,22 @@ function SongRow({ index, play, type , singer , song , onClick }) {
             ...
           </button>
 
-          {isOpen && <Menu setOpen={setOpen} isSubLeft={true} position="right" isOpen={isOpen} song={song} type="track" isSubOpen={isSubOpen} setSubOpen={setSubOpen} />}
+          {/* 🟢 پاس دادن پروپ‌های جدید به کامپوننت Menu */}
+          {isOpen && (
+            <Menu
+              setOpen={setOpen}
+              isSubLeft={true}
+              position="right"
+              isOpen={isOpen}
+              song={song}
+              type={type} // 👈 پاس دادن مستقیم تایپ ورودی
+              isLiked={isLiked}
+              onRemoveFromPlaylist={handleDeleteSongFromPlaylist}
+              onToggleLike={handleAddToLibrary}
+              isSubOpen={isSubOpen}
+              setSubOpen={setSubOpen}
+            />
+          )}
         </div>
       </div>
 

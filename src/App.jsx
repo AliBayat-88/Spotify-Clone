@@ -25,6 +25,7 @@ import ForgotPasswordForm from './components/ForgotPasswordForm.jsx'
 import VerifyEmailPage from './components/VerifyEmailPage.jsx'
 import { AuthProvider } from './context/Auth.jsx'
 import { AuthCallback } from './components/AuthCallback.jsx'
+import PublicPlaylistContainer from './components/PublicPlaylistContainer.jsx'
 
 
 const queryClient = new QueryClient({
@@ -55,6 +56,7 @@ function App() {
           <Route path="track/:id" element={<TrackContainer />} />
           <Route path="artist/:id" element={<ArtistContainer />} />
           <Route path="playList/:id" element={<PlayListContainer />} />
+          <Route path="/public-playlist/:id" element={<PublicPlaylistContainer />} />
           <Route path="/genre/:id" element={<GenreContainer />} />
           <Route path="/section/:id" element={<DetailsSection />} />
           <Route

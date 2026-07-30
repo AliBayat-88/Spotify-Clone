@@ -6,10 +6,15 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      // 🟢 ۱. تعریف تمام Keyframeها در یک سطح
       keyframes: {
         pop: {
           '0%': { transform: 'scale(0.6)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        borderBeam: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
         },
         draw: {
           'to': { strokeDashoffset: '0' },
@@ -20,17 +25,18 @@ export default {
         },
       },
 
+      // 🟢 ۲. تعریف تمام Animationهای Tailwind در یک سطح
       animation: {
         pop: 'pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+        'border-beam': 'borderBeam 3s linear infinite', // 👈 کلاس animate-border-beam
         draw: 'draw 0.4s ease-in-out 0.15s forwards',
-          ripple: 'ripple 1s ease-out infinite',
-
+        ripple: 'ripple 1s ease-out infinite',
       },
 
       fontFamily: {
-        'nexaBold' : 'nexa bold',
-        'nexa' : 'nexa light',
-        "jazoor" : "jazoor",
+        'nexaBold': 'nexa bold',
+        'nexa': 'nexa light',
+        'jazoor': 'jazoor',
       }
     },
   },

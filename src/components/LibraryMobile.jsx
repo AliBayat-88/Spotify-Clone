@@ -2,9 +2,14 @@ import Header from './Header.jsx';
 import LikedIcon from './LikedIcon.jsx'
 import { usePlaylists } from '../features/usePlaylists.js'
 import MobilePlaylist from './MobilePlaylist.jsx'
+import { useNavigate } from 'react-router-dom'
+import { useLikedSongs } from '../features/useLikedSongs.js'
 
 function LibraryMobile() {
   const {playlists , isLoading} = usePlaylists()
+  const { data: likedSongs = [] } = useLikedSongs();
+  console.log(likedSongs)
+  const navigate = useNavigate()
 
 
   return (
@@ -17,7 +22,7 @@ function LibraryMobile() {
         <div
           className="group flex items-center justify-between p-2.5 rounded-xl hover:bg-[#262626]/50 active:bg-[#262626] transition-all duration-200 cursor-pointer active:scale-[0.99]"
         >
-          <div className="flex items-center gap-3.5 min-w-0 flex-1">
+          <div onClick={() => navigate(`/playList/likedSongs`)} className="flex items-center gap-3.5 min-w-0 flex-1">
             <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-[#450af5] via-[#8c11f7] to-[#c411f7] shrink-0 flex items-center justify-center shadow-lg">
 <LikedIcon/>
             </div>
@@ -30,7 +35,7 @@ function LibraryMobile() {
                 <span>Playlist</span>
                 <span className="w-1 h-1 bg-[#1ed760]/60 rounded-full inline-block"></span>
 
-                <span>54 songs</span>
+                <span>{likedSongs?.length} songs</span>
               </p>
             </div>
           </div>

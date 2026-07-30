@@ -1,6 +1,8 @@
 import React from 'react';
 
 function BoxSong({ info, isArtist, onClick, isPlaylist }) {
+  console.log(info?.id)
+
   return (
     <div
       onClick={onClick}

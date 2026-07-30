@@ -1,6 +1,9 @@
 import PlayListActions from './PlayListActions.jsx'
+import { useNavigate } from 'react-router-dom'
 
 function MobilePlaylist({playlist , isLoading}) {
+  const navigate = useNavigate()
+
   if (isLoading) {
     return (
       <div className="p-3 mt-0.5 rounded-2xl flex items-center justify-between animate-pulse">
@@ -22,7 +25,7 @@ function MobilePlaylist({playlist , isLoading}) {
     <div
       className="group relative bg-neutral-900 flex items-center justify-between p-2.5 rounded-xl hover:bg-[#262626]/50 active:bg-[#262626] transition-all duration-200 cursor-pointer active:scale-[0.99]"
     >
-      <div className="flex items-center gap-3.5 min-w-0 flex-1">
+      <div onClick={() => navigate(`/playList/${playlist?.id}`)} className="flex items-center gap-3.5 min-w-0 flex-1">
         <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-[#262626] shadow-md">
           <img className="w-full h-full object-cover" src={playlist.cover_url || "/playlistImg.webp"} alt={playlist.name}/>
         </div>

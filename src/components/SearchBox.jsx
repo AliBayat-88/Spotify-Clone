@@ -3,30 +3,36 @@ import { Link, useNavigate } from 'react-router-dom';
 import HomeIcon from './HomeIcon.jsx';
 import { useDebounce } from '../hooks/useDebounce';
 import { useLiveSearch } from '../features/useLiveSearch';
-import { useOutsideClick } from '../hooks/useOutsideClick.js'
-import SearchLoader from './SearchLoader.jsx'
-import Button from './Button.jsx'
-import { useAuth } from '../context/Auth.jsx'
-import Profile from './Profile.jsx'
+import { useOutsideClick } from '../hooks/useOutsideClick.js';
+import SearchLoader from './SearchLoader.jsx';
+import Button from './Button.jsx';
+import { useAuth } from '../context/Auth.jsx';
+import Profile from './Profile.jsx';
 
 function SearchBox() {
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const searchContainerRef = useRef(null);
   const navigate = useNavigate();
-  const {user} = useAuth()
+
+  const { user, isLoading: isAuthLoading } = useAuth();
 
   const debouncedQuery = useDebounce(query, 500);
   const { data: results, isLoading } = useLiveSearch(debouncedQuery);
 
-  useOutsideClick(searchContainerRef , isFocused , () => setIsFocused(false))
+  useOutsideClick(searchContainerRef, isFocused, () => setIsFocused(false));
+
   const handleNavigate = (path) => {
     navigate(path);
     setQuery('');
     setIsFocused(false);
   };
 
-  const hasResults = results && (results.songs.length > 0 || results.artists.length > 0 || results.playlists.length > 0);
+  const hasResults =
+    results &&
+    (results.songs.length > 0 ||
+      results.artists.length > 0 ||
+      results.playlists.length > 0);
 
   return (
     <>
@@ -72,25 +78,38 @@ function SearchBox() {
 
           {isFocused && query.trim().length > 0 && (
             <div className="absolute top-[115%] left-0 w-full bg-[#181818] rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.8)] border border-[#282828] max-h-[65vh] overflow-y-auto scrollbar-hide z-50 p-3">
-
               {isLoading ? (
-                <SearchLoader/>
+                <SearchLoader />
               ) : !hasResults ? (
                 <div className="p-4 text-center text-white text-sm font-bold flex items-center justify-center flex-col gap-y-3">
-                  <img className="w-20" src="/nothing-found.png"/>
+                  <img className="w-20" src="/nothing-found.png" alt="Nothing found" />
                   No results found for {query}
                 </div>
               ) : (
                 <div className="flex flex-col gap-5">
                   {results.songs.length > 0 && (
                     <div>
-                      <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-3">Songs</h3>
-                      {results.songs.map(song => (
-                        <div key={song.id} onClick={() => handleNavigate(`/track/${song.id}`)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#282828] cursor-pointer transition-colors group">
-                          <img src={song.cover_url} alt={song.name} className="w-10 h-10 object-cover rounded-md shadow-md" />
+                      <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-3">
+                        Songs
+                      </h3>
+                      {results.songs.map((song) => (
+                        <div
+                          key={song.id}
+                          onClick={() => handleNavigate(`/track/${song.id}`)}
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#282828] cursor-pointer transition-colors group"
+                        >
+                          <img
+                            src={song.cover_url}
+                            alt={song.name}
+                            className="w-10 h-10 object-cover rounded-md shadow-md"
+                          />
                           <div className="flex flex-col overflow-hidden">
-                            <span className="text-white text-sm font-medium truncate group-hover:text-[#1db954] transition-colors">{song.name}</span>
-                            <span className="text-[#a7a7a7] text-xs truncate">{song.artists?.name}</span>
+                            <span className="text-white text-sm font-medium truncate group-hover:text-[#1db954] transition-colors">
+                              {song.name}
+                            </span>
+                            <span className="text-[#a7a7a7] text-xs truncate">
+                              {song.artists?.name}
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -99,12 +118,24 @@ function SearchBox() {
 
                   {results.artists.length > 0 && (
                     <div>
-                      <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-3">Artists</h3>
-                      {results.artists.map(artist => (
-                        <div key={artist.id} onClick={() => handleNavigate(`/artist/${artist.id}`)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#282828] cursor-pointer transition-colors group">
-                          <img src={artist.image_url} alt={artist.name} className="w-10 h-10 object-cover rounded-full shadow-md" />
+                      <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-3">
+                        Artists
+                      </h3>
+                      {results.artists.map((artist) => (
+                        <div
+                          key={artist.id}
+                          onClick={() => handleNavigate(`/artist/${artist.id}`)}
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#282828] cursor-pointer transition-colors group"
+                        >
+                          <img
+                            src={artist.image_url}
+                            alt={artist.name}
+                            className="w-10 h-10 object-cover rounded-full shadow-md"
+                          />
                           <div className="flex flex-col overflow-hidden">
-                            <span className="text-white text-sm font-medium truncate group-hover:text-white">{artist.name}</span>
+                            <span className="text-white text-sm font-medium truncate group-hover:text-white">
+                              {artist.name}
+                            </span>
                             <span className="text-[#a7a7a7] text-xs truncate">Artist</span>
                           </div>
                         </div>
@@ -114,19 +145,30 @@ function SearchBox() {
 
                   {results.playlists.length > 0 && (
                     <div>
-                      <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-3">Playlists</h3>
-                      {results.playlists.map(playlist => (
-                        <div key={playlist.id} onClick={() => handleNavigate(`/playlist/${playlist.id}`)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#282828] cursor-pointer transition-colors group">
-                          <img src={playlist.cover_url} alt={playlist.title} className="w-10 h-10 object-cover rounded-md shadow-md" />
+                      <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-3">
+                        Playlists
+                      </h3>
+                      {results.playlists.map((playlist) => (
+                        <div
+                          key={playlist.id}
+                          onClick={() => handleNavigate(`/playlist/${playlist.id}`)}
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#282828] cursor-pointer transition-colors group"
+                        >
+                          <img
+                            src={playlist.cover_url}
+                            alt={playlist.title}
+                            className="w-10 h-10 object-cover rounded-md shadow-md"
+                          />
                           <div className="flex flex-col overflow-hidden">
-                            <span className="text-white text-sm font-medium truncate group-hover:text-white">{playlist.title}</span>
+                            <span className="text-white text-sm font-medium truncate group-hover:text-white">
+                              {playlist.title}
+                            </span>
                             <span className="text-[#a7a7a7] text-xs truncate">Playlist</span>
                           </div>
                         </div>
                       ))}
                     </div>
                   )}
-
                 </div>
               )}
             </div>
@@ -134,7 +176,14 @@ function SearchBox() {
         </div>
       </div>
 
-      {user ? <Profile/> : <Button wherePage="/login">Login</Button>}
+      {/* 🟢 مدیریت ۳ حالت: در حال لود شدن (Skeleton) / لاگین شده (Profile) / لاگین نشده (Login Button) */}
+      {isAuthLoading ? (
+        <div className="w-12 h-10 rounded-xl bg-[#262626] animate-pulse shrink-0 " />
+      ) : user ? (
+        <Profile />
+      ) : (
+        <Button wherePage="/login">Login</Button>
+      )}
     </>
   );
 }

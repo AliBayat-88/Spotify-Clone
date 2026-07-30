@@ -3,7 +3,7 @@ import  supabase  from "./supabase";
 export async function getSongs() {
   const { data, error } = await supabase
     .from("songs")
-    .select(`* , artists(id , name , image_url)`);
+    .select(`* , artists(id , name , image_url , bio)`);
 
   if (error) throw new Error(error.message);
 
@@ -13,7 +13,7 @@ export async function getSongs() {
 export async function getSong(id) {
   const { data, error } = await supabase
     .from("songs")
-    .select(`* , artists(id , name , image_url)`)
+    .select(`* , artists(id , name , image_url , bio)`)
     .eq("id",id)
     .single()
 
@@ -69,7 +69,8 @@ export async function getHomeSections() {
         artists (
           id,
           name,
-          image_url
+          image_url,
+          bio
         )
       )
     `)

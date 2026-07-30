@@ -1,21 +1,32 @@
-import { createContext, useContext, useState, useRef, useEffect } from 'react'
+import { createContext, useContext, useState, useRef, useEffect } from 'react';
 
-const PlayerContext = createContext()
+const PlayerContext = createContext();
 
 function PlayerContextProvider({ children }) {
   const [currentSong, setCurrentSong] = useState(null);
+  const [queue, setQueue] = useState([]); // صف پخش آهنگ‌ها
 
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(50);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(100);
 
-  // این رفرنس مثل "ریموت کنترل" برای تگ audio عمل می‌کنه
-  const audioRef = useRef(null)
+  const audioRef = useRef(null);
 
-  function playSong(song) {
-    if (currentSong?.id === song?.id) {
+  // 🟢 ۱. پخش آهنگ و ست کردن صف جدید
+  function playSong(song, newQueue = null) {
+    if (!song) return;
+
+    // ست کردن صف پخش
+    if (newQueue && Array.isArray(newQueue) && newQueue.length > 0) {
+      setQueue(newQueue);
+    } else {
+      setQueue((prev) => (prev.length > 0 ? prev : [song]));
+    }
+
+    // اگر همان آهنگ فعلی انتخاب شده، پاز/پلی کن
+    if (Number(currentSong?.id) === Number(song?.id)) {
       togglePlay();
       return;
     }
@@ -23,70 +34,140 @@ function PlayerContextProvider({ children }) {
     setCurrentSong(song);
   }
 
+  // 🟢 ۲. پخش خودکار با تغییر آهنگ
   useEffect(() => {
-    if (!currentSong) return;
+    if (!currentSong || !audioRef.current) return;
 
-    audioRef.current.play();
-    setIsPlaying(true);
+    audioRef.current
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch((err) => {
+        console.error("Playback error:", err);
+        setIsPlaying(false);
+      });
   }, [currentSong]);
 
-
   function pauseSong() {
-    audioRef.current.pause();
+    audioRef.current?.pause();
     setIsPlaying(false);
   }
 
   function resumeSong() {
-    audioRef.current.play();
-    setIsPlaying(true);
+    if (!audioRef.current) return;
+    audioRef.current
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch((err) => console.error("Resume error:", err));
   }
+
   const togglePlay = () => {
+    if (!audioRef.current) return;
+
     if (isPlaying) {
-      audioRef.current.pause()
+      audioRef.current.pause();
+      setIsPlaying(false);
     } else {
-      audioRef.current.play()
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.error("Toggle play error:", err));
     }
-    setIsPlaying(!isPlaying)
-  }
+  };
+
+  // 🟢 ۳. آهنگ بعدی
+  const playNext = () => {
+    if (!queue.length || !currentSong) return;
+
+    const currentIndex = queue.findIndex(
+      (s) => Number(s?.id) === Number(currentSong?.id)
+    );
+
+    if (currentIndex !== -1 && currentIndex < queue.length - 1) {
+      const nextSong = queue[currentIndex + 1];
+      setCurrentSong(nextSong);
+    }
+  };
+
+  // 🟢 ۴. آهنگ قبلی
+  const playPrevious = () => {
+    if (!queue.length || !currentSong || !audioRef.current) return;
+
+    // اگر بیش از ۳ ثانیه گذشته، آهنگ از اول شروع می‌شود
+    if (audioRef.current.currentTime > 3) {
+      audioRef.current.currentTime = 0;
+      return;
+    }
+
+    const currentIndex = queue.findIndex(
+      (s) => Number(s?.id) === Number(currentSong?.id)
+    );
+
+    if (currentIndex > 0) {
+      const prevSong = queue[currentIndex - 1];
+      setCurrentSong(prevSong);
+    } else {
+      audioRef.current.currentTime = 0;
+    }
+  };
 
   function changeVolume(newVolume) {
-    console.log(newVolume)
     setVolume(newVolume);
-
     if (audioRef.current) {
       audioRef.current.volume = newVolume / 100;
     }
   }
 
-  // وقتی زمان آهنگ عوض می‌شه (در حال پخش)، این تابع صدا زده می‌شه
   const onTimeUpdate = () => {
-    setCurrentTime(audioRef.current.currentTime)
-  }
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
 
-  // وقتی اطلاعات آهنگ لود شد، مدت زمان کل رو می‌گیریم
   const onLoadedMetadata = () => {
-    setDuration(audioRef.current.duration)
-  }
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  };
 
-  // تابعی برای عقب و جلو بردن آهنگ با کلیک روی نوار
   const seek = (time) => {
-    audioRef.current.currentTime = time
-    setCurrentTime(time)
-  }
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+      setCurrentTime(time);
+    }
+  };
 
   return (
-    <PlayerContext.Provider value={{
-      isExpanded, setIsExpanded,
-      isPlaying, togglePlay,
-      currentTime, duration,
-      seek, audioRef, volume , setVolume,changeVolume,playSong,currentSong,pauseSong,resumeSong,setCurrentSong
-    }}>
+    <PlayerContext.Provider
+      value={{
+        isExpanded,
+        setIsExpanded,
+        isPlaying,
+        togglePlay,
+        currentTime,
+        duration,
+        seek,
+        audioRef,
+        volume,
+        setVolume,
+        changeVolume,
+        playSong,
+        currentSong,
+        pauseSong,
+        resumeSong,
+        setCurrentSong,
+        playNext,
+        playPrevious,
+        queue,
+      }}
+    >
       {children}
-      {/* تگ اصلی صدا که مخفیه و آهنگ رو پخش می‌کنه */}
       <audio
         ref={audioRef}
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
+        onEnded={playNext}
         src={currentSong?.audio_url}
       />
     </PlayerContext.Provider>
@@ -94,9 +175,11 @@ function PlayerContextProvider({ children }) {
 }
 
 function usePlayer() {
-  const context = useContext(PlayerContext)
-  if (!context) throw new Error('usePlayer must be used within the context')
-  return context
+  const context = useContext(PlayerContext);
+  if (!context) {
+    throw new Error('usePlayer must be used within a PlayerContextProvider');
+  }
+  return context;
 }
 
-export { PlayerContextProvider, usePlayer }
+export { PlayerContextProvider, usePlayer };
