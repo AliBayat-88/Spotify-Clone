@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TrackHero({ singer, songName, type, songPoster, ambientColor = "from-purple-900/80" }) {
+function TrackHero({ singer, songName, type, songPoster, ambientColor = "from-purple-900/80"}) {
   return (
     <>
       {/* 📱 نسخه موبایل */}
@@ -47,11 +47,9 @@ function TrackHero({ singer, songName, type, songPoster, ambientColor = "from-pu
 
           <h1 className="text-4xl lg:text-6xl xl:text-7xl font-black tracking-tight text-white drop-shadow-xl line-clamp-2 leading-none py-1">
             {songName}
+
           </h1>
 
-          <div className="flex items-center gap-x-2 text-xs sm:text-sm font-semibold text-gray-200 mt-2">
-            <span className="text-white font-bold">{singer}</span>
-          </div>
         </div>
       </div>
     </>

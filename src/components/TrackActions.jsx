@@ -1,71 +1,78 @@
-import { useState } from 'react'; // 👈 اضافه شد برای حالت لودینگ دانلود
-import PlusIcon from './plusIcon.jsx'
-import AnimatedCheckIcon from './AnimatedCheckIcon.jsx'
-import TrackDropdown from './TrackDropDown.jsx'
-import DownloadIcon from './DownloadIcon.jsx'
-import PlayButton from './PlayButton.jsx'
-import { useToaster } from '../context/ToastContext.jsx'
-import { usePlayer } from '../context/PlayerContext.jsx'
-import PauseBtn from './PauseBtn.jsx'
-import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js'
-
+import { useState } from 'react';
+import PlusIcon from './plusIcon.jsx';
+import AnimatedCheckIcon from './AnimatedCheckIcon.jsx';
+import TrackDropdown from './TrackDropDown.jsx';
+import DownloadIcon from './DownloadIcon.jsx';
+import PlayButton from './PlayButton.jsx';
+import { useToaster } from '../context/ToastContext.jsx';
+import { usePlayer } from '../context/PlayerContext.jsx';
+import PauseBtn from './PauseBtn.jsx';
+import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js';
+import { useAuth } from '../context/Auth.jsx';
+import AuthRequiredModal from './AuthRequiredModal.jsx';
 
 function TrackActions({ audioUrl, songName, song }) {
-  const { showToast } = useToaster()
-  const { playSong, isPlaying } = usePlayer()
+  const { showToast } = useToaster();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { playSong, isPlaying } = usePlayer();
   const { isLiked, toggleLike } = useToggleLikeSong(song);
-
-
+  const { user } = useAuth();
 
   const [isDownloading, setIsDownloading] = useState(false);
 
-  function handlePlay () {
-    playSong(song)
-  }
+  const handlePlayClick = () => {
+    if (user) {
+      playSong(song);
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
 
+  const handleDownload = async () => {
+    if (!audioUrl) {
+      showToast("Error", "No audio URL found!", "error");
+      return;
+    }else if (!user){
+      setIsAuthModalOpen(true);
+      return
+    }
 
-    const handleDownload = async () => {
-      if (!audioUrl) {
-        showToast("Error", "No audio URL found!", "error");
-        return;
-      }
+    try {
+      setIsDownloading(true);
+      showToast("Downloading...", "Please wait", "info");
 
-      try {
-        setIsDownloading(true);
-        showToast("Downloading...", "Please wait", "info");
+      const response = await fetch(audioUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
 
-        const response = await fetch(audioUrl);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `${songName || 'Track'}.mp3`;
 
-        const blob = await response.blob();
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-        const blobUrl = window.URL.createObjectURL(blob);
+      window.URL.revokeObjectURL(blobUrl);
 
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = `${songName || 'Track'}.mp3`;
+      showToast("Downloaded!", "Check your downloads folder.", "success");
+    } catch (error) {
+      console.error("Download failed:", error);
+      showToast("Failed", "Could not download the file.", "error");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        window.URL.revokeObjectURL(blobUrl);
-
-        showToast("Downloaded!", "Check your downloads folder.", "success");
-      } catch (error) {
-        console.error("Download failed:", error);
-        showToast("Failed", "Could not download the file.", "error");
-      } finally {
-        setIsDownloading(false);
-      }
-    };
-
-    return (
+  return (
+    <>
       <div className="flex gap-x-3 items-center child:transition-all">
-        <button onClick={() => handlePlay()}
-                className="p-2.5 sm:p-3.5 rounded-full bg-green-500 hover:bg-green-600 inline-flex justify-center items-center">
+        <button
+          onClick={handlePlayClick}
+          className="p-2.5 sm:p-3.5 rounded-full bg-green-500 hover:bg-green-600 inline-flex justify-center items-center"
+        >
           {isPlaying ? <PauseBtn className="w-8 h-8 text-black"/> : <PlayButton className="w-8 h-8"/>}
         </button>
-
 
         <div onClick={toggleLike} className="cursor-pointer">
           {isLiked ? (
@@ -89,8 +96,14 @@ function TrackActions({ audioUrl, songName, song }) {
 
         <TrackDropdown isLiked={isLiked} song={song}/>
       </div>
-    );
-  }
 
+      {/* ۳. مودال خارج از div و درون Fragment قرار گرفت */}
+      <AuthRequiredModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
+    </>
+  );
+}
 
 export default TrackActions;

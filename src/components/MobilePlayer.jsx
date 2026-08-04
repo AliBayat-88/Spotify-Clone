@@ -8,14 +8,18 @@ import PlayBtn from './PlayBtn.jsx'
 import AddLikedSongsBtn from './AddLikedSongsBtn.jsx'
 import { useArtist } from '../features/useArtist.js'
 import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js'
+import ActionBtn from './ActionBtn.jsx'
+import { useArtistFollow } from '../hooks/useArtistFollow.js'
 
 function MobilePlayer() {
   const { isExpanded, setIsExpanded, isPlaying, togglePlay, playNext, playPrevious, currentSong } = usePlayer();
   const { isLiked, toggleLike } = useToggleLikeSong(currentSong);
 
+
   // 🟢 ۱. گرفتن آی‌دی خواننده در صورت وجود
   const artistId = currentSong?.artist_id || currentSong?.artists?.id;
   const { artist, isLoading } = useArtist(artistId);
+  const {isFollowed , handleFollowToggle} = useArtistFollow(artistId)
 
   // 🟢 ۲. استخراج هوشمند اطلاعات (اول هوک -> بعد خود currentSong -> بعد مقدار پیش‌فرض)
   const artistName = artist?.name || currentSong?.artists?.name || "Unknown Artist";
@@ -99,9 +103,13 @@ function MobilePlayer() {
                 </div>
               </div>
 
-              <button className="px-4 py-1.5 rounded-full border border-white/20 text-white text-[12px] font-bold hover:border-white hover:bg-white/10 active:scale-95 transition-all">
-                Follow
-              </button>
+              <ActionBtn onClick={handleFollowToggle}
+                         title={isFollowed ? "Following" : "Follow"}
+                         className={
+                           isFollowed
+                             ? "bg-white text-black text-sm px-3.5 py-1.5 border-2 border-white"
+                             : "bg-transparent text-white text-sm px-3.5 py-1.5 border-2 border-white hover:bg-white/10"
+                         } />
             </div>
 
             {/* 🟢 نمایش بایو با استفاده از متغیر هوشمند artistBio */}

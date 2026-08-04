@@ -13,6 +13,7 @@ import { useAddLikedSongs } from '../features/useAddLikedSongs.js'
 import { useDeleteLikedSong } from '../features/useDeleteLikedSong.js'
 import { useAuth } from '../context/Auth.jsx'
 import { useSongDeleteFromPlaylist } from '../features/useSongDeleteFromPlaylist.js'
+import AuthRequiredModal from './AuthRequiredModal.jsx'
 
 function SongRow({
   index,
@@ -29,14 +30,16 @@ function SongRow({
   const menuRef = useRef(null);
   const { showToast } = useToaster()
   const { addLikedSongs } = useAddLikedSongs()
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { deleteLikedSong } = useDeleteLikedSong()
   const { user } = useAuth()
   const { data: likedSongs = [] } = useLikedSongs()
-  const {deleteSongFromPlaylist} = useSongDeleteFromPlaylist()
+  const { deleteSongFromPlaylist } = useSongDeleteFromPlaylist()
 
+  console.log(song)
 
   function handleDeleteSongFromPlaylist() {
-    deleteSongFromPlaylist({playlistId : playlistId , songId : song?.id})
+    deleteSongFromPlaylist({ playlistId: playlistId, songId: song?.id })
   }
 
   const isLiked = likedSongs.some((item) => {
@@ -46,8 +49,8 @@ function SongRow({
     return Number(item?.id || item?.song_id) === Number(song?.id);
   });
 
-  async function handleAddToLibrary () {
-    if (!user) return showToast("You need to login first", "Please login to use this feature", "error" , "link" , "/login");
+  async function handleAddToLibrary() {
+    if (!user) return showToast("You need to login first", "Please login to use this feature", "error", "link", "/login");
 
     if (isLiked) {
       deleteLikedSong({ userId: user.id, likedSongId: song.id });
@@ -56,28 +59,28 @@ function SongRow({
     }
   }
 
-  const { playSong , isPlaying , currentSong} = usePlayer();
+  const { playSong, isPlaying, currentSong } = usePlayer();
   const isCurrentSong = currentSong?.id === song?.id;
-
-  // در فایل components/SongRow.jsx
 
   function handlePlay() {
     if (!song) return;
-    // 🟢 پاس دادن آهنگ + صف پخش (اگر songsList نبود، خودش را در یک آرایه می‌فرستد)
-    playSong(song, songsList || [song]);
+    if(!user) {
+      setIsAuthModalOpen(true);
+    }else {
+      playSong(song, songsList || [song]);
+    }
   }
 
-  useOutsideClick(menuRef , isOpen , () => setOpen(false))
+  useOutsideClick(menuRef, isOpen, () => setOpen(false))
 
   return (
-    <div className="flex lg:grid lg:grid-cols-[5fr_3fr_2fr_120px] items-center justify-between p-2 sm:p-3 font-medium rounded-lg hover:bg-white/10 transition-all group">
+    <div className="flex lg:grid lg:grid-cols-[5fr_3fr_2fr_120px] items-center justify-between p-2 sm:p-3 font-medium rounded-xl hover:bg-white/10 transition-all duration-200 group select-none">
       <div className="flex items-center gap-x-4 sm:gap-x-3.5 min-w-0" onClick={handlePlay}>
 
-        {/* ستون شماره و پلی/پاز (فقط دسکتاپ) */}
         <div className="hidden lg:block w-5 text-center shrink-0 cursor-pointer">
           {!isCurrentSong && (
             <>
-              <span className="group-hover:hidden text-gray-400 text-sm">{index}</span>
+              <span className="group-hover:hidden text-gray-400 text-sm font-semibold">{index}</span>
               <span className="hidden group-hover:flex justify-center">
                 <PlayBtn color={"#ffffff"} />
               </span>
@@ -97,15 +100,16 @@ function SongRow({
 
           {isCurrentSong && !isPlaying && (
             <>
-              <span className="group-hover:hidden font-semibold text-sm">{index}</span>
+              <span className="group-hover:hidden font-semibold text-sm text-[#1ed760]">{index}</span>
               <span className="hidden group-hover:flex justify-center">
-                <PlayBtn color={"#ffffff"}/>
+                <PlayBtn color={"#ffffff"} />
               </span>
             </>
           )}
         </div>
 
-        <img className="w-11 h-11 rounded shrink-0 cursor-pointer" src={song?.cover_url} alt=""/>
+        <img className="w-11 h-11 rounded-lg shrink-0 cursor-pointer object-cover shadow-sm border border-white/5" src={song?.cover_url} alt="" />
+
         <div className="flex flex-col min-w-0">
           <span
             onClick={(e) => {
@@ -114,37 +118,39 @@ function SongRow({
                 onClick();
               }
             }}
-            className="truncate hover:underline cursor-pointer text-white text-sm sm:text-base"
+            className={`truncate cursor-pointer text-sm sm:text-base font-semibold ${
+              isCurrentSong ? 'text-[#1ed760]' : 'text-white hover:underline'
+            }`}
           >
             {song?.name}
           </span>
-          <span className="text-xs text-gray-400 lg:hidden font-normal mt-0.5">{singer}</span>
+          <span className="text-xs text-gray-400 font-normal mt-0.5 truncate">{singer}</span>
         </div>
       </div>
 
       {type === "song" ? (
         <span className="hidden lg:block truncate text-gray-400 text-sm">{formatNumber(play)}</span>
       ) : (
-        <span className="hidden lg:block truncate text-gray-400 text-sm">flower</span>
+        <span className="hidden lg:block truncate text-gray-400 text-sm">Single</span>
       )}
 
-      {type === "playlist" ? (
+      {type === "playlist" || type === "liked" || type === "public" ? (
         <span className="text-gray-400 text-sm hidden lg:block truncate">
-    {formatDaysAgo(song?.added_at || song?.created_at)}
-  </span>
+          {formatDaysAgo(song?.added_at || song?.created_at)}
+        </span>
       ) : (
         <span className="hidden lg:block"></span>
       )}
 
       <div className="flex items-center justify-end gap-x-3.5 text-gray-400">
-        <div className="invisible cursor-pointer sm:group-hover:visible shrink-0">
+        <div className="invisible cursor-pointer sm:group-hover:visible shrink-0 transition-transform active:scale-90">
           <AddLikedSongsBtn
             isLiked={isLiked}
             onClick={handleAddToLibrary}
           />
         </div>
 
-        <span className="sm:block hidden text-sm min-w-[35px] text-right shrink-0">
+        <span className="sm:block hidden text-sm min-w-[35px] text-right shrink-0 font-medium">
           {formatDuration(song?.duration)}
         </span>
 
@@ -165,7 +171,6 @@ function SongRow({
             ...
           </button>
 
-          {/* 🟢 پاس دادن پروپ‌های جدید به کامپوننت Menu */}
           {isOpen && (
             <Menu
               setOpen={setOpen}
@@ -173,7 +178,7 @@ function SongRow({
               position="right"
               isOpen={isOpen}
               song={song}
-              type={type} // 👈 پاس دادن مستقیم تایپ ورودی
+              type={type}
               isLiked={isLiked}
               onRemoveFromPlaylist={handleDeleteSongFromPlaylist}
               onToggleLike={handleAddToLibrary}
@@ -183,8 +188,13 @@ function SongRow({
           )}
         </div>
       </div>
+      <AuthRequiredModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
 
     </div>
+
   );
 }
 

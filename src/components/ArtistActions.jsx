@@ -1,42 +1,11 @@
 import PlayButton from './PlayButton.jsx'
 import ActionBtn from './ActionBtn.jsx'
 import ArtistDropDown from './ArtistDropDown.jsx'
-import { useAuth } from '../context/Auth.jsx'
-import { useToaster } from '../context/ToastContext.jsx'
-import { useFollowArtist } from '../features/useFollowArtist.js'
-import { useAddFollowArtist } from '../features/useAddFollowArtist.js'
-import { useDeleteFollowArtist } from '../features/useDeleteFollowArtist.js'
+import { useArtistFollow } from '../hooks/useArtistFollow.js'
 
 function ArtistActions({ artistId }) {
-  const { user } = useAuth()
-  const { showToast } = useToaster()
-  const { data: followedArtists = [] } = useFollowArtist()
-  const { addFollowArtist } = useAddFollowArtist()
-  const { deleteFollowArtist } = useDeleteFollowArtist()
+  const {isFollowed , handleFollowToggle} = useArtistFollow(artistId)
 
-  const isArtistsFollowed = followedArtists.some((item) => {
-    const followedArtistId = item?.artists?.id || item?.artist_id;
-    return Number(followedArtistId) === Number(artistId);
-  });
-
-  // تابع مشترک برای هندل کردن فالو/آن‌فالو
-  function handleFollowToggle() {
-    if (!user) {
-      return showToast(
-        "ابتدا باید وارد شوید",
-        "برای استفاده از این قابلیت لطفا لاگین کنید",
-        "error",
-        "link",
-        "/login"
-      )
-    }
-
-    if (isArtistsFollowed) {
-      deleteFollowArtist({ userId: user.id, artistId })
-    } else {
-      addFollowArtist({ userId: user.id, artistId })
-    }
-  }
 
   return (
     <div className="flex gap-x-4 items-center child:transition-all">
@@ -47,9 +16,9 @@ function ArtistActions({ artistId }) {
       {/* دکمه پویا: تغییر استایل بر اساس وضعیت فالو */}
       <ActionBtn
         onClick={handleFollowToggle}
-        title={isArtistsFollowed ? "Following" : "Follow"}
+        title={isFollowed ? "Following" : "Follow"}
         className={
-          isArtistsFollowed
+          isFollowed
             ? "bg-white text-black px-5 py-1.5 border-2 border-white"
             : "bg-transparent text-white px-5 py-1.5 border-2 border-white hover:bg-white/10"
         }
@@ -58,7 +27,7 @@ function ArtistActions({ artistId }) {
       {/* پاس دادن وضعیت و تابع به دراپ‌داون برای همگام‌سازی */}
       <ArtistDropDown
         artistId={artistId}
-        isArtistsFollowed={isArtistsFollowed}
+        isArtistsFollowed={isFollowed}
         onFollowToggle={handleFollowToggle}
       />
     </div>

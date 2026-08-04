@@ -4,14 +4,15 @@ import ForwardBtn from './ForwardBtn.jsx'
 import AudioPlay from './AudioPlay.jsx'
 import RangeSlider from './RangeSlider.jsx'
 import { usePlayer } from '../context/PlayerContext.jsx'
-import AddLikedSongsBtn from './AddLikedSongsBtn.jsx'
-import { useLibrary } from '../context/LibraryContext.jsx'
 import PlayBtn from './PlayBtn.jsx'
 import { useArtist } from '../features/useArtist.js'
+import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js'
+import AnimatedCheckIcon from './AnimatedCheckIcon.jsx'
+import PlusIcon from './plusIcon.jsx'
 
 function PlayerBar() {
   const { setIsExpanded, isPlaying, togglePlay, currentSong, playNext, playPrevious } = usePlayer();
-  const { isLiked, toggleLiked, setIsLiked, isAlertOpen, setIsAlertOpen, closeAlert } = useLibrary();
+  const { isLiked, toggleLike } = useToggleLikeSong(currentSong);
 
   const artistId = currentSong?.artist_id || currentSong?.artists?.id;
   const { artist } = useArtist(artistId);
@@ -43,15 +44,15 @@ function PlayerBar() {
           <span className="font-semibold truncate">{currentSong?.name}</span>
           <span className="text-white/60 text-xs truncate">{artistName}</span>
         </div>
-        <div className="hidden sm:block shrink-0">
-          <AddLikedSongsBtn
-            isAlertOpen={isAlertOpen}
-            closeAlert={closeAlert}
-            setIsAlertOpen={setIsAlertOpen}
-            toggleLiked={toggleLiked}
-            isLiked={isLiked}
-            setIsLiked={setIsLiked}
-          />
+        <div onClick={toggleLike} className="hidden sm:block shrink-0">
+          {isLiked ? (
+            <AnimatedCheckIcon/>
+          ) : (
+            <button
+              className="hover:border-gray-400 border-white border-[1px] sm:border-[2px] inline-flex p-0.5 rounded-full bg-transparent text-gray-400 hover:text-white">
+              <PlusIcon className="w-6 sm:w-4 h-6 sm:h-4"/>
+            </button>
+          )}
         </div>
       </div>
 

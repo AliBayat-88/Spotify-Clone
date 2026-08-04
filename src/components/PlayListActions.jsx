@@ -5,17 +5,26 @@ import Modal from './Modal.jsx'
 import { useDeletePlaylist } from '../features/useDeletePlaylist.js'
 import { useUpdatePlaylist } from '../features/useUpdatePlaylist.js'
 import { useNavigate } from 'react-router-dom'
+import { useToggleSavePublicPlaylist } from '../features/useToggleSavePublicPlaylist.js'
+import { useAuth } from '../context/Auth.jsx'
 
-function PlayListActions({ playlist }) {
+function PlayListActions({ playlist , isPublic }) {
   const navigate = useNavigate()
 
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const { deletePlaylist, isDeleting } = useDeletePlaylist(() => navigate('/'))
   const { updatePlaylist, isUpdating } = useUpdatePlaylist(() => setIsModalEditOpen(false));
+  const { unsavePublicPlaylist, isUnsaving } = useToggleSavePublicPlaylist();
+  const { user } = useAuth();
 
   function handleDeletePlaylist() {
-    deletePlaylist(playlist?.id)
+    if (playlist?.id && isPublic) {
+      unsavePublicPlaylist({ user_id: user?.id, public_playlist_id: playlist?.id },
+      );
+    }else {
+      deletePlaylist(playlist?.id)
+    }
   }
 
   function handleUpdate(value, imageFile) {
@@ -33,15 +42,15 @@ function PlayListActions({ playlist }) {
       onClick={(e) => e.stopPropagation()}
       className="flex items-center"
     >
-      <button
+      {!isPublic && <button
         onClick={(e) => {
-          e.stopPropagation();
-          setIsModalEditOpen(true);
+          e.stopPropagation()
+          setIsModalEditOpen(true)
         }}
         className="p-2 text-gray-500 hover:text-green-500 active:scale-90 rounded-full hover:bg-white/5 transition-all duration-150 shrink-0"
       >
-        <EditIcon />
-      </button>
+        <EditIcon/>
+      </button>}
 
       <button
         onClick={(e) => {
@@ -67,7 +76,7 @@ function PlayListActions({ playlist }) {
 
       {isModalDeleteOpen && (
         <Modal
-          isLoading={isDeleting}
+          isLoading={isUnsaving || isDeleting}
           onClose={() => setIsModalDeleteOpen(false)}
           onConfirm={handleDeletePlaylist}
           btnColor="bg-red-500 text-white hover:bg-red-600"

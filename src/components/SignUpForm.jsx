@@ -3,27 +3,31 @@ import GoogleLoginBtn from './GoogleLoginBtn.jsx'
 import HaveAccount from './HaveAccount.jsx'
 import TitleLogin from './TitleLogin.jsx'
 import AuthLayout from './AuthLayout.jsx'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom' // 🟢 استفاده از react-router-dom
 import { useForm } from 'react-hook-form'
-import { useSignUp } from '../features/useSignUp.js'
 import { useLoginByGoogle } from '../features/useLoginByGoogle.js'
 
 function SignUpForm() {
-  const navigate = useNavigate()
-  const {register, handleSubmit , formState: {errors}} = useForm()
+  const navigate = useNavigate();
 
-  const {googleLogin} = useLoginByGoogle()
+  // 🟢 ۱. پیکربندی React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({ mode: "onSubmit" });
 
-  function handleLogin() {
-    googleLogin()
+  const { googleLogin } = useLoginByGoogle();
+
+  function handleGoogleLogin() {
+    googleLogin();
   }
 
-  const {isPending} = useSignUp()
-
+  // 🟢 ۲. ارسال ایمیل تمیز شده به مرحله بعد
   function onSubmit(data) {
     navigate("/signup/password-step", {
       state: {
-        email: data.email,
+        email: data.email.trim(),
       },
     });
   }
@@ -34,34 +38,43 @@ function SignUpForm() {
         <TitleLogin>Sign up to start listening</TitleLogin>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full" noValidate>
         <div className="mb-5">
-          <label htmlFor="inputname" className="text-xs font-bold text-gray-400 uppercase tracking-wider px-0.5 block mb-2">
+          <label
+            htmlFor="emailInput"
+            className="text-xs font-bold text-gray-400 uppercase tracking-wider px-0.5 block mb-2"
+          >
             Email
           </label>
-          <input {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^\S+@\S+\.\S+$/,
-              message: "Please enter a valid email",
-            },
-          })}
+
+          <input
+            id="emailInput"
+            {...register("email", {
+              required: "Email address is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Please enter a valid email address",
+              },
+            })}
             type="email"
             autoComplete="email"
-            className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-[#282828] focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium"
+            className={`w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border transition-all duration-200 placeholder-gray-600 text-sm font-medium ${
+              errors.email
+                ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+                : 'border-[#282828] focus:border-white focus:ring-1 focus:ring-white'
+            }`}
             placeholder="example@gmail.com"
           />
+
+          {/* 🟢 ۵. قرارگیری پیام خطا دقیقاً زیر اینپوت (بدون فاصله زشت) */}
+          {errors.email && (
+            <p className="text-xs text-red-400 mt-1.5 block text-left px-0.5">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
-        {errors.email && (
-          <p className="text-red-500 mt-2 text-sm">
-            {errors.email.message}
-          </p>
-        )}
-
-        <LoginBtn disabled={isPending}>
-          {isPending ? "..." : "Next"}
-        </LoginBtn>
+        <LoginBtn>Next</LoginBtn>
 
         <div className="flex justify-center items-center my-5 font-bold text-xs uppercase tracking-widest text-gray-500 gap-3">
           <div className="h-px bg-[#282828] flex-1"></div>
@@ -70,8 +83,8 @@ function SignUpForm() {
         </div>
 
         <div className="flex flex-col gap-y-4 w-full">
-          <GoogleLoginBtn onClick={handleLogin} />
-          <HaveAccount to="/login" textState="Login" questionState="already have an account?" />
+          <GoogleLoginBtn onClick={handleGoogleLogin} />
+          <HaveAccount to="/login" textState="Login" questionState="Already have an account?" />
         </div>
       </form>
     </AuthLayout>

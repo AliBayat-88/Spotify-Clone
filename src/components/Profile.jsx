@@ -18,7 +18,7 @@ function Profile() {
     <div ref={profileRef} className="relative inline-block">
 
       <div className="cursor-pointer" onClick={() => setOpen(isOpen => !isOpen)}>
-        <img className="rounded-full w-12 h-12" src='/profileImg.png' alt="Profile" />
+        <img className="rounded-full w-10 h-10 sm:w-12 sm:h-12" src='/profileImg.png' alt="Profile" />
       </div>
 
       {isOpen && (

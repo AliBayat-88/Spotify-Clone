@@ -1,8 +1,11 @@
 import PlayListActions from './PlayListActions.jsx'
 import { useNavigate } from 'react-router-dom'
 
-function MobilePlaylist({playlist , isLoading}) {
+function MobilePlaylist({playlist , isLoading , isPublic}) {
   const navigate = useNavigate()
+  console.log(playlist)
+
+  const adressNavigate = isPublic ? `/public-playlist/${playlist?.id}` : `/playlist/${playlist?.id}`
 
   if (isLoading) {
     return (
@@ -25,14 +28,14 @@ function MobilePlaylist({playlist , isLoading}) {
     <div
       className="group relative bg-neutral-900 flex items-center justify-between p-2.5 rounded-xl hover:bg-[#262626]/50 active:bg-[#262626] transition-all duration-200 cursor-pointer active:scale-[0.99]"
     >
-      <div onClick={() => navigate(`/playList/${playlist?.id}`)} className="flex items-center gap-3.5 min-w-0 flex-1">
+      <div onClick={() => navigate(adressNavigate)} className="flex items-center gap-3.5 min-w-0 flex-1">
         <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-[#262626] shadow-md">
           <img className="w-full h-full object-cover" src={playlist.cover_url || "/playlistImg.webp"} alt={playlist.name}/>
         </div>
 
         <div className="flex flex-col gap-y-0.5 min-w-0">
           <h2 className="text-base font-semibold text-white truncate tracking-tight">
-            {playlist.name}
+            {!isPublic ? playlist?.name : playlist?.title}
           </h2>
           <p className="text-gray-400 text-xs font-medium flex items-center gap-1.5">
             <span>playlist</span>
@@ -43,7 +46,7 @@ function MobilePlaylist({playlist , isLoading}) {
       </div>
       <div>
 
-        <PlayListActions playlist={playlist} />
+        <PlayListActions isPublic={isPublic} playlist={playlist} />
       </div>
     </div>
   );

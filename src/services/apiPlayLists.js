@@ -20,6 +20,7 @@ export async function getPublicPlaylistApi(publicPlaylistId) {
         id,
         songs (
           id,
+          created_at,
           name,
           duration,
           audio_url,
@@ -157,7 +158,6 @@ export async function updatePlaylistApi(id , obj , imageFile) {
     coverUrl = publicUrl;
   }
 
-  // 2️⃣ آپدیت کردن جدول پلی‌لیست در دیتابیس
   const { data, error } = await supabase
     .from("playlists")
     .update({
@@ -173,7 +173,6 @@ export async function updatePlaylistApi(id , obj , imageFile) {
 }
 
 
-// دریافت پلی‌لیست‌های عمومی ذخیره‌شده توسط کاربر
 export async function getSavedPublicPlaylistsApi(userId) {
   if (!userId) return [];
 
@@ -196,7 +195,6 @@ export async function getSavedPublicPlaylistsApi(userId) {
   return data;
 }
 
-// ذخیره کردن پلی‌لیست عمومی
 export async function savePublicPlaylistApi({ user_id, public_playlist_id }) {
   const { data, error } = await supabase
     .from("saved_public_playlists")
@@ -207,7 +205,6 @@ export async function savePublicPlaylistApi({ user_id, public_playlist_id }) {
   return data;
 }
 
-// حذف پلی‌لیست عمومی از لایبرری
 export async function unsavePublicPlaylistApi({ user_id, public_playlist_id }) {
   const { data, error } = await supabase
     .from("saved_public_playlists")

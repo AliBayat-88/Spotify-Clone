@@ -26,6 +26,7 @@ import VerifyEmailPage from './components/VerifyEmailPage.jsx'
 import { AuthProvider } from './context/Auth.jsx'
 import { AuthCallback } from './components/AuthCallback.jsx'
 import PublicPlaylistContainer from './components/PublicPlaylistContainer.jsx'
+import ResetPasswordForm from './components/ResetPasswordForm.jsx'
 
 
 const queryClient = new QueryClient({
@@ -63,17 +64,19 @@ function App() {
             path="/auth/callback"
             element={<AuthCallback />}
           />
+          <Route path="/library" element={<LibraryMobile />} />
 
         </Route>
 
         <Route path="/signUp" element={<SignUpForm />} />
         <Route path="signup/password-step" element={<PasswordStepForm />} />
         <Route path="signup/verifyEmailPage" element={<VerifyEmailPage/>}/>
+        <Route path="login/reset-password" element={<ResetPasswordForm/>}/>
         <Route path="/login" element={<LoginForm />} />
         <Route path="login/otp-login" element={<OtpForm/>}/>
         <Route path="login/password-login" element={<PasswordForm/>}/>
        < Route path="login/forgot-password" element={<ForgotPasswordForm/>}/>
-        <Route path="/library" element={<LibraryMobile />} />
+
 
         <Route path="/Account" element={<Account/>}></Route>
         <Route path="Account/EditInfo" element={<EditInfo />} />

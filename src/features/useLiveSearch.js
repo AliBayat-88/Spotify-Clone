@@ -44,7 +44,7 @@ export function useLiveSearch(searchTerm) {
   return useQuery({
     queryKey: ['search', searchTerm],
     queryFn: () => fetchSearchResults(searchTerm),
-    enabled: !!searchTerm, // فقط وقتی متن سرچ پره ریکوئست بزنه
-    staleTime: 1000 * 60 * 5, // کش کردن نتایج برای ۵ دقیقه
+    enabled: !!searchTerm,
+    staleTime: 1000 * 60 * 5,
   });
 }

@@ -21,6 +21,25 @@ export async function logOutApi() {
 }
 
 
+export async function forgotPasswordApi({ email }) {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/login/reset-password`,
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function updatePasswordApi({ password }) {
+  const { data, error } = await supabase.auth.updateUser({ password });
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+
 export async function loginApi({ email, password }) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -37,7 +56,11 @@ export async function loginWithGoogle() {
     provider: "google",
     options: {
       redirectTo: "http://localhost:5173",
+      queryParams: {
+        prompt: 'select_account',
+      },
     },
+
   });
 }
 

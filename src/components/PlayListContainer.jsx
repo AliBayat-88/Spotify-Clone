@@ -79,10 +79,10 @@ function PlayListContainer() {
     <div className="text-white w-full child:p-4 sm:child:pb-16 lg:child:pb-24 relative">
       <TrackHero
         type="playlist"
-        backColor={isLikedSongsPage ? "bg-purple-700" : "bg-green-400"}
         songName={pageTitle || "Playlist"}
-        singer={`Ali bayat • ${songs?.length || 0} songs`}
+        singer={`Ali bayat • ${songs?.length }  songs •`}
         songPoster={pagePoster}
+        songs={songs}
       />
 
       <div className="bg-[#171717]/70 min-h-[60vh] backdrop-blur-xl border-t border-white/10 rounded-t-2xl absolute sm:top-[230px] lg:top-[275px] w-full">
@@ -103,7 +103,7 @@ function PlayListContainer() {
           {/* منوی سه نقطه */}
           { !isLikedSongsPage ? <div ref={headerMenuRef} className="relative mb-auto">
             <button
-              onClick={() => setHeaderMenuOpen(!isHeaderMenuOpen)} // 🟢 ۳. اصلاح باز شدن Dropdown منو
+              onClick={() => setHeaderMenuOpen(!isHeaderMenuOpen)}
               className="text-gray-400 hover:text-white text-3xl font-bold tracking-widest bg-transparent border-none outline-none cursor-pointer p-2 transition-colors"
             >
               ...
@@ -123,7 +123,7 @@ function PlayListContainer() {
         </div>
 
         {/* جدول آهنگ‌ها (دسکتاپ) */}
-        <div className="hidden lg:grid grid-cols-[40px_minmax(0,4fr)_2fr_2fr_120px] items-center gap-x-4 px-4 mt-4 pb-2 border-b border-white/10 text-sm text-gray-400 font-medium">
+        <div className="hidden lg:grid grid-cols-[40px_minmax(0,4fr)_2fr_2fr_120px] items-center gap-x-4 px-4 mt-14 pb-2 border-b border-white/10 text-sm text-gray-400 font-medium">
           <span className="text-center">#</span>
           <span>Title</span>
           <span>Album</span>
@@ -146,7 +146,7 @@ function PlayListContainer() {
         </div>
 
         {/* لیست آهنگ‌ها */}
-        <div className="mt-4 lg:mt-2 px-2 mb-20">
+        <div className="mt-4 px-2 mb-20">
           {songs.length > 0 ? (
             songs.map((song, index) => (
               <SongRow
@@ -168,7 +168,6 @@ function PlayListContainer() {
         </div>
       </div>
 
-      {/* 🟢 ۵. رندر کردن کامپوننت مدال ادیت */}
       {isModalEditOpen && (
         <Modal
           isLoading={isUpdating}

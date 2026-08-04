@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 function Logo({size}) {
   return (
     <Link to="/">
-      <img className={`w-${size}`} src="/spotifyLogo.png" alt="logo" />
+      <img className={`w-${size} shrink-0`} src="/spotifyLogo.png" alt="logo" />
     </Link>
   );
 }

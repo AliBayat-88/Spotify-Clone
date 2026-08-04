@@ -4,6 +4,7 @@ import { useNavigate, useOutletContext, useParams, useLocation } from 'react-rou
 import { useToaster } from '../context/ToastContext.jsx'
 import { usePlaylists } from '../features/usePlaylists.js'
 import { useAddSongToPlaylist } from '../features/useAddSongToPlaylist.js'
+import { useAuth } from '../context/Auth.jsx'
 
 function Menu({
   setSubOpen,
@@ -21,7 +22,8 @@ function Menu({
   onEditPlaylist,
   onDeletePlaylist,
   onAddToLibrary,
-  isSavedInLibrary = false, // 🟢 پروپ جدید
+  isSavedInLibrary = false,
+  setIsAuthModalOpen
 }) {
   const navigate = useNavigate()
   const location = useLocation()
@@ -30,6 +32,7 @@ function Menu({
   const { playlists } = usePlaylists()
   const { addSongToPlaylist } = useAddSongToPlaylist()
   const { onOpenCreatePlaylist } = useOutletContext() || {}
+  const { user } = useAuth();
 
   async function handleShare() {
     await navigator.clipboard.writeText(window.location.href)
@@ -82,9 +85,13 @@ function Menu({
           {onAddToLibrary && (
             <button
               onClick={(e) => {
-                e.stopPropagation();
-                setOpen(false);
-                onAddToLibrary();
+                if(!user){
+                  setIsAuthModalOpen(true)
+                }else {
+                  e.stopPropagation();
+                  setOpen(false);
+                  onAddToLibrary();
+                }
               }}
               className={`${btnClass} ${isSavedInLibrary ? 'text-red-400 hover:text-red-300 hover:bg-red-500/10' : ''}`}
             >
@@ -93,7 +100,7 @@ function Menu({
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                   </svg>
-                  Remove from Your Library
+                  Remove from Library
                 </>
               ) : (
                 <>

@@ -9,6 +9,7 @@ import { useFollowArtist } from '../features/useFollowArtist.js'
 import { useSavedPublicPlaylists } from '../features/useSavedPublicPlaylists.js'
 import { useToggleSavePublicPlaylist } from '../features/useToggleSavePublicPlaylist.js'
 import { useDeleteFollowArtist } from '../features/useDeleteFollowArtist.js'
+import { useLikedSongs } from '../features/useLikedSongs.js'
 
 function SideBar({ onOpenModal }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -19,6 +20,7 @@ function SideBar({ onOpenModal }) {
   const { savedPublicPlaylists, isLoading: isLoadingSavedPublic } = useSavedPublicPlaylists();
   const { unsavePublicPlaylist, isUnsaving } = useToggleSavePublicPlaylist();
   const { deleteFollowArtist , isDeleting } = useDeleteFollowArtist()
+  const { data: likedSongs = [] } = useLikedSongs()
   const { user } = useAuth();
 
   const isLoading = isLoadingPlaylists || isLoadingArtists || isLoadingSavedPublic;
@@ -68,16 +70,15 @@ function SideBar({ onOpenModal }) {
           {!isCollapsed && (
             <button
               onClick={onOpenModal}
-              className="inline-flex justify-center items-center gap-1 px-3 py-1.5 rounded-xl bg-[#2b2b2b] hover:bg-[#383838] transition active:scale-95 text-xs font-semibold cursor-pointer"
+              className="inline-flex justify-center items-center gap-1 px-3.5 py-2 rounded-xl bg-[#2b2b2b] hover:bg-[#383838] transition active:scale-95 text-sm font-semibold cursor-pointer"
             >
-              <img className="w-3.5 h-3.5" src="/plus.svg" alt="create" />
+              <img className="w-5 h-5" src="/plus.svg" alt="create" />
               <span className="hidden xl:inline">create</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* آیتم ثابتی: Liked Songs */}
       <div
         onClick={() => navigate("/playList/likedSongs")}
         className={`p-2 hover:bg-[#262626] transition-colors rounded-xl flex items-center cursor-pointer w-full mb-0.5 ${
@@ -85,7 +86,7 @@ function SideBar({ onOpenModal }) {
         }`}
         title={isCollapsed ? "Liked Songs" : ""}
       >
-        <div className="flex items-center gap-3 min-w-0">
+        { user && <div className="flex items-center gap-3 min-w-0">
           <img
             className="w-12 h-12 rounded-md shrink-0 object-cover"
             src="/liked%20songs.png"
@@ -95,13 +96,12 @@ function SideBar({ onOpenModal }) {
           {!isCollapsed && (
             <div className="flex flex-col justify-center min-w-0 overflow-hidden">
               <h2 className="text-sm font-semibold truncate text-white">Liked songs</h2>
-              <span className="text-gray-400 text-xs truncate">Playlist • 20 songs</span>
+              <span className="text-gray-400 text-xs truncate">{`Playlist • ${likedSongs.length} songs`}</span>
             </div>
           )}
-        </div>
+        </div>}
       </div>
 
-      {/* لیست ترکیبی لایبرری */}
       <div className="w-full flex flex-col gap-y-0.5 items-center">
         {user ? (
           isLoading ? (
@@ -133,15 +133,13 @@ function SideBar({ onOpenModal }) {
                 />
               ))}
 
-              {/* ۳. رندر خواننده‌های فالوشده */}
-              {/* رندر خواننده‌های فالوشده */}
               {followedArtistsData?.map((artistData) => (
                 <FollowedArtist
                   key={`artist-${artistData?.id}`}
                   artistData={artistData}
                   isCollapsed={isCollapsed}
                   onUnfollow={deleteFollowArtist}
-                  isUnfollowing={isDeleting} // وضعیت لودینگ آن‌فالو از هوور/کوئری
+                  isUnfollowing={isDeleting}
                 />
               ))}
             </>
