@@ -1,7 +1,6 @@
 import LoginBtn from './LoginBtn.jsx'
 import TitleLogin from './TitleLogin.jsx'
 import AuthLayout from './AuthLayout.jsx'
-import { useState } from 'react'
 import { hasMinLength, hasSpecialChar, hasUpperCase } from '../utils/helpers.js'
 import TickIcon from './TickIcon.jsx'
 import EmptyIcon from './EmptyIcon.jsx'
@@ -11,9 +10,8 @@ import { useSignUp } from '../features/useSignUp.js'
 import { useForm } from 'react-hook-form'
 
 function PasswordStepForm() {
-  const [password, setPassword] = useState('');
   const {signUp , isPending} = useSignUp()
-  const {register, handleSubmit} = useForm()
+  const {register, handleSubmit , watch} = useForm()
 
   const { state } = useLocation()
 
@@ -23,10 +21,12 @@ function PasswordStepForm() {
     signUp({email, password: data?.password})
   }
 
+  const createPassword = watch('password', '')
+
   const isValidPassword =
-    hasSpecialChar(password) &&
-    hasMinLength(password) &&
-    hasUpperCase(password);
+    hasSpecialChar(createPassword) &&
+    hasMinLength(createPassword) &&
+    hasUpperCase(createPassword);
 
 
   return (
@@ -48,8 +48,7 @@ function PasswordStepForm() {
           <input
             {...register("password")}
             id="inputpass"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            value={createPassword}
             type="password"
             autoComplete="new-password"
             className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-[#282828] focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium"
@@ -59,18 +58,18 @@ function PasswordStepForm() {
 
         <div className="flex flex-col gap-y-2.5 mb-6 px-1 text-sm">
           <div className="flex items-center gap-x-2 text-gray-400">
-            {hasMinLength(password) ? <TickIcon size="p-0.5" iconSize="w-3 h-3" /> : <EmptyIcon size="w-4 h-4" />}
+            {hasMinLength(createPassword) ? <TickIcon size="p-0.5" iconSize="w-3 h-3" /> : <EmptyIcon size="w-4 h-4" />}
             <span className="font-medium text-sm">At least 8 characters</span>
           </div>
 
           <div className="flex items-center gap-x-2 text-gray-400">
-            {hasUpperCase(password) ? <TickIcon size="p-0.5" iconSize="w-3 h-3" /> : <EmptyIcon size="w-4 h-4" />}
+            {hasUpperCase(createPassword) ? <TickIcon size="p-0.5" iconSize="w-3 h-3" /> : <EmptyIcon size="w-4 h-4" />}
             <span className="font-medium text-sm">At least 1 uppercase letter</span>
           </div>
 
           {/* شرط ۳: حروف خاص مثل @ یا # */}
           <div className="flex items-center gap-x-2 text-gray-400">
-            {hasSpecialChar(password) ? <TickIcon size="p-0.5" iconSize="w-3 h-3" /> : <EmptyIcon size="w-4 h-4" />}
+            {hasSpecialChar(createPassword) ? <TickIcon size="p-0.5" iconSize="w-3 h-3" /> : <EmptyIcon size="w-4 h-4" />}
             <span className="font-medium text-sm">At least 1 special character (e.g., @, #, $)</span>
           </div>
         </div>

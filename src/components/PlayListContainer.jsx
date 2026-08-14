@@ -5,7 +5,7 @@ import SongRow from './SongRow.jsx'
 import LoadingSpinner from './LoadingSpinner.jsx'
 import EmptyPlaylist from './EmptyPlaylist.jsx'
 import Menu from './Menu.jsx'
-import Modal from './Modal.jsx' // 🟢 ۱. ایمپورت کامپوننت مدال
+import Modal from './Modal.jsx'
 import { useGetPlaylistsSongs } from '../features/useGetPlaylistsSongs.js'
 import { useLikedSongs } from '../features/useLikedSongs.js'
 import { useDeletePlaylist } from '../features/useDeletePlaylist.js'

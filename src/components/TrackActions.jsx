@@ -11,22 +11,31 @@ import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js';
 import { useAuth } from '../context/Auth.jsx';
 import AuthRequiredModal from './AuthRequiredModal.jsx';
 
-function TrackActions({ audioUrl, songName, song }) {
+function TrackActions({ audioUrl, songName, song , songs = [] }) {
   const { showToast } = useToaster();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { playSong, isPlaying } = usePlayer();
+  const { playSong, isPlaying,togglePlay,
+    currentSong } = usePlayer();
   const { isLiked, toggleLike } = useToggleLikeSong(song);
   const { user } = useAuth();
 
+
+  const isCurrentArtistPlaying = songs.some(
+    (s) => Number(s?.id) === Number(currentSong?.id)
+  );
+
+  function handlePlay() {
+    if (!songs || songs.length === 0) return;
+
+    if (isCurrentArtistPlaying) {
+      togglePlay();
+    } else {
+      playSong(songs[0], songs);
+    }
+  }
+
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const handlePlayClick = () => {
-    if (user) {
-      playSong(song);
-    } else {
-      setIsAuthModalOpen(true);
-    }
-  };
 
   const handleDownload = async () => {
     if (!audioUrl) {
@@ -68,7 +77,7 @@ function TrackActions({ audioUrl, songName, song }) {
     <>
       <div className="flex gap-x-3 items-center child:transition-all">
         <button
-          onClick={handlePlayClick}
+          onClick={handlePlay}
           className="p-2.5 sm:p-3.5 rounded-full bg-green-500 hover:bg-green-600 inline-flex justify-center items-center"
         >
           {isPlaying ? <PauseBtn className="w-8 h-8 text-black"/> : <PlayButton className="w-8 h-8"/>}

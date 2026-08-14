@@ -1,4 +1,4 @@
-import { formatDaysAgo, formatDuration, formatNumber } from '../utils/helpers.js'
+import { formatDaysAgo, formatDuration, formatNumber, getDeterministicPlayCount } from '../utils/helpers.js'
 import PlayBtn from './PlayBtn.jsx'
 import AddLikedSongsBtn from './AddLikedSongsBtn.jsx'
 import { useState, useRef } from 'react'
@@ -17,7 +17,6 @@ import AuthRequiredModal from './AuthRequiredModal.jsx'
 
 function SongRow({
   index,
-  play,
   type = "song",
   singer,
   song,
@@ -129,7 +128,7 @@ function SongRow({
       </div>
 
       {type === "song" ? (
-        <span className="hidden lg:block truncate text-gray-400 text-sm">{formatNumber(play)}</span>
+        <span className="hidden lg:block truncate text-gray-400 text-sm">{formatNumber(getDeterministicPlayCount(song?.id))}</span>
       ) : (
         <span className="hidden lg:block truncate text-gray-400 text-sm">Single</span>
       )}

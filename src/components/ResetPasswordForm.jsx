@@ -7,6 +7,7 @@ import {
   hasSpecialChar
 } from '../utils/helpers.js';
 import { useUpdatePassword } from '../features/useUpdatePassword.js';
+import ButtonLoader from './ButtonLoader.jsx'
 
 function ResetPasswordForm() {
   const navigate = useNavigate();
@@ -96,7 +97,7 @@ function ResetPasswordForm() {
                 placeholder="Repeat new password"
                 {...register('confirmPassword', {
                   required: 'Please confirm your password',
-                  validate: (val) => val === passwordValue || 'Passwords do not match',
+                  validate: (val) => val === passwordValue || 'Passwords are not the same',
                 })}
                 className={`w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border transition-all duration-200 placeholder-gray-600 text-sm font-medium ${
                   errors.confirmPassword ? 'border-red-500 focus:ring-1 focus:ring-red-500' : 'border-[#282828] focus:border-white focus:ring-1 focus:ring-white'
@@ -115,7 +116,7 @@ function ResetPasswordForm() {
               className="w-full mt-3 bg-[#1ed760] text-black font-bold py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2 cursor-pointer"
             >
               {isPending ? (
-                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                <ButtonLoader/>
               ) : (
                 'Reset Password'
               )}

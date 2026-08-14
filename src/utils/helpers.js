@@ -20,7 +20,32 @@ export const isValidEmail = (email) => {
   return emailRegex.test(email);
 };
 
-// utils/helpers.js
+export function getDeterministicPlayCount(songId) {
+  if (!songId) return 150000;
+
+  const numericId =
+    typeof songId === 'number'
+      ? songId
+      : String(songId)
+        .split('')
+        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+  return ((numericId * 9301 + 49297) % 1450000) + 50000;
+}
+
+
+export function getMonthlyListeners(artistId) {
+  if (!artistId) return "1,250,000";
+
+  const num = typeof artistId === 'number'
+    ? artistId
+    : String(artistId).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+  const listeners = ((num * 2654435761) % 4500000) + 500000;
+
+  return new Intl.NumberFormat('en-US').format(listeners);
+}
+
 
 export function formatDaysAgo(dateString) {
   if (!dateString) return '';

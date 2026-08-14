@@ -27,6 +27,13 @@ import { AuthProvider } from './context/Auth.jsx'
 import { AuthCallback } from './components/AuthCallback.jsx'
 import PublicPlaylistContainer from './components/PublicPlaylistContainer.jsx'
 import ResetPasswordForm from './components/ResetPasswordForm.jsx'
+import ChangePassword from './ChangePassword.jsx'
+import DashboardLayout from './components/Dashboard/DashboardLayout.jsx'
+import DashboardHome from './components/Dashboard/DashboardHome.jsx'
+import DashboardSongs from './components/Dashboard/DashboardSongs.jsx'
+import DashboardArtists from './components/Dashboard/DashboardArtists.jsx'
+import DashboardPublicPlaylists from './components/Dashboard/DashboardPublicPlaylists.jsx'
+import DashboardSections from './components/Dashboard/DashboardSections.jsx'
 
 
 const queryClient = new QueryClient({
@@ -79,8 +86,18 @@ function App() {
 
 
         <Route path="/Account" element={<Account/>}></Route>
-        <Route path="Account/EditInfo" element={<EditInfo />} />
+        <Route path="Account/edit-info" element={<EditInfo />} />
+        <Route path="Account/change-password" element={<ChangePassword />} />
         <Route path="Account/Recovery-PlayLists" element={<RecoveryPlayLists />} />
+
+
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<DashboardHome/>}/>
+          <Route path="/dashboard/songs" element={<DashboardSongs />}/>
+          <Route path="/dashboard/artists" element={<DashboardArtists />}/>
+          <Route path="/dashboard/public-playlists" element={<DashboardPublicPlaylists />}/>
+          <Route path="/dashboard/browse-content" element={<DashboardSections />}/>
+        </Route>
 
 
 

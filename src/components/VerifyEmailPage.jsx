@@ -1,24 +1,20 @@
-import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AuthLayout from './AuthLayout.jsx';
 import TitleLogin from './TitleLogin.jsx';
-import { useToaster } from '../context/ToastContext.jsx';
+import { useResendVerification } from '../features/useResendVerification.js'
+import ButtonLoader from './ButtonLoader.jsx'
 
 function VerifyEmailPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const { showToast } = useToaster();
   const { state } = useLocation()
   console.log(state?.email)
 
   const email = state?.email || 'ali@example.com';
 
-  function handleResend() {
-    setIsLoading(true);
+  const { resendVerification, isPending } = useResendVerification();
 
-    setTimeout(() => {
-      setIsLoading(false);
-      showToast("Verification link resent!", "Please check your inbox.", "success");
-    }, 1500);
+  function handleResend() {
+    if (!email) return;
+    resendVerification(email);
   }
 
   return (
@@ -51,11 +47,11 @@ function VerifyEmailPage() {
         <div className="w-full flex flex-col gap-y-3">
           <button
             onClick={handleResend}
-            disabled={isLoading}
+            disabled={isPending}
             className="w-full bg-white/5 border border-white/10 hover:border-white/20 text-white font-bold py-3.5 rounded-full hover:bg-white/10 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
           >
-            {isLoading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            {isPending ? (
+              <ButtonLoader/>
             ) : (
               "Resend email"
             )}

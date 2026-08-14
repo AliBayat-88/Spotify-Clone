@@ -77,6 +77,7 @@ function PlayerContextProvider({ children }) {
   };
 
   // 🟢 ۳. آهنگ بعدی
+  // 🟢 پخش آهنگ بعدی (با قابلیت چرخه بی‌پایان در صف)
   const playNext = () => {
     if (!queue.length || !currentSong) return;
 
@@ -84,9 +85,10 @@ function PlayerContextProvider({ children }) {
       (s) => Number(s?.id) === Number(currentSong?.id)
     );
 
-    if (currentIndex !== -1 && currentIndex < queue.length - 1) {
-      const nextSong = queue[currentIndex + 1];
-      setCurrentSong(nextSong);
+    if (currentIndex !== -1) {
+      // 💡 اگر به انتهای صف برسد، باقی‌مانده تقسیم برابر صفر می‌شود و به آهنگ اول برمی‌گردد
+      const nextIndex = (currentIndex + 1) % queue.length;
+      setCurrentSong(queue[nextIndex]);
     }
   };
 

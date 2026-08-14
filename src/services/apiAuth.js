@@ -20,6 +20,18 @@ export async function logOutApi() {
   await supabase.auth.signOut();
 }
 
+export async function signOutEverywhereApi() {
+  const { error } = await supabase.auth.signOut({ scope: 'global' });
+  if (error) throw new Error(error.message);
+}
+
+export async function deleteAccountApi() {
+  const { error } = await supabase.rpc('delete_user_account');
+  if (error) throw new Error(error.message);
+
+  await supabase.auth.signOut();
+}
+
 
 export async function forgotPasswordApi({ email }) {
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -36,6 +48,19 @@ export async function updatePasswordApi({ password }) {
 
   if (error) throw new Error(error.message);
 
+  return data;
+}
+
+export async function resendVerificationEmailApi(email) {
+  const { data, error } = await supabase.auth.resend({
+    type: 'signup',
+    email,
+    options: {
+      emailRedirectTo: `${window.location.origin}/auth/callback`,
+    },
+  });
+
+  if (error) throw new Error(error.message);
   return data;
 }
 

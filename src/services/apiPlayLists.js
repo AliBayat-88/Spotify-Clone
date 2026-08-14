@@ -48,11 +48,14 @@ export async function getPublicPlaylistApi(publicPlaylistId) {
   };
 }
 
-export async function getPlaylists(userId){
+export async function getPlaylists(userId) {
+  if (!userId) return [];
+
   const { data, error } = await supabase
     .from("playlists")
     .select(`*`)
-    .eq("user_id" , userId)
+    .eq("user_id", userId)
+    .is("deleted_at", null); 
 
   if (error) throw new Error(error.message);
 
@@ -127,8 +130,16 @@ export async function deleteSongFromPlaylistApi({ songId, playlistId }) {
 }
 
 
-export async function deletePlaylistApi(id){
-    await supabase .from("playlists").delete().eq("id" , id)
+export async function deletePlaylistApi(id) {
+  const { data, error } = await supabase
+    .from("playlists")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data;
 }
 
 export async function updatePlaylistApi(id , obj , imageFile) {
@@ -214,5 +225,46 @@ export async function unsavePublicPlaylistApi({ user_id, public_playlist_id }) {
 
   if (error) throw new Error(error.message);
 
+  return data;
+}
+
+export async function getDeletedPlaylistsApi(userId) {
+  if (!userId) return [];
+
+  const ninetyDaysAgo = new Date();
+  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+  const { data, error } = await supabase
+    .from("playlists")
+    .select(`
+      id,
+      name,
+      deleted_at,
+      playlists_songs(count)
+    `)
+    .eq("user_id", userId)
+    .not("deleted_at", "is", null)
+    .gte("deleted_at", ninetyDaysAgo.toISOString())
+    .order("deleted_at", { ascending: false });
+
+  if (error) throw new Error(error.message);
+
+  return data.map((item) => ({
+    id: item.id,
+    title: item.name,
+    deletedDate: new Date(item.deleted_at).toISOString().split("T")[0],
+    songsCount: item.playlists_songs?.[0]?.count || 0,
+  }));
+}
+
+export async function restorePlaylistApi(playlistId) {
+  const { data, error } = await supabase
+    .from("playlists")
+    .update({ deleted_at: null })
+    .eq("id", playlistId)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
   return data;
 }

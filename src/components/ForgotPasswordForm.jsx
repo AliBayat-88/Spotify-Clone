@@ -1,12 +1,14 @@
 import { useForm } from 'react-hook-form';
 import { useForgotPassword } from '../features/useForgotPassword';
 import BackBtn from './BackBtn';
+import ButtonLoader from './ButtonLoader.jsx'
 
 function ForgotPasswordForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { forgotPassword, isPending } = useForgotPassword();
 
   function onSubmit(data) {
+    console.log(data);
     forgotPassword({ email: data.email });
   }
 
@@ -55,7 +57,7 @@ function ForgotPasswordForm() {
             className="w-full mt-2 bg-[#1ed760] text-black font-bold py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2 cursor-pointer"
           >
             {isPending ? (
-              <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+              <ButtonLoader/>
             ) : (
               'Send reset link'
             )}

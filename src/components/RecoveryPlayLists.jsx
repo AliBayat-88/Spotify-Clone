@@ -1,21 +1,20 @@
-import { useState } from "react";
 import Header from './Header.jsx';
-import BackBtn from './BackBtn.jsx'
-import ActionBtn from './ActionBtn.jsx'
+import BackBtn from './BackBtn.jsx';
+import ActionBtn from './ActionBtn.jsx';
+import { useDeletedPlaylists } from '../features/useDeletedPlaylists.js';
+import { useRestorePlaylist } from './useRestorePlaylist.js'
 
 function RecoveryPlayLists() {
-  const [deletedPlaylists] = useState([
-    { id: 1, title: "Midnight Driving", deletedDate: "2026/05/12", songsCount: 42 },
-    { id: 2, title: "Gym Beats 2025", deletedDate: "2026/04/28", songsCount: 18 },
-    { id: 3, title: "Acoustic Morning", deletedDate: "2026/04/01", songsCount: 65 },
-  ]);
+  const { deletedPlaylists, isLoading } = useDeletedPlaylists();
+  const { restorePlaylist, isRestoring } = useRestorePlaylist();
 
   return (
-    <div className="min-h-screen bg-black text-white pb-32 select-none">
+    <div className="min-h-screen bg-black text-white pb-32 select-none font-sans">
       <Header />
+
       <div className="max-w-4xl mx-auto px-4 mt-6">
         <div className="flex items-center justify-between border-b border-[#262626] pb-4">
-          <BackBtn/>
+          <BackBtn />
           <h1 className="text-lg sm:text-3xl font-bold tracking-tight">Recover Playlists</h1>
           <div className="w-10"></div>
         </div>
@@ -26,16 +25,20 @@ function RecoveryPlayLists() {
           </p>
         </div>
 
-        {/* ۳. جدول پنل مدیریتی پلی‌لیست‌ها */}
+        {/* کانتینر جدول */}
         <div className="mt-8 bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden shadow-xl">
-
-          {deletedPlaylists.length === 0 ? (
-            /* حالت خالی بودن لیست */
-            <div className="text-center py-12 text-gray-500 text-sm font-medium">
-              No recently deleted playlists found.
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="w-6 h-6 border-2 border-[#1ed760] border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : deletedPlaylists.length === 0 ? (
+            <div className="text-center flex justify-center py-12 flex-col items-center">
+              <img src="/noData.svg" className="w-[75%] sm:w-1/3" />
+              <h2 className="font-black sm:text-2xl">There is no playlist to recovery (:</h2>
             </div>
           ) : (
             <>
+              {/* دسکتاپ */}
               <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
@@ -55,7 +58,9 @@ function RecoveryPlayLists() {
                       <td className="py-4 px-6 text-right">
                         <ActionBtn
                           title="Restore"
-                          className="bg-transparent border border-gray-500 hover:border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2"
+                          disabled={isRestoring}
+                          onClick={() => restorePlaylist(playlist.id)}
+                          className="bg-transparent border border-gray-500 hover:border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 cursor-pointer disabled:opacity-50"
                         />
                       </td>
                     </tr>
@@ -63,6 +68,8 @@ function RecoveryPlayLists() {
                   </tbody>
                 </table>
               </div>
+
+              {/* موبایل */}
               <div className="block md:hidden divide-y divide-[#262626]/50">
                 {deletedPlaylists.map((playlist) => (
                   <div key={playlist.id} className="p-4 flex flex-col gap-y-3">
@@ -76,7 +83,9 @@ function RecoveryPlayLists() {
                       </span>
                     </div>
                     <button
-                      className="w-full bg-[#262626] border border-[#3e3e3e] text-white active:bg-white active:text-black text-xs font-bold py-2.5 rounded-xl transition-all active:scale-[0.98] cursor-pointer"
+                      disabled={isRestoring}
+                      onClick={() => restorePlaylist(playlist.id)}
+                      className="w-full bg-[#262626] border border-[#3e3e3e] text-white active:bg-white active:text-black text-xs font-bold py-2.5 rounded-xl transition-all active:scale-[0.98] cursor-pointer disabled:opacity-50"
                     >
                       Restore Playlist
                     </button>
@@ -85,9 +94,7 @@ function RecoveryPlayLists() {
               </div>
             </>
           )}
-
         </div>
-
       </div>
     </div>
   );

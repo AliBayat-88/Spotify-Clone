@@ -1,17 +1,21 @@
 import Header from './Header.jsx';
-import { NavLink } from 'react-router-dom'
-import { useState } from 'react'
-import Modal from './Modal.jsx'
+import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import Modal from './Modal.jsx';
+import { useUserInfo } from '../features/useUserInfo.js'
+import { useSignOutEverywhere } from '../features/useSignOutEverywhere.js'
+import { useDeleteAccount } from '../features/useDeleteAccount.js'
 
 function Account() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-
-  const user = {
-    name: "Ali Bayat",
-    email: "alibayat@example.com",
-    avatar: "/profileImg.png"
-  };
+  const { displayName, avatarUrl, email } = useUserInfo();
+  const [isSignOutModalOpen, setIsSignOutModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { signOutEverywhere, isPending: isSigningOut } = useSignOutEverywhere(() => {
+    setIsSignOutModalOpen(false);
+  });
+  const { deleteAccount, isDeleting } = useDeleteAccount(() => {
+    setIsDeleteModalOpen(false);
+  });
 
   return (
     <div className="min-h-screen bg-black text-white pb-32 select-none">
@@ -19,22 +23,32 @@ function Account() {
 
       <div className="max-w-xl mx-auto px-4 mt-6 flex flex-col gap-y-6">
 
+        {/* کارت پروفایل کاربر */}
         <div className="bg-[#181818] border border-[#262626] rounded-2xl p-5 flex items-center gap-4 shadow-xl">
           <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0 bg-[#262626] border-2 border-[#3e3e3e] shadow-md">
-            <img className="w-full h-full object-cover" src={user.avatar} alt="Profile" />
+            <img
+              className="w-full h-full object-cover"
+              src={avatarUrl || "/profileImg.png"}
+              alt="Profile"
+              onError={(e) => {
+                e.currentTarget.onerror = null; // جلوگیری از حلقه بی‌نهایت اگر عکس پیش‌فرض هم موجود نبود
+                e.currentTarget.src = "/profileImg.png";
+              }}
+            />
           </div>
           <div className="flex flex-col min-w-0">
             <span className="text-xs font-bold uppercase tracking-widest text-[#1ed760] mb-0.5">Free Account</span>
-            <h1 className="text-xl sm:text-2xl font-black text-white truncate tracking-tight">{user.name}</h1>
-            <p className="text-gray-400 text-xs sm:text-sm truncate mt-0.5">{user.email}</p>
+            <h1 className="text-xl sm:text-2xl font-black text-white truncate tracking-tight">{displayName}</h1>
+            <p className="text-gray-400 text-xs sm:text-sm truncate mt-0.5">{email}</p>
           </div>
         </div>
 
+        {/* بخش Account Management */}
         <div className="flex flex-col gap-y-2">
           <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider px-1">Account Management</h2>
 
           <div className="bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden shadow-lg">
-            <NavLink to="EditInfo" className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
+            <NavLink to="edit-info" className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
               <div className="flex items-center gap-3">
                 <div className="text-gray-400 group-hover:text-white transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
@@ -50,7 +64,7 @@ function Account() {
 
             <div className="border-t border-[#262626]" />
 
-            <NavLink to="Recovery-PlayLists" className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
+            <NavLink to="recovery-playlists" className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
               <div className="flex items-center gap-3">
                 <div className="text-gray-400 group-hover:text-white transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
@@ -66,14 +80,34 @@ function Account() {
           </div>
         </div>
 
-        {isModalOpen && <Modal type="delete" btnColor="bg-red-500/90" explanation="Are you sure you want to sign out of all devices?" isOpen={isModalOpen} btnText="Sign out" onClose={() => setIsModalOpen(false)} />}
-
+        {/* بخش Security & Privacy */}
         <div className="flex flex-col gap-y-2">
           <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider px-1">Security & Privacy</h2>
 
           <div className="bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden shadow-lg">
-            <div  onClick={() => {
-              setIsModalOpen(true);}} className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
+
+            {/* 🟢 گزینه جدید: Change Password */}
+            <NavLink to="change-password" className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
+              <div className="flex items-center gap-3">
+                <div className="text-gray-400 group-hover:text-white transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                  </svg>
+                </div>
+                <span className="text-sm sm:text-base font-semibold">Change Password</span>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </NavLink>
+
+            <div className="border-t border-[#262626]" />
+
+            {/* Sign out everywhere */}
+            <div
+              onClick={() => setIsSignOutModalOpen(true)}
+              className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]"
+            >
               <div className="flex items-center gap-3">
                 <div className="text-gray-400 group-hover:text-white transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
@@ -89,13 +123,14 @@ function Account() {
 
             <div className="border-t border-[#262626]" />
 
-            {isModalDeleteOpen && <Modal type="delete" explanation="Do you relly want to delete your account? you are not able to turn it back!" btnColor="bg-red-500/90" isOpen={isModalDeleteOpen} btnText="Delete Account" onClose={() => setIsModalDeleteOpen(false)} />}
-
-            <div onClick={() => {
-              setIsModalDeleteOpen(true);}} className="flex items-center justify-between p-4 hover:bg-red-950/20 active:bg-red-950/40 transition-colors cursor-pointer group active:scale-[0.995]">
+            {/* Delete Account */}
+            <div
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="flex items-center justify-between p-4 hover:bg-red-950/20 active:bg-red-950/40 transition-colors cursor-pointer group active:scale-[0.995]"
+            >
               <div className="flex items-center gap-3">
                 <div className="text-red-500/70 group-hover:text-red-500 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="00 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
                   </svg>
                 </div>
@@ -105,10 +140,37 @@ function Account() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
               </svg>
             </div>
+
           </div>
         </div>
 
       </div>
+
+      {isSignOutModalOpen && (
+        <Modal
+          type="delete"
+          btnColor="bg-red-500/90"
+          explanation="Are you sure you want to sign out of all devices?"
+          isOpen={isSignOutModalOpen}
+          btnText="Sign out"
+          isLoading={isSigningOut}
+          onClose={() => setIsSignOutModalOpen(false)}
+          onConfirm={signOutEverywhere}
+        />
+      )}
+
+      {isDeleteModalOpen && (
+        <Modal
+          type="delete"
+          explanation="Do you really want to delete your account? You will not be able to recover it!"
+          btnColor="bg-red-500/90"
+          isOpen={isDeleteModalOpen}
+          btnText="Delete Account"
+          isLoading={isDeleting}
+          onConfirm={deleteAccount}
+          onClose={() => setIsDeleteModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
