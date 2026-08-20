@@ -11,7 +11,7 @@ import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js';
 import { useAuth } from '../context/Auth.jsx';
 import AuthRequiredModal from './AuthRequiredModal.jsx';
 
-function TrackActions({ audioUrl, songName, song , songs = [] }) {
+function TrackActions({ song , queue , audioUrl }) {
   const { showToast } = useToaster();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { playSong, isPlaying,togglePlay,
@@ -20,17 +20,19 @@ function TrackActions({ audioUrl, songName, song , songs = [] }) {
   const { user } = useAuth();
 
 
-  const isCurrentArtistPlaying = songs.some(
-    (s) => Number(s?.id) === Number(currentSong?.id)
-  );
 
-  function handlePlay() {
-    if (!songs || songs.length === 0) return;
+  // آیا آهنگی که الان در حال پخشه، همین آهنگ صفحه جاریه؟
+  const isCurrentTrackPlaying = Number(currentSong?.id) === Number(song?.id);
 
-    if (isCurrentArtistPlaying) {
+  function handleMainPlay() {
+    if (!song) return;
+
+    if (isCurrentTrackPlaying) {
+      // اگر همین آهنگ در حال پخش بود، پاز/پلی کن
       togglePlay();
     } else {
-      playSong(songs[0], songs);
+      // 🟢 شروع پخش دقیقاً از همین آهنگ با صف پخش کامل خواننده
+      playSong(song, queue);
     }
   }
 
@@ -56,7 +58,7 @@ function TrackActions({ audioUrl, songName, song , songs = [] }) {
 
       const link = document.createElement('a');
       link.href = blobUrl;
-      link.download = `${songName || 'Track'}.mp3`;
+      link.download = `${song?.name || 'Track'}.mp3`;
 
       document.body.appendChild(link);
       link.click();
@@ -77,7 +79,7 @@ function TrackActions({ audioUrl, songName, song , songs = [] }) {
     <>
       <div className="flex gap-x-3 items-center child:transition-all">
         <button
-          onClick={handlePlay}
+          onClick={handleMainPlay}
           className="p-2.5 sm:p-3.5 rounded-full bg-green-500 hover:bg-green-600 inline-flex justify-center items-center"
         >
           {isPlaying ? <PauseBtn className="w-8 h-8 text-black"/> : <PlayButton className="w-8 h-8"/>}

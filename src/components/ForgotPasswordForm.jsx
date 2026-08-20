@@ -13,7 +13,7 @@ function ForgotPasswordForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] flex items-center justify-center p-6 select-none font-sans">
+    <div className="min-h-screen bg-[#121212] flex items-center justify-center p-6 select-none">
       <div className="w-full max-w-lg bg-[#181818] border border-[#282828] rounded-2xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
         <BackBtn />
 

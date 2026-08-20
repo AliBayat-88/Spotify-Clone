@@ -2,7 +2,7 @@ import Logo from './Logo.jsx'
 
 function AuthLayout({ children }) {
   return (
-    <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center p-6 select-none font-sans text-white">
+    <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center p-6 select-none text-white">
       <div className="mb-6 transform hover:scale-105 transition-transform duration-300">
         <Logo size="24" />
       </div>

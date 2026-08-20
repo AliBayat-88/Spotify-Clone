@@ -1,8 +1,11 @@
 // components/TableActions.jsx
 
-function TableActions({ onEdit, onDelete, editTitle = "Edit", deleteTitle = "Delete" }) {
+
+function TableActions({ onEdit, onDelete , editTitle = "Edit", deleteTitle = "Delete" }) {
   return (
     <div className="flex items-center justify-end gap-1">
+
+
       {onEdit && (
         <button
           type="button"

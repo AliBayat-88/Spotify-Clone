@@ -81,3 +81,31 @@ export async function getHomeSections() {
 }
 
 
+export async function trackSongPlayApi(songId) {
+  if (!songId) return;
+  const { error } = await supabase.rpc('increment_song_play', {
+    target_song_id: songId,
+  });
+  if (error) console.error('Error logging play:', error.message);
+}
+
+// 🟢 ۲. دریافت ۵ آهنگ برتر بر اساس بیشترین پخش
+export async function getPopularSongsApi() {
+  const { data, error } = await supabase
+    .from('songs')
+    .select(`
+      id,
+      name,
+      duration,
+      cover_url,
+      play_count,
+      artists ( name )
+    `)
+    .order('play_count', { ascending: false })
+    .limit(5);
+
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+

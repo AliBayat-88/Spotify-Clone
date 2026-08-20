@@ -79,7 +79,7 @@ function PlayListActions({ playlist , isPublic }) {
           isLoading={isUnsaving || isDeleting}
           onClose={() => setIsModalDeleteOpen(false)}
           onConfirm={handleDeletePlaylist}
-          btnColor="bg-red-500 text-white hover:bg-red-600"
+          btnColor="bg-red-500 hover:bg-red-600"
           explanation="Do you really want to DELETE the playlist ?"
           type="delete"
           isOpen={isModalDeleteOpen}

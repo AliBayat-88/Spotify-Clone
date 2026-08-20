@@ -78,7 +78,7 @@ function SearchBox() {
               text-white placeholder-gray-400
               focus:outline-none
               focus:ring-2 focus:ring-white
-              transition-all duration-200
+              transition-all duration-400
               w-full min-w-[300px] lg:min-w-[400px]
             "
           />

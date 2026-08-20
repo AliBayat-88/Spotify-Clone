@@ -1,42 +1,11 @@
-function PopularSongs() {
+import { usePopularSongs } from '../../features/usePopularSongs.js'
+import LoadingSpinner from '../LoadingSpinner.jsx'
 
-  const songs = [
-    {
-      id: 1,
-      name: 'Blinding Lights',
-      artist: 'The Weeknd',
-      plays: 12450,
-      cover: '/profileImg.png',
-    },
-    {
-      id: 2,
-      name: 'Starboy',
-      artist: 'The Weeknd',
-      plays: 10820,
-      cover: '/profileImg.png',
-    },
-    {
-      id: 3,
-      name: 'Save Your Tears',
-      artist: 'The Weeknd',
-      plays: 9420,
-      cover: '/profileImg.png',
-    },
-    {
-      id: 4,
-      name: 'One Dance',
-      artist: 'Drake',
-      plays: 8170,
-      cover: '/profileImg.png',
-    },
-    {
-      id: 5,
-      name: 'As It Was',
-      artist: 'Harry Styles',
-      plays: 7630,
-      cover: '/profileImg.png',
-    },
-  ]
+function PopularSongs() {
+  const {songs  , isLoading} = usePopularSongs()
+  console.log(songs)
+  
+
 
   return (
     <div className="bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden">
@@ -78,10 +47,12 @@ function PopularSongs() {
 
       <div>
 
+        {isLoading && <LoadingSpinner/>}
+
         {songs.map((song, index) => (
 
           <div
-            key={song.id}
+            key={song?.id}
             className="
               grid
               grid-cols-[40px_1fr_auto]
@@ -103,7 +74,7 @@ function PopularSongs() {
             <div className="flex items-center gap-3 min-w-0">
 
               <img
-                src={song.cover}
+                src={song?.cover_url}
                 alt=""
                 className="w-10 h-10 rounded-md object-cover shrink-0"
               />
@@ -111,11 +82,11 @@ function PopularSongs() {
               <div className="min-w-0">
 
                 <p className="text-sm font-semibold text-white truncate">
-                  {song.name}
+                  {song?.name}
                 </p>
 
                 <p className="text-xs text-gray-500 truncate sm:hidden">
-                  {song.artist}
+                  {song?.artists?.name}
                 </p>
 
               </div>
@@ -124,12 +95,12 @@ function PopularSongs() {
 
 
             <span className="hidden sm:block text-sm text-gray-400 truncate">
-              {song.artist}
+              {song?.artists?.name}
             </span>
 
 
             <span className="text-xs sm:text-sm text-gray-400 text-right">
-              {song.plays.toLocaleString()}
+              {song?.play_count.toLocaleString()}
             </span>
 
           </div>

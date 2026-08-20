@@ -8,45 +8,22 @@ function StatCard({
   const icons = {
 
     users: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="1.8"
-        stroke="currentColor"
-        className="w-5 h-5"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15 19.128a9.38 9.38 0 0 0 2.625.372
-          9.337 9.337 0 0 0 4.125-.933
-          3.375 3.375 0 0 0-5.953-1.388M15
-          19.128v-.003c0-1.113-.285-2.16-.786-3.07
-          M15 19.128v.003a9.357 9.357 0 0 1-3.75.75
-          9.357 9.357 0 0 1-3.75-.75
-          M12 15.75a3.375 3.375 0 1 0
-          0-6.75 3.375 3.375 0 0 0 0 6.75Z"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1ed760"
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+           className="lucide lucide-users-round-icon lucide-users-round">
+        <path d="M18 21a8 8 0 0 0-16 0"/>
+        <circle cx="10" cy="8" r="5"/>
+        <path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>
       </svg>
     ),
 
     artists: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="1.8"
-        stroke="currentColor"
-        className="w-5 h-5"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9 9.75a3 3 0 1 0
-          6 0 3 3 0 0 0-6 0ZM4.5
-          19.125a7.5 7.5 0 0 1 15 0"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1ed760"
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+           className="lucide lucide-mic-vocal-icon lucide-mic-vocal">
+        <path d="m11 7.601-5.994 8.19a1 1 0 0 0 .1 1.298l.817.818a1 1 0 0 0 1.314.087L15.09 12"/>
+        <path d="M16.5 21.174C15.5 20.5 14.372 20 13 20c-2.058 0-3.928 2.356-6 2-2.072-.356-2.775-3.369-1.5-4.5"/>
+        <circle cx="16" cy="7" r="5"/>
       </svg>
     ),
 
@@ -64,8 +41,8 @@ function StatCard({
           strokeLinejoin="round"
           d="M9 18V5l12-2v13"
         />
-        <circle cx="6" cy="18" r="3" />
-        <circle cx="18" cy="16" r="3" />
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
       </svg>
     ),
 

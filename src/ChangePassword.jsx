@@ -36,7 +36,7 @@ function ChangePassword() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pb-32 select-none font-sans">
+    <div className="min-h-screen bg-black text-white pb-32 select-none">
       <Header />
 
       <div className="max-w-xl mx-auto px-4 mt-12 flex flex-col gap-y-6">

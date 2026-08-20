@@ -134,11 +134,11 @@ function PublicPlaylistContainer() {
           </button>
 
           <div ref={headerMenuRef} className="relative">
-            <button
-              onClick={() => setHeaderMenuOpen(!isHeaderMenuOpen)}
-              className="text-gray-400 hover:text-white text-2xl font-bold tracking-widest bg-transparent border-none outline-none cursor-pointer p-2 transition-colors"
-            >
-              •••
+            <button onClick={() => setHeaderMenuOpen(!isHeaderMenuOpen)} className="text-[#c9d1d9] hover:text-white transition p-2 focus:outline-none">
+              <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+                <path
+                  d="M4.5 10.5c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5zm15 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5zm-7.5 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5z"></path>
+              </svg>
             </button>
 
             {isHeaderMenuOpen && (

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useRef, useEffect } from 'react';
+import { trackSongPlayApi } from '../services/apiSongs.js';
 
 const PlayerContext = createContext();
 
@@ -14,18 +15,25 @@ function PlayerContextProvider({ children }) {
 
   const audioRef = useRef(null);
 
-  // 🟢 ۱. پخش آهنگ و ست کردن صف جدید
+  // 🟢 ۱. پرچم پیگیری شمارش پخش (بدون ایجاد Re-render اضافی در پلیر)
+  const hasCountedPlayRef = useRef(false);
+
+  // 🟢 ۲. هر زمان که آهنگ تغییر کرد، پرچم شمارش را ریست می‌کنیم
+  useEffect(() => {
+    hasCountedPlayRef.current = false;
+  }, [currentSong?.id]);
+
+  // 🟢 ۳. پخش آهنگ و تنظیم صف
   function playSong(song, newQueue = null) {
     if (!song) return;
 
-    // ست کردن صف پخش
     if (newQueue && Array.isArray(newQueue) && newQueue.length > 0) {
       setQueue(newQueue);
     } else {
       setQueue((prev) => (prev.length > 0 ? prev : [song]));
     }
 
-    // اگر همان آهنگ فعلی انتخاب شده، پاز/پلی کن
+    // اگر همان آهنگ جاری انتخاب شد، فقط پاز/پلی شود
     if (Number(currentSong?.id) === Number(song?.id)) {
       togglePlay();
       return;
@@ -34,7 +42,7 @@ function PlayerContextProvider({ children }) {
     setCurrentSong(song);
   }
 
-  // 🟢 ۲. پخش خودکار با تغییر آهنگ
+  // 🟢 ۴. اجرای پخش خودکار هنگام تغییر آهنگ
   useEffect(() => {
     if (!currentSong || !audioRef.current) return;
 
@@ -76,8 +84,7 @@ function PlayerContextProvider({ children }) {
     }
   };
 
-  // 🟢 ۳. آهنگ بعدی
-  // 🟢 پخش آهنگ بعدی (با قابلیت چرخه بی‌پایان در صف)
+  // 🟢 ۵. آهنگ بعدی (حلقه بی‌پایان صف)
   const playNext = () => {
     if (!queue.length || !currentSong) return;
 
@@ -86,17 +93,15 @@ function PlayerContextProvider({ children }) {
     );
 
     if (currentIndex !== -1) {
-      // 💡 اگر به انتهای صف برسد، باقی‌مانده تقسیم برابر صفر می‌شود و به آهنگ اول برمی‌گردد
       const nextIndex = (currentIndex + 1) % queue.length;
       setCurrentSong(queue[nextIndex]);
     }
   };
 
-  // 🟢 ۴. آهنگ قبلی
+  // 🟢 ۶. آهنگ قبلی
   const playPrevious = () => {
     if (!queue.length || !currentSong || !audioRef.current) return;
 
-    // اگر بیش از ۳ ثانیه گذشته، آهنگ از اول شروع می‌شود
     if (audioRef.current.currentTime > 3) {
       audioRef.current.currentTime = 0;
       return;
@@ -121,9 +126,23 @@ function PlayerContextProvider({ children }) {
     }
   }
 
+  // 🟢 ۷. قلب تپنده محاسبه زمان و ثبت شمارش پخش واقعی
   const onTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime);
+    if (!audioRef.current) return;
+
+    const current = audioRef.current.currentTime;
+    const totalDuration = audioRef.current.duration || 0;
+
+    setCurrentTime(current);
+
+    // تعیین آستانه مجاز (Threshold):
+    // اگر آهنگ کمتر از ۳۰ ثانیه بود، ۵۰٪ آهنگ؛ در غیر این صورت ۳۰ ثانیه
+    const playThreshold = totalDuration > 0 && totalDuration < 30 ? totalDuration * 0.5 : 30;
+
+    // بررسی شرط: اگر به آستانه رسید و قبلاً برای این دور شمرده نشده بود
+    if (current >= playThreshold && !hasCountedPlayRef.current && currentSong?.id) {
+      hasCountedPlayRef.current = true; // علامت‌گذاری تا دیگر در این دور شمرده نشود
+      trackSongPlayApi(currentSong.id);
     }
   };
 

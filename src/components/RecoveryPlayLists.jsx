@@ -9,7 +9,7 @@ function RecoveryPlayLists() {
   const { restorePlaylist, isRestoring } = useRestorePlaylist();
 
   return (
-    <div className="min-h-screen bg-black text-white pb-32 select-none font-sans">
+    <div className="min-h-screen bg-black text-white pb-32 select-none">
       <Header />
 
       <div className="max-w-4xl mx-auto px-4 mt-6">
@@ -34,7 +34,7 @@ function RecoveryPlayLists() {
           ) : deletedPlaylists.length === 0 ? (
             <div className="text-center flex justify-center py-12 flex-col items-center">
               <img src="/noData.svg" className="w-[75%] sm:w-1/3" />
-              <h2 className="font-black sm:text-2xl">There is no playlist to recovery (:</h2>
+              <h2 className="font-black sm:text-2xl text-white/80">There is no playlist to recover (:</h2>
             </div>
           ) : (
             <>

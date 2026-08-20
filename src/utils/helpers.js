@@ -20,17 +20,27 @@ export const isValidEmail = (email) => {
   return emailRegex.test(email);
 };
 
-export function getDeterministicPlayCount(songId) {
-  if (!songId) return 150000;
+export function getAudioDuration(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      resolve(0);
+      return;
+    }
 
-  const numericId =
-    typeof songId === 'number'
-      ? songId
-      : String(songId)
-        .split('')
-        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const audio = new Audio();
+    const objectUrl = URL.createObjectURL(file);
+    audio.src = objectUrl;
 
-  return ((numericId * 9301 + 49297) % 1450000) + 50000;
+    audio.onloadedmetadata = () => {
+      URL.revokeObjectURL(objectUrl); // آزادسازی رم مرورگر
+      resolve(Math.round(audio.duration)); // زمان به ثانیه گرد شده
+    };
+
+    audio.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("Failed to load audio metadata"));
+    };
+  });
 }
 
 

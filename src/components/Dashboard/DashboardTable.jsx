@@ -1,12 +1,16 @@
+import LoadingSpinner from '../LoadingSpinner.jsx'
 
 function DashboardTable({
   title = 'Items',
   count,
+  isLoading,
   columns = [], // مثال: ['Song', 'Artist', 'Duration', { label: 'Actions', align: 'right' }]
   data = [],
   renderRow,
-  emptyMessage = 'No items found in this section.',
+  emptyError= "there is no items.",
 }) {
+  console.log(data)
+
   const totalCount = count !== undefined ? count : data.length;
 
   return (
@@ -50,8 +54,9 @@ function DashboardTable({
             data.map((item, index) => renderRow(item, index))
           ) : (
             <tr>
-              <td colSpan={columns.length} className="text-center py-12 text-sm text-gray-500 font-medium">
-                {emptyMessage}
+              <td colSpan={columns.length} className="text-center py-6 text-sm text-gray-500 font-medium">
+                {isLoading && <LoadingSpinner/>}
+                <span className={`${!data?.length ? "hidden" : "block"}`}>{emptyError}</span>
               </td>
             </tr>
           )}

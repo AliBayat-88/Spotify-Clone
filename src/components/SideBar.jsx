@@ -81,7 +81,7 @@ function SideBar({ onOpenModal }) {
 
       <div
         onClick={() => navigate("/playList/likedSongs")}
-        className={`p-2 hover:bg-[#262626] transition-colors rounded-xl flex items-center cursor-pointer w-full mb-0.5 ${
+        className={`p-2 hover:bg-[#262626] transition-colors  rounded-xl flex items-center cursor-pointer w-full mb-0.5 ${
           isCollapsed ? 'justify-center' : 'justify-between'
         }`}
         title={isCollapsed ? "Liked Songs" : ""}
@@ -100,6 +100,10 @@ function SideBar({ onOpenModal }) {
             </div>
           )}
         </div>}
+      </div>
+
+      <div className="border-b-2 border-white/10 my-0.5 rounded-xl ml-1">
+
       </div>
 
       <div className="w-full flex flex-col gap-y-0.5 items-center">

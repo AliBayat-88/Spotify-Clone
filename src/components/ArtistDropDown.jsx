@@ -28,8 +28,8 @@ function ArtistDropDown({ isArtistsFollowed, onFollowToggle }) {
           setOpen={setOpen}
           isSubOpen={isSubOpen}
           setSubOpen={setSubOpen}
-          isArtistsFollowed={isArtistsFollowed} // 🟢
-          onFollowToggle={onFollowToggle}       // 🟢
+          isArtistsFollowed={isArtistsFollowed}
+          onFollowToggle={onFollowToggle}
         />
       )}
     </div>
