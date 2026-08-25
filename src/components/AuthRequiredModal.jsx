@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
-import { createPortal } from 'react-dom'; // 👈 ۱. اضافه کردن createPortal
-import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 
 function AuthRequiredModal({ isOpen, onClose }) {
-  const navigate = useNavigate();
-
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.key === 'Escape') onClose();
@@ -23,29 +20,29 @@ function AuthRequiredModal({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  // ۲. رندر کردن کانتنت داخل createPortal
+  function handleRedirect(path) {
+    onClose();
+    window.location.href = path;
+  }
+
   return createPortal(
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4 animate-[fadeIn_.2s_ease-out]"
       role="dialog"
       aria-modal="true"
     >
-      {/* بک‌گراند تاریک */}
       <div
         onClick={onClose}
         className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
       />
 
-      {/* باکس اصلی مودال */}
       <div className="relative w-full max-w-sm bg-[#181818] border border-[#282828] rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.8)] overflow-hidden transform transition-all select-none">
-
-        {/* هاله نوری سبز */}
         <div className="absolute -top-16 -left-16 w-32 h-32 bg-[#1ed760]/10 blur-[50px] rounded-full pointer-events-none" />
 
-        {/* دکمه بستن */}
         <button
           onClick={onClose}
           type="button"
+          aria-label="Close modal"
           className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors p-1 rounded-full hover:bg-white/5 active:scale-95"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5">
@@ -69,10 +66,7 @@ function AuthRequiredModal({ isOpen, onClose }) {
 
           <div className="w-full flex flex-col gap-y-2.5">
             <button
-              onClick={() => {
-                onClose();
-                navigate('/login');
-              }}
+              onClick={() => handleRedirect('/login')}
               type="button"
               className="w-full bg-white text-black font-bold py-3 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all text-sm shadow-md"
             >
@@ -80,10 +74,7 @@ function AuthRequiredModal({ isOpen, onClose }) {
             </button>
 
             <button
-              onClick={() => {
-                onClose();
-                navigate('/signUp');
-              }}
+              onClick={() => handleRedirect('/signUp')}
               type="button"
               className="w-full bg-transparent text-gray-400 hover:text-white font-bold py-2 rounded-full hover:underline transition-all text-sm"
             >
@@ -91,10 +82,9 @@ function AuthRequiredModal({ isOpen, onClose }) {
             </button>
           </div>
         </div>
-
       </div>
     </div>,
-    document.body // 👈 ۳. به انتهای body متصل می‌شود
+    document.body
   );
 }
 

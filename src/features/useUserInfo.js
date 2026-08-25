@@ -1,4 +1,3 @@
-// features/useUserInfo.js
 import { useQuery } from '@tanstack/react-query';
 import { getUserInfoApi } from '../services/apiUser.js';
 import { useAuth } from '../context/Auth.jsx';
@@ -22,6 +21,7 @@ export function useUserInfo() {
   return {
     user,
     profile,
+    isAuthenticated : user?.id,
     isAdmin,
     isLoading: isAuthLoading || isProfileLoading,
     error,

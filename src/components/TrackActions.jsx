@@ -108,7 +108,6 @@ function TrackActions({ song , queue , audioUrl }) {
         <TrackDropdown isLiked={isLiked} song={song}/>
       </div>
 
-      {/* ۳. مودال خارج از div و درون Fragment قرار گرفت */}
       <AuthRequiredModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}

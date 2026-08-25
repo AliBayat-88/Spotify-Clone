@@ -1,15 +1,19 @@
 import { createContext, useContext, useState, useRef, useEffect } from 'react';
 import { trackSongPlayApi } from '../services/apiSongs.js';
 import { getSavedPlayback, savePlaybackState } from '../utils/helpers.js';
+import { useUserInfo } from '../features/useUserInfo.js';
+import AuthRequiredModal from '../components/AuthRequiredModal.jsx';
 
 const PlayerContext = createContext();
 
 function PlayerContextProvider({ children }) {
+  const { isAuthenticated } = useUserInfo();
   const savedState = getSavedPlayback();
 
   const [currentSong, setCurrentSong] = useState(savedState?.song || null);
   const [queue, setQueue] = useState(savedState?.queue || []);
 
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -59,6 +63,11 @@ function PlayerContextProvider({ children }) {
   function playSong(song, newQueue = null) {
     if (!song) return;
 
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     if (newQueue && Array.isArray(newQueue) && newQueue.length > 0) {
       setQueue(newQueue);
     } else {
@@ -83,6 +92,12 @@ function PlayerContextProvider({ children }) {
 
   function resumeSong() {
     if (!audioRef.current) return;
+
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     isUserActionRef.current = true;
     const playPromise = audioRef.current.play();
     if (playPromise !== undefined) {
@@ -94,6 +109,11 @@ function PlayerContextProvider({ children }) {
 
   const togglePlay = () => {
     if (!audioRef.current) return;
+
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
 
     if (isPlaying) {
       pauseSong();
@@ -194,6 +214,7 @@ function PlayerContextProvider({ children }) {
         playNext,
         playPrevious,
         queue,
+        openAuthModal: () => setIsAuthModalOpen(true),
       }}
     >
       {children}
@@ -202,6 +223,10 @@ function PlayerContextProvider({ children }) {
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
         onEnded={playNext}
+      />
+      <AuthRequiredModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
       />
     </PlayerContext.Provider>
   );

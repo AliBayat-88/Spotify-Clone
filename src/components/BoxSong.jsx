@@ -1,4 +1,3 @@
-// src/components/BoxSong.jsx
 import React from 'react';
 import { usePlayer } from '../context/PlayerContext.jsx';
 import PauseBtn from './PauseBtn.jsx';
@@ -7,7 +6,7 @@ import PlayButton from './PlayButton.jsx';
 function BoxSong({ info, isArtist, onClick, isPlaylist }) {
   const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
 
-  const isCurrentTrack = currentSong?.id === info?.id;
+  const isCurrentTrack = Number(currentSong?.id) === Number(info?.id);
   const isThisPlaying = isCurrentTrack && isPlaying;
 
   const displayName = info?.name || info?.title || '';
@@ -21,38 +20,36 @@ function BoxSong({ info, isArtist, onClick, isPlaylist }) {
 
     if (isCurrentTrack) {
       togglePlay();
-    } else {
-      if (!audioSource) {
-        console.error('No audio source found for this track:', info);
-        return;
-      }
-
-      const songToPlay = {
-        id: info.id,
-        name: displayName,
-        title: displayName,
-        audio_url: audioSource,
-        song_url: audioSource,
-        cover_url: coverImage,
-        duration: info.duration || 0,
-        bio: artistBio,
-        artists: {
-          id: info?.artists?.id || info?.artist_id,
-          name: artistName,
-          bio: artistBio,
-          image_url: info?.artists?.image_url || coverImage,
-        },
-        artist: artistName,
-      };
-
-      playSong(songToPlay, [songToPlay]);
+      return;
     }
+
+    if (!audioSource) return;
+
+    const songToPlay = {
+      id: info.id,
+      name: displayName,
+      title: displayName,
+      audio_url: audioSource,
+      song_url: audioSource,
+      cover_url: coverImage,
+      duration: info.duration || 0,
+      bio: artistBio,
+      artists: {
+        id: info?.artists?.id || info?.artist_id,
+        name: artistName,
+        bio: artistBio,
+        image_url: info?.artists?.image_url || coverImage,
+      },
+      artist: artistName,
+    };
+
+    playSong(songToPlay, [songToPlay]);
   }
 
   return (
     <div
       onClick={onClick}
-      className="group relative p-2 sm:p-3 rounded-xl sm:rounded-2xl cursor-pointer bg-[#141414] hover:bg-[#202020] border border-white/[0.04] hover:border-white/15 transition-all duration-300 ease-out w-full flex flex-col h-full shadow-md hover:shadow-2xl hover:-translate-y-1.5 transform-gpu will-change-transform select-none overflow-hidden"
+      className="group relative p-2 sm:p-3 rounded-xl sm:rounded-2xl cursor-pointer bg-[#141414] hover:bg-[#202020] border border-white/[0.04] hover:border-white/15 transition-all duration-300 ease-out w-full flex flex-col h-full shadow-md hover:shadow-2xl hover:-translate-y-1.5 transform-gpu will-change-transform select-none font-sans overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] via-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl sm:rounded-2xl" />
 
@@ -72,7 +69,7 @@ function BoxSong({ info, isArtist, onClick, isPlaylist }) {
           }}
         />
 
-        {!isArtist && !isPlaylist && (
+        {!isArtist && (
           <button
             type="button"
             onClick={handlePlayClick}
@@ -92,10 +89,11 @@ function BoxSong({ info, isArtist, onClick, isPlaylist }) {
         )}
       </div>
 
-      {/* متادیتا */}
       <div className="relative flex flex-col flex-grow pt-2.5 sm:pt-3.5 min-w-0 z-10">
         <h5
-          className={`text-xs sm:text-base font-bold truncate leading-snug transition-colors duration-200`}
+          className={`text-xs sm:text-base font-bold truncate leading-snug transition-colors duration-200 ${
+            isCurrentTrack && !isArtist ? 'text-[#1ed760]' : 'text-white'
+          }`}
         >
           {displayName}
         </h5>
