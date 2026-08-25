@@ -10,7 +10,6 @@ function BackBtn() {
   return (
     <button
       onClick={() => handleBack()}
-      // با pt-10 جدید AuthLayout هماهنگ شد؛ دیگه از کارت بیرون نمی‌زنه
       className="absolute -top-4 left-0 text-neutral-400 hover:text-white flex items-center gap-1 text-sm font-semibold transition-colors"
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">

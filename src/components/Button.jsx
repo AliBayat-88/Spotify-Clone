@@ -16,7 +16,7 @@ function Button({children , icon , wherePage , color = "bg-white"}) {
           <span className="transition-all lg:text-base text-sm text-black duration-500 group-hover:translate-x-1"
           >{children}</span
           >
-          {icon && <img src={icon} alt="arrow"  className="w-6 h-6 transition-transform duration-500 group-hover:translate-x-1"/>}
+          {icon && <img loading="lazy" src={icon} alt="arrow"  className="w-6 h-6 transition-transform duration-500 group-hover:translate-x-1"/>}
 
         </div>
       </span>

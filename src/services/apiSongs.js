@@ -64,7 +64,8 @@ export async function getHomeSections() {
           id,
           name,
           cover_url,
-          artists (name)
+          audio_url,
+          artists (name , bio)
         ),
         artists (
           id,

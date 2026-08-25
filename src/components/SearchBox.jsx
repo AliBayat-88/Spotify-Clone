@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import HomeIcon from './HomeIcon.jsx';
+import HomeIcon from './icons/HomeIcon.jsx';
 import { useDebounce } from '../hooks/useDebounce';
 import { useLiveSearch } from '../features/useLiveSearch';
 import { useOutsideClick } from '../hooks/useOutsideClick.js';
@@ -64,7 +64,7 @@ function SearchBox() {
 
         <div className="relative hidden md:block" ref={searchContainerRef}>
           <input
-            ref={inputRef} // 👈 ۴. اتصال ref به عنصر input
+            ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -72,7 +72,7 @@ function SearchBox() {
             onKeyDown={handleKeyDown}
             placeholder="Search for songs, artists ..."
             className="
-              bg-[#262626]
+              bg-[#181818]
               rounded-2xl
               p-2.5 pl-11 pr-24
               text-white placeholder-gray-400
@@ -85,6 +85,7 @@ function SearchBox() {
 
           {/* آیکون ذره‌بین سمت چپ */}
           <img
+            loading="lazy"
             src="/search.svg"
             className="absolute cursor-pointer left-3 top-1/2 -translate-y-1/2 w-5 h-5"
             alt="Search"
@@ -117,6 +118,7 @@ function SearchBox() {
           {/* آیکون Browse */}
           <Link to="/search" title="Browse Genres">
             <img
+              loading="lazy"
               src="/browse.svg"
               className="absolute cursor-pointer right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 hover:scale-110 transition-transform"
               alt="Browse"
@@ -156,7 +158,7 @@ function SearchBox() {
                     <SearchLoader />
                   ) : !hasResults ? (
                     <div className="p-4 text-center text-white text-sm font-bold flex items-center justify-center flex-col gap-y-2">
-                      <img className="w-16 opacity-80" src="/nothing-found.png" alt="Nothing found" />
+                      <img loading="lazy" className="w-16 opacity-80" src="/nothing-found.png" alt="Nothing found" />
                       <span className="text-gray-300">No results found</span>
                     </div>
                   ) : (
@@ -173,6 +175,7 @@ function SearchBox() {
                               className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#282828] cursor-pointer transition-colors group"
                             >
                               <img
+                                loading="lazy"
                                 src={song.cover_url}
                                 alt={song.name}
                                 className="w-10 h-10 object-cover rounded-md shadow-md shrink-0"
@@ -202,6 +205,7 @@ function SearchBox() {
                               className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#282828] cursor-pointer transition-colors group"
                             >
                               <img
+                                loading="lazy"
                                 src={artist.image_url}
                                 alt={artist.name}
                                 className="w-10 h-10 object-cover rounded-full shadow-md shrink-0"
@@ -229,6 +233,7 @@ function SearchBox() {
                               className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#282828] cursor-pointer transition-colors group"
                             >
                               <img
+                                loading="lazy"
                                 src={playlist.cover_url}
                                 alt={playlist.title}
                                 className="w-10 h-10 object-cover rounded-md shadow-md shrink-0"

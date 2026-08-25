@@ -34,6 +34,7 @@ function ArtistBioDrawer({ artist, isOpen, onClose }) {
 
           <div className="relative w-full h-64 rounded-2xl overflow-hidden mb-6 shadow-xl border border-white/5">
             <img
+              loading="lazy"
               src={artist?.image_url || '/playlistImg.webp'}
               alt={artist?.name}
               className="w-full h-full object-cover"

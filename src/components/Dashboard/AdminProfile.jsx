@@ -1,128 +1,73 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react';
+import { useUserInfo } from '../../features/useUserInfo.js';
+import { useLogOut } from '../../features/useLogOut.js';
+import { useOutsideClick } from '../../hooks/useOutsideClick.js';
+import ProfileMenu from '../ProfileMenu.jsx';
+import Modal from '../Modal.jsx';
 
 function AdminProfile() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const { displayName, avatarUrl } = useUserInfo();
+  const { logOut, isLoginOut } = useLogOut(() => setIsLogoutModalOpen(false));
+
+  const profileRef = useRef(null);
+  useOutsideClick(profileRef, isOpen, () => setIsOpen(false));
 
   return (
-    <div className="relative">
-
+    <div ref={profileRef} className="relative select-none">
       <button
         type="button"
-        onClick={() => setIsOpen(prev => !prev)}
-        className="
-          flex items-center gap-2
-          p-1
-          pr-2
-          rounded-full
-          hover:bg-white/[0.06]
-          transition-all
-        "
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="flex items-center gap-2.5 p-1 pr-2.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 transition-all cursor-pointer group"
       >
-
-        <img
-          src="/profileImg.png"
-          alt="Admin"
-          className="w-9 h-9 rounded-full object-cover border border-white/10"
-        />
-
-        <div className="hidden lg:flex flex-col items-start leading-none">
-          <span className="text-white text-xs font-bold">
-            Ali Bayat
-          </span>
-
-          <span className="text-[10px] text-gray-500 mt-1">
-            Administrator
-          </span>
+        <div className="relative">
+          <img
+            loading="lazy"
+            src={avatarUrl || '/profileImg.png'}
+            alt="Admin"
+            className="w-8 h-8 rounded-full object-cover bg-black border border-white/10 shrink-0"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/profileImg.png';
+            }}
+          />
+          <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-[#1ed760] border-2 border-[#121212] rounded-full" />
         </div>
 
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className={`
-            hidden sm:block
-            w-4 h-4
-            text-gray-500
-            transition-transform
-            ${isOpen ? 'rotate-180' : ''}
-          `}
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <div className="hidden lg:flex flex-col items-start leading-tight text-left">
+          <span className="text-white text-xs font-bold truncate max-w-[110px]">{displayName}</span>
+          <span className="text-[10px] text-[#1ed760] font-semibold">Admin</span>
+        </div>
 
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={`w-3.5 h-3.5 text-gray-500 group-hover:text-white transition-transform duration-200 ${isOpen ? 'rotate-180 text-white' : ''}`}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
+        </svg>
       </button>
 
+      {/* استفاده مستقیم از کامپوننت مشترک */}
       {isOpen && (
-        <div
-          className="
-            absolute
-            right-0
-            top-12
-            w-48
-            bg-[#181818]
-            border border-white/[0.08]
-            rounded-xl
-            shadow-[0_20px_50px_rgba(0,0,0,0.5)]
-            p-1.5
-            overflow-hidden
-          "
-        >
-
-          <button
-            className="
-              w-full
-              text-left
-              px-3 py-2.5
-              rounded-lg
-              text-sm
-              text-gray-300
-              hover:bg-white/[0.06]
-              hover:text-white
-              transition
-            "
-          >
-            Account settings
-          </button>
-
-          <button
-            className="
-              w-full
-              text-left
-              px-3 py-2.5
-              rounded-lg
-              text-sm
-              text-gray-300
-              hover:bg-white/[0.06]
-              hover:text-white
-              transition
-            "
-          >
-            View website
-          </button>
-
-          <div className="h-px bg-white/[0.06] my-1" />
-
-          <button
-            className="
-              w-full
-              text-left
-              px-3 py-2.5
-              rounded-lg
-              text-sm
-              text-red-400
-              hover:bg-red-500/10
-              transition
-            "
-          >
-            Log out
-          </button>
-
-        </div>
+        <ProfileMenu
+          onClose={() => setIsOpen(false)}
+          onLogoutClick={() => setIsLogoutModalOpen(true)}
+        />
       )}
 
+      {isLogoutModalOpen && (
+        <Modal
+          isLoading={isLoginOut}
+          onConfirm={logOut}
+          type="delete"
+          btnColor="bg-red-500/90"
+          explanation="Are you sure you want to log out from this admin session?"
+          isOpen={isLogoutModalOpen}
+          btnText="Log out"
+          onClose={() => setIsLogoutModalOpen(false)}
+        />
+      )}
     </div>
-  )
+  );
 }
 
-export default AdminProfile
+export default AdminProfile;

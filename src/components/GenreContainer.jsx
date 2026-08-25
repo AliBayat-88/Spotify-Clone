@@ -1,83 +1,78 @@
-import { useNavigate, useParams } from 'react-router-dom'
-import { useCategory, useSectionsCategory } from '../features/useCategory.js'
-import EachAlbum from './EachAlbum.jsx'
-import Footer from './Footer.jsx'
+// src/components/GenreContainer.jsx
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useCategory, useSectionsCategory } from '../features/useCategory.js';
+import EachAlbum from './EachAlbum.jsx';
+import Footer from './Footer.jsx';
 
 const COLOR_PALETTES = [
-  { bg: "bg-gradient-to-br from-purple-600 to-purple-900", shadow: "shadow-purple-900/40" },
-  { bg: "bg-gradient-to-br from-pink-600 to-rose-900", shadow: "shadow-rose-900/40" },
-  { bg: "bg-gradient-to-br from-orange-500 to-red-800", shadow: "shadow-red-900/40" },
-  { bg: "bg-gradient-to-br from-emerald-500 to-green-900", shadow: "shadow-green-900/40" },
-  { bg: "bg-gradient-to-br from-blue-600 to-indigo-900", shadow: "shadow-indigo-900/40" },
-  { bg: "bg-gradient-to-br from-yellow-500 to-amber-800", shadow: "shadow-amber-900/40" },
-  { bg: "bg-gradient-to-br from-teal-500 to-cyan-900", shadow: "shadow-cyan-900/40" },
-  { bg: "bg-gradient-to-br from-fuchsia-600 to-purple-900", shadow: "shadow-fuchsia-900/40" },
-]
+  { bg: 'from-purple-700 to-[#121212]', glow: 'bg-purple-600/30' },
+  { bg: 'from-rose-700 to-[#121212]', glow: 'bg-rose-600/30' },
+  { bg: 'from-amber-600 to-[#121212]', glow: 'bg-amber-600/30' },
+  { bg: 'from-emerald-700 to-[#121212]', glow: 'bg-emerald-600/30' },
+  { bg: 'from-blue-700 to-[#121212]', glow: 'bg-blue-600/30' },
+  { bg: 'from-teal-700 to-[#121212]', glow: 'bg-teal-600/30' },
+  { bg: 'from-fuchsia-700 to-[#121212]', glow: 'bg-fuchsia-600/30' },
+  { bg: 'from-indigo-700 to-[#121212]', glow: 'bg-indigo-600/30' },
+];
 
 function GenreContainer() {
-  const { id } = useParams()
-  const navigate = useNavigate()
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  const { category } = useCategory(id)
-const {sections , isLoading} = useSectionsCategory(id)
-  console.log(sections)
+  const { category } = useCategory(id);
+  const { sections, isLoading } = useSectionsCategory(id);
 
-  const loadingSkeletons = Array.from({ length: 2 });
-  const palette = COLOR_PALETTES[id % COLOR_PALETTES.length];
+  const numericId = Number(id) || id?.charCodeAt(0) || 0;
+  const palette = COLOR_PALETTES[Math.abs(numericId) % COLOR_PALETTES.length];
 
   return (
-    <div className="w-full relative min-h-screen text-white select-none">
-      <div
-        className={`absolute top-0 left-0 right-0 h-[160px] sm:h-[320px] ${palette.bg} flex items-end p-6 sm:p-10 z-0 pointer-events-none`}
-      >
-        <div
-          className="transition-all duration-75 will-change-transform"
-        >
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none mb-4 sm:mb-6">
-            {category?.name}
+    <div className="w-full relative min-h-screen text-white select-none bg-[#121212] rounded-xl overflow-hidden">
+      <div className={`relative w-full min-h-[220px] sm:min-h-[280px] bg-gradient-to-b ${palette.bg} p-6 sm:p-10 flex flex-col justify-end overflow-hidden`}>
+        <div className={`absolute -top-16 -left-16 w-80 h-80 ${palette.glow} rounded-full blur-[100px] pointer-events-none transform-gpu`} />
+
+        <div className="relative z-10">
+          <span className="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-white/80">
+            Category
+          </span>
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-none mt-2 drop-shadow-xl">
+            {category?.name || '...'}
           </h1>
         </div>
       </div>
 
-      <div
-        className="absolute top-36 sm:top-[280px] bg-[#171717]/90 backdrop-blur-2xl border-t border-white/10 rounded-t-2xl w-full p-4 sm:p-6 shadow-[0_-15px_40px_rgba(0,0,0,0.6)] z-10"
-      >
-
+      <div className="relative bg-[#121212] px-4 sm:px-8 py-6 flex flex-col gap-y-6 border-t border-white/[0.06] shadow-[0_-16px_36px_rgba(0,0,0,0.7)] z-10">
         {isLoading ? (
-          loadingSkeletons.map((_, index) => (
+          Array.from({ length: 2 }).map((_, index) => (
             <EachAlbum
-              key={`skeleton-section-${index}`}
+              key={`genre-skeleton-${index}`}
               variant="slider"
               isLoading={true}
             />
           ))
-        ) : sections?.map((section) => {
-          return (
-            <>
-              <EachAlbum
-                onClick={(id) => navigate(`/public-playlist/${id}`)}
-                variant="slider"
-                sectionId={section?.id}
-                isLoading={isLoading}
-                infos={section.public_playLists?.map((playlist) => ({
-                  id: playlist.id,
-                  img: playlist.cover_url,
-                  title: playlist.title,
-                  description: playlist.description,
-                }))}
-                isPlaylist
-                headingText={section.title}
-              />
-            </>
-          )
-        })}
+        ) : (
+          sections?.map((section) => (
+            <EachAlbum
+              key={section.id}
+              onClick={(playlistId) => navigate(`/public-playlist/${playlistId}`)}
+              variant="slider"
+              sectionId={section?.id}
+              isLoading={isLoading}
+              isPlaylist
+              headingText={section.title}
+              infos={section.public_playLists?.map((playlist) => ({
+                id: playlist.id,
+                img: playlist.cover_url,
+                title: playlist.title,
+                description: playlist.description,
+              }))}
+            />
+          ))
+        )}
 
-
-        <Footer/>
+        <Footer />
       </div>
-
     </div>
-
   );
 }
 

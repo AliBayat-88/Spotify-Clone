@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import PlusIcon from './plusIcon.jsx';
-import AnimatedCheckIcon from './AnimatedCheckIcon.jsx';
+import PlusIcon from './icons/PlusIcon.jsx';
+import AnimatedCheckIcon from './icons/AnimatedCheckIcon.jsx';
 import TrackDropdown from './TrackDropDown.jsx';
-import DownloadIcon from './DownloadIcon.jsx';
+import DownloadIcon from './icons/DownloadIcon.jsx';
 import PlayButton from './PlayButton.jsx';
 import { useToaster } from '../context/ToastContext.jsx';
 import { usePlayer } from '../context/PlayerContext.jsx';

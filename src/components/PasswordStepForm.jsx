@@ -2,8 +2,8 @@ import LoginBtn from './LoginBtn.jsx'
 import TitleLogin from './TitleLogin.jsx'
 import AuthLayout from './AuthLayout.jsx'
 import { hasMinLength, hasSpecialChar, hasUpperCase } from '../utils/helpers.js'
-import TickIcon from './TickIcon.jsx'
-import EmptyIcon from './EmptyIcon.jsx'
+import TickIcon from './icons/TickIcon.jsx'
+import EmptyIcon from './icons/EmptyIcon.jsx'
 import BackBtn from './BackBtn.jsx'
 import { useLocation } from 'react-router'
 import { useSignUp } from '../features/useSignUp.js'
@@ -40,7 +40,6 @@ function PasswordStepForm() {
           <TitleLogin>Create a password</TitleLogin>
         </div>
 
-        {/* باکس اینپوت پسورد - استایل هماهنگ‌شده با بقیه فرم‌های auth (border به‌جای ring) */}
         <div className="mb-5">
           <label htmlFor="inputpass" className="text-xs font-bold text-gray-400 uppercase tracking-wider px-0.5 block mb-2">
             Password
@@ -67,16 +66,14 @@ function PasswordStepForm() {
             <span className="font-medium text-sm">At least 1 uppercase letter</span>
           </div>
 
-          {/* شرط ۳: حروف خاص مثل @ یا # */}
           <div className="flex items-center gap-x-2 text-gray-400">
             {hasSpecialChar(createPassword) ? <TickIcon size="p-0.5" iconSize="w-3 h-3" /> : <EmptyIcon size="w-4 h-4" />}
             <span className="font-medium text-sm">At least 1 special character (e.g., @, #, $)</span>
           </div>
         </div>
 
-        {/* دکمه حالا تا وقتی پسورد معتبر نیست غیرفعاله، نه فقط اینکه toast خطا بده */}
         <LoginBtn  disabled={!isValidPassword || isPending}>
-          {isPending ? "..." : "Create"}
+          {isPending ? "Creating..." : "Create"}
         </LoginBtn>
       </form>
     </AuthLayout>

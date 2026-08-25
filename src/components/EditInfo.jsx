@@ -54,6 +54,7 @@ function EditInfo() {
               <div className="relative group select-none">
                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-[#262626] group-hover:border-[#1ed760] transition-colors shadow-2xl bg-black">
                   <img
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:opacity-40 transition-opacity duration-200"
                     src={avatarUrl}
                     alt="Profile"

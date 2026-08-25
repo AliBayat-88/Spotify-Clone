@@ -23,7 +23,7 @@ function ArtistDropDown({ isArtistsFollowed, onFollowToggle }) {
       {isOpen && (
         <Menu
           type="artist"
-          position="center"
+          position="right"
           isOpen={isOpen}
           setOpen={setOpen}
           isSubOpen={isSubOpen}

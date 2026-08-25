@@ -107,7 +107,7 @@ function SongRow({
           )}
         </div>
 
-        <img className="w-11 h-11 rounded-lg shrink-0 cursor-pointer object-cover shadow-sm border border-white/5" src={song?.cover_url} alt="" />
+        <img loading="lazy" className="w-11 h-11 rounded-lg shrink-0 cursor-pointer object-cover shadow-sm border border-white/5" src={song?.cover_url} alt="" />
 
         <div className="flex flex-col min-w-0">
           <span

@@ -1,4 +1,4 @@
-import PlusIcon from './plusIcon.jsx'
+import PlusIcon from './icons/PlusIcon.jsx'
 import SubMenu from './SubMenu.jsx'
 import { useNavigate, useOutletContext, useParams, useLocation } from 'react-router-dom'
 import { useToaster } from '../context/ToastContext.jsx'
@@ -67,7 +67,7 @@ function Menu({
       className={`
         absolute top-9 mt-3
         ${positions[position]}
-        flex flex-col w-[230px]
+        flex flex-col w-[240px]
         bg-[#181818]
         p-1.5
         rounded-lg

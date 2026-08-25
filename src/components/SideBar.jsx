@@ -72,7 +72,7 @@ function SideBar({ onOpenModal }) {
               onClick={onOpenModal}
               className="inline-flex justify-center items-center gap-1 px-3.5 py-2 rounded-xl bg-[#2b2b2b] hover:bg-[#383838] transition active:scale-95 text-sm font-semibold cursor-pointer"
             >
-              <img className="w-5 h-5" src="/plus.svg" alt="create" />
+              <img loading="lazy" className="w-5 h-5" src="/plus.svg" alt="create" />
               <span className="hidden xl:inline">create</span>
             </button>
           )}
@@ -88,6 +88,7 @@ function SideBar({ onOpenModal }) {
       >
         { user && <div className="flex items-center gap-3 min-w-0">
           <img
+            loading="lazy"
             className="w-12 h-12 rounded-md shrink-0 object-cover"
             src="/liked%20songs.png"
             alt="liked-songs"
@@ -102,9 +103,9 @@ function SideBar({ onOpenModal }) {
         </div>}
       </div>
 
-      <div className="border-b-2 border-white/10 my-0.5 rounded-xl ml-1">
+      {user && <div className=" border-b-2 border-white/10 my-0.5 rounded-xl ml-1"></div>}
 
-      </div>
+
 
       <div className="w-full flex flex-col gap-y-0.5 items-center">
         {user ? (

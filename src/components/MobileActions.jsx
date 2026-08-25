@@ -1,4 +1,4 @@
-import PlusIcon from "./plusIcon.jsx";
+import PlusIcon from "./icons/PlusIcon.jsx";
 
 function MobileActions({
   isOpen,

@@ -72,6 +72,7 @@ function EditSongModal({ isOpen, onClose, song }) {
             className="w-20 h-20 rounded-xl overflow-hidden border border-[#333] relative group cursor-pointer bg-black shrink-0 shadow-md"
           >
             <img
+              loading="lazy"
               src={coverPreview}
               alt="Cover preview"
               className="w-full h-full object-cover group-hover:opacity-40 transition-opacity"

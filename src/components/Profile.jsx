@@ -41,6 +41,7 @@ function Profile() {
         >
           {/* ۳. عکس پروفایل با بردر مشکی داخلی جهت تفکیک لایه‌ها */}
           <img
+            loading="lazy"
             className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover bg-[#121212] border-2 border-black/80 transition-all duration-300"
             src={avatarUrl || "/profileImg.png"}
             alt="Profile"
@@ -57,7 +58,7 @@ function Profile() {
       </button>
 
       {isOpen && (
-        <ProfileMenu onClick={() => setIsLogoutModalOpen(true)} onClose={() => setOpen(false)} />
+        <ProfileMenu onLogoutClick={() => setIsLogoutModalOpen(true)} onClose={() => setOpen(false)} />
       )}
 
       {isLogoutModalOpen && (
@@ -66,7 +67,7 @@ function Profile() {
           onConfirm={logOut}
           type="delete"
           btnColor="bg-red-500/90"
-          explanation="Are you sure you want to log out from your account on this device?"
+          explanation="Are you sure you want to log out from your account?"
           isOpen={isLogoutModalOpen}
           btnText="Log out"
           onClose={() => setIsLogoutModalOpen(false)}

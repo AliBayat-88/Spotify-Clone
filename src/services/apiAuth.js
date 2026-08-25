@@ -80,7 +80,7 @@ export async function loginWithGoogle() {
   return await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: "http://localhost:5173",
+      redirectTo: `${window.location.origin}/`,
       queryParams: {
         prompt: 'select_account',
       },

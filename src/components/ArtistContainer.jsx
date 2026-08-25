@@ -1,62 +1,89 @@
-import { useParams } from 'react-router-dom'
-import { useArtist } from '../features/useArtist.js'
-import { useSongs } from '../features/useSongs.js'
-import LoadingSpinner from './LoadingSpinner.jsx'
-import ArtistHero from './ArtistHero.jsx'
-import ArtistActions from './ArtistActions.jsx'
-import SongRow from './SongRow.jsx'
-import Footer from './Footer.jsx'
-import { useState } from 'react'
-import SeeMore from './SeeMore.jsx'
-import ArtistBioDrawer from './ArtistBioDrawer.jsx'
+// src/components/ArtistContainer.jsx
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useArtist } from '../features/useArtist.js';
+import { useSongsByArtist } from '../features/useSongsById.js';
+import LoadingSpinner from './LoadingSpinner.jsx';
+import ArtistHero from './ArtistHero.jsx';
+import ArtistActions from './ArtistActions.jsx';
+import SongRow from './SongRow.jsx';
+import Footer from './Footer.jsx';
+import SeeMore from './SeeMore.jsx';
+import ArtistBioDrawer from './ArtistBioDrawer.jsx';
 
 function ArtistContainer() {
-  const [isExpanded, setExpanded] = useState(true)
-  const [isBioOpen, setIsBioOpen] = useState(false) // 🟢 ۲. استیت کنترل کشو
-  const { id } = useParams()
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isBioOpen, setIsBioOpen] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  const { songs, isLoading: isLoadingSongs } = useSongs()
-  const { artist, isLoading: isLoadingArtist } = useArtist(id)
+  const { artist, isLoading: isLoadingArtist } = useArtist(id);
+  const { songsByArtist, isLoading: isLoadingSongs } = useSongsByArtist(id);
 
-  const showSongs = songs?.filter(song => String(song?.artists?.id) === String(id))
-  const slicedSongs = isExpanded ? showSongs?.slice(0, 1) : showSongs?.slice(0, 6)
-
-  function handleExpand() {
-    setExpanded(!isExpanded)
+  if (isLoadingArtist || isLoadingSongs) {
+    return (
+      <div className="w-full py-32 flex justify-center items-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
-  if (isLoadingArtist || isLoadingSongs) return <LoadingSpinner />
+  const displayedSongs = !isExpanded
+    ? songsByArtist
+    : songsByArtist?.slice(0, 3);
 
   return (
-    <div className="text-white w-full child:p-4 sm:child:pb-16 lg:child:pb-24 relative">
-      <ArtistHero artistName={artist?.name} artistBackImg={artist?.image_url} backColor="bg-[#1F1FDE]"/>
+    <div className="w-full text-white bg-[#121212] rounded-xl overflow-hidden select-none">
+      {/* بخش هیرو */}
+      <ArtistHero
+        artistName={artist?.name}
+        artistBackImg={artist?.image_url}
+        isVerified={true}
+      />
 
-      <div className="bg-[#171717]/70 backdrop-blur-xl border-t border-white/10 rounded-t-2xl absolute sm:top-[230px] lg:top-[275px] w-full">
-        <ArtistActions songs={showSongs} artistId={artist?.id} onOpenBio={() => setIsBioOpen(true)} />
+      {/* بدنه محتوا با تفکیک نرم و سایه */}
+      <div className="relative bg-gradient-to-b from-[#161616] via-[#131313] to-[#121212] px-4 sm:px-8 py-6 flex flex-col gap-y-6 border-t border-white/[0.08] shadow-[0_-16px_36px_rgba(0,0,0,0.6)] z-20">
 
-        <div className="mt-20">
-          <div>
-            <span className="block text-white font-bold text-xl sm:text-3xl my-3">Popular</span>
-          </div>
+        {/* نوار دکمه پلی بزرگ، فالو و باز کردن بیو */}
+        <ArtistActions
+          songs={songsByArtist}
+          artistId={artist?.id}
+          onOpenBio={() => setIsBioOpen(true)}
+        />
 
-          {slicedSongs?.map((song, index) => {
-            return (
+        {/* جدول آهنگ‌های پرطرفدار */}
+        <div className="flex flex-col gap-y-3 mt-4">
+          <h2 className="text-xl sm:text-2xl font-black text-white">
+            Popular
+          </h2>
+
+          <div className="flex flex-col divide-y divide-white/[0.04]">
+            {displayedSongs?.map((song, index) => (
               <SongRow
                 key={song.id || index}
-                type="song"
-                singer={artist?.name}
-                play={224242}
                 index={index + 1}
                 song={song}
+                singer={artist?.name}
+                play={song.play_count}
+                onClick={() => navigate(`/track/${song.id}`)}
               />
-            )
-          })}
+            ))}
+          </div>
 
-          <SeeMore isExpanded={isExpanded} onClick={() => handleExpand()}/>
-          <Footer/>
+          {songsByArtist?.length > 3 && (
+            <div className="pt-2 flex justify-start">
+              <SeeMore
+                isExpanded={isExpanded}
+                onClick={() => setIsExpanded((prev) => !prev)}
+              />
+            </div>
+          )}
         </div>
+
+        <Footer />
       </div>
 
+      {/* دراور بایوگرافی خواننده */}
       <ArtistBioDrawer
         artist={artist}
         isOpen={isBioOpen}

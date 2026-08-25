@@ -11,7 +11,16 @@ function MainMusicContainer() {
   const loadingSkeletons = Array.from({ length: 2 });
 
   return (
-    <div className="relative w-full rounded-xl p-2 sm:p-5 h-full overflow-y-auto select-none bg-[#121212] bg-gradient-to-b from-[#1e3224] via-[#121212]/90 to-[#121212] bg-[length:100%_500px] bg-no-repeat scrollbar-hide">
+    <div className="relative w-full rounded-xl p-2 sm:p-5 h-full overflow-y-auto select-none bg-[#101010] scrollbar-hide">
+
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-0">
+        {/* گوی سبز نئونی در گوشه چپ بالا */}
+        <div className="absolute -top-24 -left-20 w-96 h-96 bg-[#1ed760]/20 rounded-full blur-[100px] animate-pulse transition-all duration-1000" />
+        {/* گوی بنفش/ایندیگو در سمت راست */}
+        <div className="absolute top-10 right-0 w-80 h-80 bg-purple-900/25 rounded-full blur-[110px] animate-pulse delay-700" />
+        {/* بازتاب نوری ملایم در مرکز */}
+        <div className="absolute top-64 left-1/3 w-72 h-72 bg-teal-800/15 rounded-full blur-[90px]" />
+      </div>
 
       {isLoading ? (
         loadingSkeletons.map((_, index) => (
@@ -32,12 +41,15 @@ function MainMusicContainer() {
                 name: item.songs?.name,
                 img: item.songs?.cover_url,
                 artist: item.songs?.artists?.name,
+                bio: item.songs?.artists?.bio,
+                audio_url: item.songs?.audio_url,
               };
             } else {
               return {
                 id: item.artists?.id,
                 name: item.artists?.name,
                 img: item.artists?.image_url,
+                bio: item.artists?.bio,
               };
             }
           }).filter(Boolean) || [];

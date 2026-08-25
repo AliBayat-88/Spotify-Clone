@@ -7,8 +7,8 @@ import { usePlayer } from '../context/PlayerContext.jsx'
 import PlayBtn from './PlayBtn.jsx'
 import { useArtist } from '../features/useArtist.js'
 import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js'
-import AnimatedCheckIcon from './AnimatedCheckIcon.jsx'
-import PlusIcon from './plusIcon.jsx'
+import AnimatedCheckIcon from './icons/AnimatedCheckIcon.jsx'
+import PlusIcon from './icons/PlusIcon.jsx'
 
 function PlayerBar() {
   const { setIsExpanded, isPlaying, togglePlay, currentSong, playNext, playPrevious } = usePlayer();
@@ -38,7 +38,7 @@ function PlayerBar() {
       {/* بخش سمت چپ */}
       <div className="w-60 flex items-center gap-x-2 lg:gap-x-3">
         <div>
-          <img src={currentSong?.cover_url} className="w-10 lg:w-12 h-10 lg:h-12 rounded-sm object-cover" alt="" />
+          <img loading="lazy" src={currentSong?.cover_url} className="w-10 lg:w-12 h-10 lg:h-12 rounded-sm object-cover" alt="" />
         </div>
         <div className="flex flex-col gap-y-0.5 text-sm min-w-0 pr-2">
           <span className="font-semibold truncate">{currentSong?.name}</span>

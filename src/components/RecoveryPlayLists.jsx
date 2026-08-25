@@ -2,7 +2,7 @@ import Header from './Header.jsx';
 import BackBtn from './BackBtn.jsx';
 import ActionBtn from './ActionBtn.jsx';
 import { useDeletedPlaylists } from '../features/useDeletedPlaylists.js';
-import { useRestorePlaylist } from './useRestorePlaylist.js'
+import { useRestorePlaylist } from '../hooks/useRestorePlaylist.js'
 
 function RecoveryPlayLists() {
   const { deletedPlaylists, isLoading } = useDeletedPlaylists();
@@ -33,7 +33,7 @@ function RecoveryPlayLists() {
             </div>
           ) : deletedPlaylists.length === 0 ? (
             <div className="text-center flex justify-center py-12 flex-col items-center">
-              <img src="/noData.svg" className="w-[75%] sm:w-1/3" />
+              <img loading="lazy" src="/noData.svg" className="w-[75%] sm:w-1/3" />
               <h2 className="font-black sm:text-2xl text-white/80">There is no playlist to recover (:</h2>
             </div>
           ) : (

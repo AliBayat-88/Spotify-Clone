@@ -71,6 +71,7 @@ function PublicPlaylistContainer() {
       {/* 🟢 ۱. هدر اصلی (Hero Section) */}
       <div className="relative w-full h-[320px] sm:h-[350px] lg:h-[400px] overflow-hidden">
         <img
+          loading="lazy"
           src={publicPlaylistSongs?.cover_url || "/playlistImg.webp"}
           alt={publicPlaylistSongs?.title}
           className="absolute inset-0 w-full h-full object-cover object-center filter brightness-90"

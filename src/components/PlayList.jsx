@@ -51,6 +51,7 @@ function PlayList({ playlist, isLoading, isCollapsed, isPublic = false, item, us
     >
       <div className="flex items-center gap-3 min-w-0">
         <img
+          loading="lazy"
           className="w-12 h-12 rounded-md shrink-0 object-cover"
           src={playlist?.cover_url || "/playlistImg.webp"}
           alt="playlist-logo"

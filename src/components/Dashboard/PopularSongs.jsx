@@ -74,6 +74,7 @@ function PopularSongs() {
             <div className="flex items-center gap-3 min-w-0">
 
               <img
+                loading="lazy"
                 src={song?.cover_url}
                 alt=""
                 className="w-10 h-10 rounded-md object-cover shrink-0"

@@ -1,5 +1,5 @@
 import { usePlayer } from '../context/PlayerContext.jsx'
-import ChevronDown from './ChevronDown.jsx'
+import ChevronDown from './icons/ChevronDown.jsx'
 import BackWardBtn from './BackWardBtn.jsx'
 import PauseBtn from './PauseBtn.jsx'
 import ForwardBtn from './ForwardBtn.jsx'
@@ -52,7 +52,7 @@ function MobilePlayer() {
       <div className="px-6 flex flex-col flex-1">
         <div className="flex items-center justify-center my-8">
           <div className="w-full max-w-[330px] aspect-square rounded-lg overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] active:scale-[0.98] transition-transform duration-300">
-            <img src={currentSong?.cover_url} className="w-full h-full object-cover" alt="Album Cover" />
+            <img loading="lazy" src={currentSong?.cover_url} className="w-full h-full object-cover" alt="Album Cover" />
           </div>
         </div>
 
@@ -95,7 +95,7 @@ function MobilePlayer() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-white/10 shadow-lg">
-                  <img src={artistImage} alt={artistName} className="w-full h-full object-cover" />
+                  <img loading="lazy" src={artistImage} alt={artistName} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[10px] uppercase tracking-[0.2em] text-[#a0a0a0] font-bold">About the Artist</span>

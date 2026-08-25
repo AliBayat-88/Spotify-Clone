@@ -145,7 +145,7 @@ function PhoneSearchBox() {
                 <SearchLoader />
               ) : !hasResults ? (
                 <div className="p-4 text-center text-white text-sm font-bold flex items-center justify-center flex-col gap-y-2">
-                  <img className="w-14 opacity-80" src="/nothing-found.png" alt="Not found" />
+                  <img loading="lazy" className="w-14 opacity-80" src="/nothing-found.png" alt="Not found" />
                   <span className="text-xs text-gray-400">No results found</span>
                 </div>
               ) : (
@@ -159,7 +159,7 @@ function PhoneSearchBox() {
                           onClick={() => handleNavigate(`/track/${song.id}`)}
                           className="flex items-center gap-3 p-2 rounded-xl active:bg-[#282828] cursor-pointer"
                         >
-                          <img src={song.cover_url} alt={song.name} className="w-9 h-9 object-cover rounded-md shadow-md shrink-0" />
+                          <img loading="lazy" src={song.cover_url} alt={song.name} className="w-9 h-9 object-cover rounded-md shadow-md shrink-0" />
                           <div className="flex flex-col overflow-hidden">
                             <span className="text-white text-sm font-medium truncate">{song.name}</span>
                             <span className="text-[#a7a7a7] text-xs truncate">{song.artists?.name}</span>
@@ -178,7 +178,7 @@ function PhoneSearchBox() {
                           onClick={() => handleNavigate(`/artist/${artist.id}`)}
                           className="flex items-center gap-3 p-2 rounded-xl active:bg-[#282828] cursor-pointer"
                         >
-                          <img src={artist.image_url} alt={artist.name} className="w-9 h-9 object-cover rounded-full shadow-md shrink-0" />
+                          <img loading="lazy" src={artist.image_url} alt={artist.name} className="w-9 h-9 object-cover rounded-full shadow-md shrink-0" />
                           <div className="flex flex-col overflow-hidden">
                             <span className="text-white text-sm font-medium truncate">{artist.name}</span>
                             <span className="text-[#a7a7a7] text-xs truncate">Artist</span>
@@ -200,6 +200,7 @@ function PhoneSearchBox() {
                           className="flex items-center gap-3 p-2 rounded-xl active:bg-[#282828] cursor-pointer"
                         >
                           <img
+                            loading="lazy"
                             src={playlist.cover_url}
                             alt={playlist.title}
                             className="w-9 h-9 object-cover rounded-md shadow-md shrink-0"

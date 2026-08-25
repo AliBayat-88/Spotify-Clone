@@ -5,7 +5,7 @@ const AuthContext = createContext()
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // 🟢 ۱. استیت لودینگ با مقدار اولیه true
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadUser() {
@@ -18,7 +18,7 @@ function AuthProvider({ children }) {
       } catch (error) {
         console.error("Error loading user:", error.message);
       } finally {
-        setIsLoading(false); // 🟢 ۲. بعد از اتمام بررسی (چه موفق چه خطا) لودینگ تمام می‌شود
+        setIsLoading(false);
       }
     }
 
@@ -28,14 +28,13 @@ function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      setIsLoading(false); // 🟢 ۳. جهت اطمینان در لیسنر تغییرات لاگین/لاگ‌آوت
+      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
   return (
-    // 🟢 ۴. قرار دادن isLoading در value تا بقیه کامپوننت‌ها بهش دسترسی داشته باشن
     <AuthContext.Provider value={{ user, isLoading }}>
       {children}
     </AuthContext.Provider>

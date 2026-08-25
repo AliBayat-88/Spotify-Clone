@@ -136,6 +136,7 @@ function Modal({ onClose, isOpen, onConfirm, btnText, btnColor = "bg-white", typ
                     className="w-32 h-32 rounded-xl overflow-hidden border border-[#282828] shadow-xl bg-black cursor-pointer relative"
                   >
                     <img
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:opacity-40 transition-opacity"
                       src={imagePreview}
                       alt="Playlist Cover"

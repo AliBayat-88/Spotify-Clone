@@ -1,5 +1,5 @@
-import EditIcon from './EditIcon.jsx'
-import GarbageIcon from './GarbageIcon.jsx'
+import EditIcon from './icons/EditIcon.jsx'
+import GarbageIcon from './icons/GarbageIcon.jsx'
 import { useState } from 'react'
 import Modal from './Modal.jsx'
 import { useDeletePlaylist } from '../features/useDeletePlaylist.js'

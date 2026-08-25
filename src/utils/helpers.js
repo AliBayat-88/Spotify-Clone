@@ -71,19 +71,16 @@ export function formatDaysAgo(dateString) {
     return `${hours} hour${hours > 1 ? 's' : ''} ago`;
   }
 
-  // روزها
   const days = Math.floor(diffInSeconds / 86400);
   if (days < 30) {
     return `${days} day${days > 1 ? 's' : ''} ago`;
   }
 
-  // ماه‌ها یا فرمت تاریخ ثابت برای تاریخ‌های قدیمی‌تر
   const months = Math.floor(days / 30);
   if (months < 12) {
     return `${months} month${months > 1 ? 's' : ''} ago`;
   }
 
-  // اگر بیشتر از یک سال بود، فرمت تاریخ نمایش داده شود
   return date.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -112,4 +109,48 @@ export function calculateTotalDuration(songs = []) {
   const minutes = Math.floor((totalSeconds % 3600) / 60);
 
   return hours > 0 ? `${hours} hr ${minutes} min` : `${minutes} min`;
+}
+
+const PLAYBACK_STORAGE_KEY = 'spotify_last_track';
+const EXPIRATION_TIME = 12 * 60 * 60 * 1000;
+
+export function getSavedPlayback() {
+  try {
+    const rawData = localStorage.getItem(PLAYBACK_STORAGE_KEY);
+    if (!rawData) return null;
+
+    const { song, queue, savedAt } = JSON.parse(rawData);
+
+    // بررسی اینکه آیا ۲۴ ساعت گذشته است یا خیر
+    const isExpired = Date.now() - savedAt > EXPIRATION_TIME;
+
+    if (isExpired) {
+      localStorage.removeItem(PLAYBACK_STORAGE_KEY);
+      return null;
+    }
+
+    return { song, queue };
+  } catch (err) {
+    localStorage.removeItem(PLAYBACK_STORAGE_KEY);
+    return null;
+  }
+}
+
+export function savePlaybackState(song, queue = []) {
+  try {
+    if (!song) {
+      localStorage.removeItem(PLAYBACK_STORAGE_KEY);
+      return;
+    }
+
+    const payload = {
+      song,
+      queue,
+      savedAt: Date.now(),
+    };
+
+    localStorage.setItem(PLAYBACK_STORAGE_KEY, JSON.stringify(payload));
+  } catch (err) {
+    console.error('Failed to save playback state:', err);
+  }
 }

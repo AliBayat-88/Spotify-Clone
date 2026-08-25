@@ -52,6 +52,7 @@ function CustomSelect({
         <div className="flex items-center gap-2.5 truncate">
           {selectedOption && getOptionImage(selectedOption) && (
             <img
+              loading="lazy"
               src={getOptionImage(selectedOption)}
               alt=""
               className="w-5 h-5 rounded-full object-cover bg-[#262626] shrink-0"
@@ -102,6 +103,7 @@ function CustomSelect({
                   <div className="flex items-center gap-2.5 truncate">
                     {optImg && (
                       <img
+                        loading="lazy"
                         src={optImg}
                         alt={optLabel}
                         className="w-6 h-6 rounded-full object-cover bg-black shrink-0 border border-white/10"

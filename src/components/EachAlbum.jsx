@@ -18,17 +18,21 @@ function EachAlbum({ headingText, infos, isArtist, variant , onClick , isLoading
 
       <div className="flex items-center justify-between px-4 mb-4">
         <HeadingText>{headingText}</HeadingText>
-        <NavLink to={`/section/${sectionId}`} className="text-xs sm:text-sm transition-all hover:underline font-bold text-[#b3b3b3] hover:text-white">
-          Show all
-        </NavLink>
+        {sectionId && (
+          <NavLink
+            to={`/section/${sectionId}`}
+            className="text-xs sm:text-sm transition-all hover:underline font-bold text-[#b3b3b3] hover:text-white"
+          >
+            Show all
+          </NavLink>
+        )}
       </div>
 
-      {/* 🟢 حالت اسلایدر (پشتیبانی از افکت نیمه‌کاره اسپاتیفای) */}
       {variant === "slider" && (
         <Swiper
           modules={[Navigation]}
           spaceBetween={14}
-          slidesPerView={2.2} // در موبایل ۲ تا کامل و کمی از سومی معلوم است
+          slidesPerView={2.2}
           navigation={true}
           className="music-swiper !px-4"
           breakpoints={{
@@ -46,7 +50,7 @@ function EachAlbum({ headingText, infos, isArtist, variant , onClick , isLoading
               </SwiperSlide>
             ))
             : infos?.map((info) => (
-              <SwiperSlide key={info.id} className="h-auto flex">
+              <SwiperSlide key={info.id} className="h-auto pt-1 flex">
                 <BoxSong isPlaylist={isPlaylist} info={info} isArtist={isArtist} onClick={() => onClick?.(info.id)} />
               </SwiperSlide>
             ))
@@ -58,7 +62,7 @@ function EachAlbum({ headingText, infos, isArtist, variant , onClick , isLoading
       {variant === "grid" && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 px-4">
           {infos?.map(info => (
-            <SwiperSlide key={info.id}>
+            <SwiperSlide className="h-auto pt-1 flex" key={info.id}>
               <BoxSong
                 info={info}
                 isArtist={isArtist}
@@ -100,7 +104,6 @@ function EachAlbum({ headingText, infos, isArtist, variant , onClick , isLoading
             </Swiper>
           </div>
 
-          {/* Desktop → Grid */}
           <div className="hidden lg:grid grid-cols-5 xl:grid-cols-6 gap-4 px-4">
             {infos?.slice(0, 6).map(info => (
               <BoxSong

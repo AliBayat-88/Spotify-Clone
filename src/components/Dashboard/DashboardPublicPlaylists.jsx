@@ -1,4 +1,3 @@
-// pages/DashboardPublicPlaylists.jsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import DashboardTable from './DashboardTable.jsx';
@@ -9,9 +8,18 @@ import { useCategories } from '../../features/useCategories.js';
 import { useSections } from '../../features/useSections.js';
 import { useInsertPublicPlaylist } from '../../features/useInsertPublicPlaylist.js';
 import { useDashboardPublicPlayLists } from '../../features/useDashboardPublicPlayLists.js'
+import Modal from '../Modal.jsx'
+import { useDeletePublicPlaylist } from '../../features/useDeletePublicPlaylist.js'
+import EditPublicPlaylistModal from './EditPublicPlaylistModal.jsx'
 
 function DashboardPublicPlaylists() {
   const [coverFile, setCoverFile] = useState(null);
+  const [publicPlaylistToDelete , setPublicPlaylistToDelete] = useState(null);
+  const [publicPlaylistToEdit , setPublicPlaylistToEdit] = useState(null);
+
+  const {deletePublicPlaylist , isDeleting} = useDeletePublicPlaylist(() => {
+    setPublicPlaylistToDelete(null);
+  })
 
   const {
     register,
@@ -30,6 +38,11 @@ function DashboardPublicPlaylists() {
     reset();
     setCoverFile(null);
   });
+
+  function handleDeletePublicPlaylist() {
+    deletePublicPlaylist(publicPlaylistToDelete?.id)
+  }
+
 
   const selectedCategoryId = watch('categoryId', '');
   const selectedSectionId = watch('sectionId', '');
@@ -247,6 +260,7 @@ function DashboardPublicPlaylists() {
             <td className="px-5 py-4">
               <div className="flex items-center gap-3">
                 <img
+                  loading="lazy"
                   src={playlist.cover_url || '/profileImg.png'}
                   alt={playlist.title}
                   className="w-11 h-11 rounded-lg object-cover bg-black shrink-0 shadow-md"
@@ -268,13 +282,35 @@ function DashboardPublicPlaylists() {
 
             <td className="px-5 py-4">
               <TableActions
-                onEdit={() => console.log('Edit playlist:', playlist.id)}
-                onDelete={() => console.log('Delete playlist:', playlist.id)}
+                onEdit={() => setPublicPlaylistToEdit(playlist)}
+                onDelete={() => setPublicPlaylistToDelete(playlist)}
               />
             </td>
           </tr>
         )}
       />
+
+      {publicPlaylistToDelete && (
+        <Modal
+          isLoading={isDeleting}
+          type="delete"
+          btnColor="bg-red-500/90"
+          explanation={`Are you sure you want to delete "${publicPlaylistToDelete.name}" artist? This action cannot be undone.`}
+          isOpen={Boolean(publicPlaylistToDelete)}
+          btnText="Delete artist"
+          onConfirm={handleDeletePublicPlaylist}
+          onClose={() => setPublicPlaylistToDelete(null)}
+        />
+      )}
+
+      {publicPlaylistToEdit && (
+        <EditPublicPlaylistModal
+          isOpen={Boolean(publicPlaylistToEdit)}
+          artist={publicPlaylistToEdit}
+          onClose={() => setPublicPlaylistToEdit(null)}
+          playlist={publicPlaylistToEdit}
+        />
+      )}
     </div>
   );
 }

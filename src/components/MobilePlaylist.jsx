@@ -30,7 +30,7 @@ function MobilePlaylist({playlist , isLoading , isPublic}) {
     >
       <div onClick={() => navigate(adressNavigate)} className="flex items-center gap-3.5 min-w-0 flex-1">
         <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-[#262626] shadow-md">
-          <img className="w-full h-full object-cover" src={playlist.cover_url || "/playlistImg.webp"} alt={playlist.name}/>
+          <img loading="lazy" className="w-full h-full object-cover" src={playlist.cover_url || "/playlistImg.webp"} alt={playlist.name}/>
         </div>
 
         <div className="flex flex-col gap-y-0.5 min-w-0">

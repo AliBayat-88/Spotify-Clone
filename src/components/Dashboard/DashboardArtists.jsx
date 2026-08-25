@@ -122,6 +122,7 @@ function DashboardArtists() {
               {imageFile ? (
                 <div className="flex flex-col items-center">
                   <img
+                    loading="lazy"
                     src={URL.createObjectURL(imageFile)}
                     alt="Artist preview"
                     className="w-24 h-24 rounded-full object-cover border border-[#333] shadow-md"
@@ -201,6 +202,7 @@ function DashboardArtists() {
             <td className="px-5 py-4">
               <div className="flex items-center gap-3">
                 <img
+                  loading="lazy"
                   src={artist.image_url || artist.image || '/profileImg.png'}
                   alt={artist.name}
                   className="w-11 h-11 rounded-full object-cover bg-black shrink-0 shadow-md"

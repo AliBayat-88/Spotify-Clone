@@ -1,11 +1,14 @@
 import { createContext, useContext, useState, useRef, useEffect } from 'react';
 import { trackSongPlayApi } from '../services/apiSongs.js';
+import { getSavedPlayback, savePlaybackState } from '../utils/helpers.js';
 
 const PlayerContext = createContext();
 
 function PlayerContextProvider({ children }) {
-  const [currentSong, setCurrentSong] = useState(null);
-  const [queue, setQueue] = useState([]); // صف پخش آهنگ‌ها
+  const savedState = getSavedPlayback();
+
+  const [currentSong, setCurrentSong] = useState(savedState?.song || null);
+  const [queue, setQueue] = useState(savedState?.queue || []);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -14,16 +17,45 @@ function PlayerContextProvider({ children }) {
   const [volume, setVolume] = useState(100);
 
   const audioRef = useRef(null);
-
-  // 🟢 ۱. پرچم پیگیری شمارش پخش (بدون ایجاد Re-render اضافی در پلیر)
   const hasCountedPlayRef = useRef(false);
+  const isUserActionRef = useRef(false);
 
-  // 🟢 ۲. هر زمان که آهنگ تغییر کرد، پرچم شمارش را ریست می‌کنیم
+  useEffect(() => {
+    if (currentSong) {
+      savePlaybackState(currentSong, queue);
+    }
+  }, [currentSong, queue]);
+
   useEffect(() => {
     hasCountedPlayRef.current = false;
   }, [currentSong?.id]);
 
-  // 🟢 ۳. پخش آهنگ و تنظیم صف
+  useEffect(() => {
+    if (!currentSong || !audioRef.current) return;
+
+    const src = currentSong.audio_url || currentSong.song_url;
+    if (!src) return;
+
+    if (audioRef.current.src !== src) {
+      audioRef.current.src = src;
+    }
+
+    if (!isUserActionRef.current) {
+      setIsPlaying(false);
+      return;
+    }
+
+    const playPromise = audioRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => setIsPlaying(true))
+        .catch((error) => {
+          if (error.name !== 'AbortError') console.error('Playback error:', error);
+          setIsPlaying(false);
+        });
+    }
+  }, [currentSong]);
+
   function playSong(song, newQueue = null) {
     if (!song) return;
 
@@ -33,58 +65,43 @@ function PlayerContextProvider({ children }) {
       setQueue((prev) => (prev.length > 0 ? prev : [song]));
     }
 
-    // اگر همان آهنگ جاری انتخاب شد، فقط پاز/پلی شود
     if (Number(currentSong?.id) === Number(song?.id)) {
       togglePlay();
       return;
     }
 
+    isUserActionRef.current = true;
     setCurrentSong(song);
   }
 
-  // 🟢 ۴. اجرای پخش خودکار هنگام تغییر آهنگ
-  useEffect(() => {
-    if (!currentSong || !audioRef.current) return;
-
-    audioRef.current
-      .play()
-      .then(() => {
-        setIsPlaying(true);
-      })
-      .catch((err) => {
-        console.error("Playback error:", err);
-        setIsPlaying(false);
-      });
-  }, [currentSong]);
-
   function pauseSong() {
-    audioRef.current?.pause();
-    setIsPlaying(false);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
   }
 
   function resumeSong() {
     if (!audioRef.current) return;
-    audioRef.current
-      .play()
-      .then(() => setIsPlaying(true))
-      .catch((err) => console.error("Resume error:", err));
+    isUserActionRef.current = true;
+    const playPromise = audioRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.error('Resume error:', err));
+    }
   }
 
   const togglePlay = () => {
     if (!audioRef.current) return;
 
     if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+      pauseSong();
     } else {
-      audioRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => console.error("Toggle play error:", err));
+      resumeSong();
     }
   };
 
-  // 🟢 ۵. آهنگ بعدی (حلقه بی‌پایان صف)
   const playNext = () => {
     if (!queue.length || !currentSong) return;
 
@@ -94,11 +111,11 @@ function PlayerContextProvider({ children }) {
 
     if (currentIndex !== -1) {
       const nextIndex = (currentIndex + 1) % queue.length;
+      isUserActionRef.current = true;
       setCurrentSong(queue[nextIndex]);
     }
   };
 
-  // 🟢 ۶. آهنگ قبلی
   const playPrevious = () => {
     if (!queue.length || !currentSong || !audioRef.current) return;
 
@@ -112,8 +129,8 @@ function PlayerContextProvider({ children }) {
     );
 
     if (currentIndex > 0) {
-      const prevSong = queue[currentIndex - 1];
-      setCurrentSong(prevSong);
+      isUserActionRef.current = true;
+      setCurrentSong(queue[currentIndex - 1]);
     } else {
       audioRef.current.currentTime = 0;
     }
@@ -126,7 +143,6 @@ function PlayerContextProvider({ children }) {
     }
   }
 
-  // 🟢 ۷. قلب تپنده محاسبه زمان و ثبت شمارش پخش واقعی
   const onTimeUpdate = () => {
     if (!audioRef.current) return;
 
@@ -135,13 +151,10 @@ function PlayerContextProvider({ children }) {
 
     setCurrentTime(current);
 
-    // تعیین آستانه مجاز (Threshold):
-    // اگر آهنگ کمتر از ۳۰ ثانیه بود، ۵۰٪ آهنگ؛ در غیر این صورت ۳۰ ثانیه
     const playThreshold = totalDuration > 0 && totalDuration < 30 ? totalDuration * 0.5 : 30;
 
-    // بررسی شرط: اگر به آستانه رسید و قبلاً برای این دور شمرده نشده بود
     if (current >= playThreshold && !hasCountedPlayRef.current && currentSong?.id) {
-      hasCountedPlayRef.current = true; // علامت‌گذاری تا دیگر در این دور شمرده نشود
+      hasCountedPlayRef.current = true;
       trackSongPlayApi(currentSong.id);
     }
   };
@@ -189,7 +202,6 @@ function PlayerContextProvider({ children }) {
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
         onEnded={playNext}
-        src={currentSong?.audio_url}
       />
     </PlayerContext.Provider>
   );

@@ -1,4 +1,3 @@
-// components/EditArtistModal.jsx
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ModalLayout from './ModalLayout.jsx';
@@ -17,7 +16,6 @@ function EditArtistModal({ isOpen, onClose, artist }) {
     formState: { errors },
   } = useForm();
 
-  // اتصال به هوک آپدیت خواننده
   const { updateArtist, isUpdating } = useUpdateArtist(() => {
     onClose();
   });
@@ -61,7 +59,7 @@ function EditArtistModal({ isOpen, onClose, artist }) {
             onClick={() => fileInputRef.current?.click()}
             className="w-20 h-20 rounded-full overflow-hidden border border-[#333] relative group cursor-pointer bg-black shrink-0 shadow-md"
           >
-            <img src={imagePreview} alt="Artist" className="w-full h-full object-cover group-hover:opacity-40 transition-opacity" />
+            <img loading="lazy" src={imagePreview} alt="Artist" className="w-full h-full object-cover group-hover:opacity-40 transition-opacity" />
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/50 text-[10px] font-bold text-white transition-opacity">
               Change
             </div>

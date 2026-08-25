@@ -31,7 +31,7 @@ function FollowedArtist({ artistData, isCollapsed, onUnfollow, isUnfollowing, is
       >
         <div className="flex items-center gap-3.5 min-w-0 flex-1">
           <div className="w-14 h-14 rounded-full overflow-hidden shrink-0 bg-[#262626] shadow-md border border-white/10">
-            <img className="w-full h-full object-cover" src={artistImage} alt={artistName} />
+            <img loading="lazy" className="w-full h-full object-cover" src={artistImage} alt={artistName} />
           </div>
 
           <div className="flex flex-col gap-y-0.5 min-w-0">
@@ -94,6 +94,7 @@ function FollowedArtist({ artistData, isCollapsed, onUnfollow, isUnfollowing, is
     >
       <div className="flex items-center gap-3 min-w-0">
         <img
+          loading="lazy"
           className="w-12 h-12 rounded-full shrink-0 object-cover border border-white/5"
           src={artistImage}
           alt={artistName}

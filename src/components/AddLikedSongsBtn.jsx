@@ -1,5 +1,5 @@
-import AnimatedCheckIcon from './AnimatedCheckIcon.jsx'
-import PlusIcon from './plusIcon.jsx'
+import AnimatedCheckIcon from './icons/AnimatedCheckIcon.jsx'
+import PlusIcon from './icons/PlusIcon.jsx'
 
 function AddLikedSongsBtn({ isLiked, onClick }) {
   return (

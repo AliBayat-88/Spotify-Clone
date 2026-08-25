@@ -62,7 +62,6 @@ function DashboardSongs() {
   const selectedArtistId = watch('artistId', '');
   const autoDuration = watch('duration', 0);
 
-  // 🟢 هندلر انتخاب فایل موزیک و محاسبه خودکار زمان
   async function handleAudioChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -72,10 +71,8 @@ function DashboardSongs() {
       setAudioFile(file);
       setValue('audio', file, { shouldValidate: true });
 
-      // استخراج زمان دقیق فایل صوتی به ثانیه
       const durationInSeconds = await getAudioDuration(file);
 
-      // تزریق خودکار به React Hook Form
       setValue('duration', durationInSeconds, { shouldValidate: true });
     } catch (err) {
         showToast("error" , "could not upload the file ")
@@ -314,7 +311,7 @@ function DashboardSongs() {
           <tr key={song.id} className="border-b border-white/5 last:border-b-0 hover:bg-white/[0.02] transition-colors">
             <td className="px-5 py-4">
               <div className="flex items-center gap-3">
-                <img src={song.cover_url} alt={song.name} className="w-11 h-11 rounded-lg object-cover bg-black shrink-0 shadow-md" />
+                <img loading="lazy" src={song.cover_url} alt={song.name} className="w-11 h-11 rounded-lg object-cover bg-black shrink-0 shadow-md" />
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-white truncate max-w-[200px]">{song.name}</p>
                   <p className="text-xs text-gray-500 mt-0.5">ID: {song.id}</p>

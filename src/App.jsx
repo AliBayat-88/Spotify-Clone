@@ -27,13 +27,18 @@ import { AuthProvider } from './context/Auth.jsx'
 import { AuthCallback } from './components/AuthCallback.jsx'
 import PublicPlaylistContainer from './components/PublicPlaylistContainer.jsx'
 import ResetPasswordForm from './components/ResetPasswordForm.jsx'
-import ChangePassword from './ChangePassword.jsx'
+import ChangePassword from './components/ChangePassword.jsx'
 import DashboardLayout from './components/Dashboard/DashboardLayout.jsx'
 import DashboardHome from './components/Dashboard/DashboardHome.jsx'
 import DashboardSongs from './components/Dashboard/DashboardSongs.jsx'
 import DashboardArtists from './components/Dashboard/DashboardArtists.jsx'
 import DashboardPublicPlaylists from './components/Dashboard/DashboardPublicPlaylists.jsx'
 import DashboardSections from './components/Dashboard/DashboardSections.jsx'
+import DashboardCategories from './components/Dashboard/DashboardCategories.jsx'
+import DashboardUsers from './components/Dashboard/DashboardUsers.jsx'
+import MobileOnlyRoute from './components/MobileOnlyRoute.jsx'
+import PageNotFound from './components/PageNotFound.jsx'
+import AdminProtectedRoute from './components/AdminProtectedRoute.jsx'
 
 
 const queryClient = new QueryClient({
@@ -71,7 +76,7 @@ function App() {
             path="/auth/callback"
             element={<AuthCallback />}
           />
-          <Route path="/library" element={<LibraryMobile />} />
+          <Route path="/library" element={<MobileOnlyRoute><LibraryMobile /></MobileOnlyRoute>} />
 
         </Route>
 
@@ -91,16 +96,25 @@ function App() {
         <Route path="Account/Recovery-PlayLists" element={<RecoveryPlayLists />} />
 
 
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<DashboardHome/>}/>
-          <Route path="/dashboard/songs" element={<DashboardSongs />}/>
-          <Route path="/dashboard/artists" element={<DashboardArtists />}/>
-          <Route path="/dashboard/public-playlists" element={<DashboardPublicPlaylists />}/>
-          <Route path="/dashboard/browse-content" element={<DashboardSections />}/>
+        <Route
+          path="/dashboard"
+          element={
+            <AdminProtectedRoute>
+              <DashboardLayout />
+            </AdminProtectedRoute>
+          }
+        >
+          <Route index element={<DashboardHome />} />
+          <Route path="songs" element={<DashboardSongs />} />
+          <Route path="artists" element={<DashboardArtists />} />
+          <Route path="categories" element={<DashboardCategories />} />
+          <Route path="public-playlists" element={<DashboardPublicPlaylists />} />
+          <Route path="browse-content" element={<DashboardSections />} />
+          <Route path="users" element={<DashboardUsers />} />
         </Route>
 
 
-
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
         <GlobalToast/>
     </BrowserRouter>

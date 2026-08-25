@@ -1,11 +1,11 @@
-import Header from './components/Header.jsx';
-import BackBtn from './components/BackBtn.jsx';
-import ActionBtn from './components/ActionBtn.jsx';
-import TickIcon from './components/TickIcon.jsx';
-import EmptyIcon from './components/EmptyIcon.jsx';
+import Header from './Header.jsx';
+import BackBtn from './BackBtn.jsx';
+import ActionBtn from './ActionBtn.jsx';
+import TickIcon from './icons/TickIcon.jsx';
+import EmptyIcon from './icons/EmptyIcon.jsx';
 import { useForm } from 'react-hook-form';
-import { hasMinLength, hasSpecialChar, hasUpperCase } from './utils/helpers.js';
-import { useChangePassword } from './features/useChangePassword.js';
+import { hasMinLength, hasSpecialChar, hasUpperCase } from '../utils/helpers.js';
+import { useChangePassword } from '../features/useChangePassword.js';
 
 function ChangePassword() {
   const {

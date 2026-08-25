@@ -27,6 +27,7 @@ function Account() {
         <div className="bg-[#181818] border border-[#262626] rounded-2xl p-5 flex items-center gap-4 shadow-xl">
           <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0 bg-[#262626] border-2 border-[#3e3e3e] shadow-md">
             <img
+              loading="lazy"
               className="w-full h-full object-cover"
               src={avatarUrl || "/profileImg.png"}
               alt="Profile"
