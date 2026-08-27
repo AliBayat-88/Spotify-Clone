@@ -49,7 +49,7 @@ function BoxSong({ info, isArtist, onClick, isPlaylist }) {
   return (
     <div
       onClick={onClick}
-      className="group relative p-2 sm:p-3 rounded-xl sm:rounded-2xl cursor-pointer bg-[#141414] hover:bg-[#202020] border border-white/[0.04] hover:border-white/15 transition-all duration-300 ease-out w-full flex flex-col h-full shadow-md hover:shadow-2xl hover:-translate-y-1.5 transform-gpu will-change-transform select-none font-sans overflow-hidden"
+      className="group relative p-2 sm:p-3 rounded-xl sm:rounded-2xl cursor-pointer bg-[#141414] hover:bg-[#202020] border border-white/[0.04] hover:border-white/15 transition-all duration-300 ease-out w-full flex flex-col h-full shadow-md hover:shadow-2xl hover:-translate-y-1.5 transform-gpu will-change-transform select-none  overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] via-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl sm:rounded-2xl" />
 

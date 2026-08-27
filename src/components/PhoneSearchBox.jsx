@@ -49,9 +49,9 @@ function PhoneSearchBox() {
 
       {/* کادر سرچ بازشونده موبایل */}
       <div
-        className={`p-1.5 overflow-hidden h-9 bg-[#262626] shadow-[2px_2px_20px_rgba(0,0,0,0.3)] rounded-full flex items-center transition-all duration-300 ease-in-out ${
+        className={`p-2 overflow-hidden h-9 bg-[#262626] shadow-[2px_2px_20px_rgba(0,0,0,0.3)] rounded-full flex items-center transition-all duration-300 ease-in-out ${
           isFocused
-            ? 'w-[calc(100vw-130px)] max-w-[280px] sm:max-w-[400px]'
+            ? 'w-[calc(100vw-150px)] max-w-[270px] sm:max-w-[400px]'
             : 'w-9'
         }`}
       >
@@ -108,18 +108,18 @@ function PhoneSearchBox() {
           className="
             absolute top-[120%]
             right-0
-            w-[280px] sm:w-[400px]
+            w-[calc(100vw-150px)] max-w-[270px] sm:max-w-[400px]
             bg-[#181818] rounded-2xl
             shadow-[0_12px_36px_rgba(0,0,0,0.9)]
             border border-[#282828]
             max-h-[60vh] overflow-y-auto
-            scrollbar-hide p-2.5 z-50 animate-[fadeIn_.15s_ease-out]
+            scrollbar-hide p-2 z-50 animate-[fadeIn_.15s_ease-out]
           "
         >
           {/* میانبر Browse All Genres */}
           <div
             onClick={() => handleNavigate('/search')}
-            className="flex items-center justify-between p-1.5 rounded-xl active:bg-white/15 transition-colors cursor-pointer group"
+            className="flex items-center justify-between p-1 rounded-xl active:bg-white/15 transition-colors cursor-pointer group"
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-[#1ed760]/10 text-[#1ed760] flex items-center justify-center shrink-0">

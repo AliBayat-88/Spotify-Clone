@@ -1,11 +1,9 @@
-// components/PlaylistFilters.jsx
 import { useState, useRef } from 'react';
 import { useOutsideClick } from '../hooks/useOutsideClick.js';
 
 const SORT_OPTIONS = [
   { id: 'recent', label: 'Recently Added' },
   { id: 'title', label: 'Title (A-Z)' },
-  { id: 'artist', label: 'Artist' },
 ];
 
 function PlaylistFilters({ searchQuery, setSearchQuery, sortBy, setSortBy }) {

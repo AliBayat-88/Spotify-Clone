@@ -118,10 +118,8 @@ function PublicPlaylistContainer() {
         </div>
       </div>
 
-      {/* 🟢 ۲. کانتینر اصلی لیست آهنگ‌ها با افکت Glassmorphism و گوشه‌های گرد */}
       <div className="bg-[#171717]/80 min-h-[50vh] backdrop-blur-xl border-t border-white/10 rounded-t-2xl -mt-6 sm:-mt-8 relative z-20 p-4 sm:p-6 pb-24">
 
-        {/* اکشن‌بار (دکمه Play و منوی ۳ نقطه) */}
         <div className="flex items-center gap-x-4 mb-6">
           <button
             onClick={handlePlay}

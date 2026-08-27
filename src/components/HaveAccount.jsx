@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 function HaveAccount({ textState, questionState, to }) {
   return (
-    <div className="flex flex-col items-center gap-y-4 mt-4 text-lg">
+    <div className="flex flex-col items-center gap-y-4 mt-2.5 sm:mt-4 text-lg">
       <span className="text-white/60 font-semibold">
         {questionState}
       </span>

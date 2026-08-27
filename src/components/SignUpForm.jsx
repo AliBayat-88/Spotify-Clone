@@ -34,12 +34,12 @@ function SignUpForm() {
 
   return (
     <AuthLayout>
-      <div className="flex flex-col justify-center items-center text-center mb-6 w-full">
+      <div className="flex flex-col justify-center items-center text-center mb-4 sm:mb-6 w-full">
         <TitleLogin>Sign up to start listening</TitleLogin>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full" noValidate>
-        <div className="mb-5">
+        <div className="mb-4 sm:mb-5">
           <label
             htmlFor="emailInput"
             className="text-xs font-bold text-gray-400 uppercase tracking-wider px-0.5 block mb-2"
@@ -66,9 +66,8 @@ function SignUpForm() {
             placeholder="example@gmail.com"
           />
 
-          {/* 🟢 ۵. قرارگیری پیام خطا دقیقاً زیر اینپوت (بدون فاصله زشت) */}
           {errors.email && (
-            <p className="text-xs text-red-400 mt-1.5 block text-left px-0.5">
+            <p className="text-xs text-red-400 mt-1 block text-left px-0.5">
               {errors.email.message}
             </p>
           )}
@@ -76,7 +75,7 @@ function SignUpForm() {
 
         <LoginBtn>Next</LoginBtn>
 
-        <div className="flex justify-center items-center my-5 font-bold text-xs uppercase tracking-widest text-gray-500 gap-3">
+        <div className="flex justify-center items-center my-2.5 sm:my-5 font-bold text-xs uppercase tracking-widest text-gray-500 gap-3">
           <div className="h-px bg-[#282828] flex-1"></div>
           <span>or</span>
           <div className="h-px bg-[#282828] flex-1"></div>

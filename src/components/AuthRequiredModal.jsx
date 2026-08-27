@@ -1,29 +1,9 @@
-import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 
 function AuthRequiredModal({ isOpen, onClose }) {
-  useEffect(() => {
-    function handleKeyDown(e) {
-      if (e.key === 'Escape') onClose();
-    }
-
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
-  function handleRedirect(path) {
-    onClose();
-    window.location.href = path;
-  }
 
   return createPortal(
     <div
@@ -36,14 +16,14 @@ function AuthRequiredModal({ isOpen, onClose }) {
         className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
       />
 
-      <div className="relative w-full max-w-sm bg-[#181818] border border-[#282828] rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.8)] overflow-hidden transform transition-all select-none">
+      <div className="relative w-full max-w-sm bg-[#181818] border border-[#282828] rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.8)] overflow-hidden transform transition-all select-none font-sans">
         <div className="absolute -top-16 -left-16 w-32 h-32 bg-[#1ed760]/10 blur-[50px] rounded-full pointer-events-none" />
 
         <button
           onClick={onClose}
           type="button"
           aria-label="Close modal"
-          className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors p-1 rounded-full hover:bg-white/5 active:scale-95"
+          className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors p-1 rounded-full hover:bg-white/5 active:scale-95 cursor-pointer"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -65,21 +45,21 @@ function AuthRequiredModal({ isOpen, onClose }) {
           </p>
 
           <div className="w-full flex flex-col gap-y-2.5">
-            <button
-              onClick={() => handleRedirect('/login')}
-              type="button"
-              className="w-full bg-white text-black font-bold py-3 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all text-sm shadow-md"
+            <Link
+              to="/login"
+              onClick={onClose}
+              className="w-full bg-white text-black font-bold py-3 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all text-sm shadow-md text-center block"
             >
               Log in
-            </button>
+            </Link>
 
-            <button
-              onClick={() => handleRedirect('/signUp')}
-              type="button"
-              className="w-full bg-transparent text-gray-400 hover:text-white font-bold py-2 rounded-full hover:underline transition-all text-sm"
+            <Link
+              to="/signUp"
+              onClick={onClose}
+              className="w-full bg-transparent text-gray-400 hover:text-white font-bold py-2 rounded-full hover:underline transition-all text-sm text-center block"
             >
               Don&#39;t have an account? Sign up
-            </button>
+            </Link>
           </div>
         </div>
       </div>

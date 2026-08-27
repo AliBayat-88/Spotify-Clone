@@ -3,7 +3,7 @@ function GoogleLoginBtn({onClick}) {
     <div onClick={onClick} className="flex justify-center w-full">
       <button
         type="button"
-        className="w-full flex items-center justify-center gap-3 bg-black hover:bg-white/5 border border-[#282828] hover:border-gray-500 text-white font-bold py-3.5 px-4 rounded-full transition-all duration-300 active:scale-[0.98] group"
+        className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-black hover:bg-white/5 border border-[#282828] hover:border-gray-500 text-white font-bold py-3.5 px-4 rounded-full transition-all duration-300 active:scale-[0.98] group"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

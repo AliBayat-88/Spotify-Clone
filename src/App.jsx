@@ -39,6 +39,7 @@ import DashboardUsers from './components/Dashboard/DashboardUsers.jsx'
 import MobileOnlyRoute from './components/MobileOnlyRoute.jsx'
 import PageNotFound from './components/PageNotFound.jsx'
 import AdminProtectedRoute from './components/AdminProtectedRoute.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 
 const queryClient = new QueryClient({
@@ -54,12 +55,14 @@ function App() {
   return (
     <AuthProvider>
     <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
     <LibraryContextProvider>
+
     <PlayerContextProvider>
       <ToastContextProvider>
 
 
-      <BrowserRouter>
+
       <Routes>
 
 
@@ -90,10 +93,20 @@ function App() {
        < Route path="login/forgot-password" element={<ForgotPasswordForm/>}/>
 
 
-        <Route path="/Account" element={<Account/>}></Route>
-        <Route path="Account/edit-info" element={<EditInfo />} />
-        <Route path="Account/change-password" element={<ChangePassword />} />
-        <Route path="Account/Recovery-PlayLists" element={<RecoveryPlayLists />} />
+        <Route
+          path="/Account"
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="Account/edit-info" element={<EditInfo />} />
+          <Route path="Account/change-password" element={<ChangePassword />} />
+          <Route path="Account/Recovery-PlayLists" element={<RecoveryPlayLists />} />
+        </Route>
 
 
         <Route
@@ -117,11 +130,13 @@ function App() {
         <Route path="*" element={<PageNotFound />} />
       </Routes>
         <GlobalToast/>
-    </BrowserRouter>
+
       </ToastContextProvider>
 
     </PlayerContextProvider>
+
     </LibraryContextProvider>
+    </BrowserRouter>
     </QueryClientProvider>
     </AuthProvider>
   );

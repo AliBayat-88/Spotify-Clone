@@ -6,8 +6,7 @@ function MobileActions({
   onCreatePlaylist,
 }) {
   return (
-    <div className="fixed right-9 bottom-28 z-40 md:hidden flex flex-col items-end gap-4 select-none pointer-events-none isolate">
-      {/* آیتم منو: Create Playlist */}
+    <div className="fixed right-9 bottom-16 z-40 md:hidden flex flex-col items-end gap-4 select-none pointer-events-none isolate">
       <div
         className={`
           flex flex-col gap-1.5 items-end

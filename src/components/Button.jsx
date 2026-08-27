@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-function Button({children , icon , wherePage , color = "bg-white"}) {
+function Button({children , icon , wherePage , color = "bg-white" }) {
   return (
     <div className="flex items-center justify-center">
       <div className="relative group">
