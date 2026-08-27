@@ -9,7 +9,7 @@ function LyricsSection({ lyrics }) {
   const isTooLong = lyrics.length > 220;
 
   return (
-    <div className="my-14 px-2 sm:px-0 select-text font-sans">
+    <div className="my-14 px-2 sm:px-0 select-text ">
       <h4 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-6">
         Lyrics
       </h4 >

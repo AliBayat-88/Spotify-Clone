@@ -1,15 +1,14 @@
-import React from 'react';
-import BackWardBtn from './BackWardBtn.jsx';
-import PauseBtn from './PauseBtn.jsx';
-import ForwardBtn from './ForwardBtn.jsx';
-import AudioPlay from './AudioPlay.jsx';
-import RangeSlider from './RangeSlider.jsx';
-import { usePlayer } from '../context/PlayerContext.jsx';
-import PlayBtn from './PlayBtn.jsx';
-import { useArtist } from '../features/useArtist.js';
-import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js';
-import AnimatedCheckIcon from './icons/AnimatedCheckIcon.jsx';
-import PlusIcon from './icons/PlusIcon.jsx';
+import BackWardBtn from './BackWardBtn.jsx'
+import PauseBtn from './PauseBtn.jsx'
+import ForwardBtn from './ForwardBtn.jsx'
+import AudioPlay from './AudioPlay.jsx'
+import RangeSlider from './RangeSlider.jsx'
+import { usePlayer } from '../context/PlayerContext.jsx'
+import PlayBtn from './PlayBtn.jsx'
+import { useArtist } from '../features/useArtist.js'
+import { useToggleLikeSong } from '../hooks/useToggleLikedSong.js'
+import AnimatedCheckIcon from './icons/AnimatedCheckIcon.jsx'
+import PlusIcon from './icons/PlusIcon.jsx'
 
 function PlayerBar() {
   const { setIsExpanded, isPlaying, togglePlay, currentSong, playNext, playPrevious } = usePlayer();
@@ -18,14 +17,14 @@ function PlayerBar() {
   const artistId = currentSong?.artist_id || currentSong?.artists?.id;
   const { artist } = useArtist(artistId);
 
-  const artistName = artist?.name || currentSong?.artists?.name || 'Unknown Artist';
-
-  if (!currentSong) return null;
+  const artistName = artist?.name || currentSong?.artists?.name || "Unknown Artist";
 
   return (
     <div
       onClick={() => setIsExpanded(true)}
-      className="fixed bottom-0 left-0 right-0 z-50 w-full h-20 sm:h-22 bg-[#121212]/95 backdrop-blur-2xl border-t border-white/10 px-4 sm:px-6 text-white flex items-center justify-between cursor-pointer md:cursor-default shadow-[0_-10px_30px_rgba(0,0,0,0.85)] pb-[env(safe-area-inset-bottom)]"
+      className={`bg-[#121212]/95 backdrop-blur-xl border-t border-white/10 fixed ${
+        currentSong ? "translate-y-0 opacity-100 flex" : 'translate-y-20 opacity-0 hidden'
+      } bottom-0 right-0 left-0 w-full h-20 p-4 text-white items-center justify-between z-50 cursor-pointer md:cursor-default overflow-hidden transition-all duration-300 shadow-[0_-10px_30px_rgba(0,0,0,0.8)]`}
     >
       {isPlaying && (
         <>
@@ -36,87 +35,66 @@ function PlayerBar() {
         </>
       )}
 
-      {/* بخش کاور و نام موزیک */}
-      <div className="w-48 sm:w-60 flex items-center gap-x-3 min-w-0">
-        <img
-          loading="lazy"
-          src={currentSong?.cover_url || '/default-cover.png'}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-md object-cover shrink-0 shadow-md"
-          alt={currentSong?.name || 'Track cover'}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = '/default-cover.png';
-          }}
-        />
-        <div className="flex flex-col gap-y-0.5 min-w-0 pr-1">
-          <span className="font-bold text-xs sm:text-sm text-white truncate hover:underline">
-            {currentSong?.name}
-          </span>
-          <span className="text-[#a7a7a7] text-[11px] sm:text-xs truncate">
-            {artistName}
-          </span>
+      {/* بخش سمت چپ */}
+      <div className="w-60 flex items-center gap-x-2 lg:gap-x-3">
+        <div>
+          <img loading="lazy" src={currentSong?.cover_url} className="w-10 lg:w-12 h-10 lg:h-12 rounded-sm object-cover" alt="" />
         </div>
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleLike();
-          }}
-          className="hidden sm:block shrink-0 ml-1"
-        >
+        <div className="flex flex-col gap-y-0.5 text-sm min-w-0 pr-2">
+          <span className="font-semibold truncate">{currentSong?.name}</span>
+          <span className="text-white/60 text-xs truncate">{artistName}</span>
+        </div>
+        <div onClick={toggleLike} className="hidden sm:block shrink-0">
           {isLiked ? (
-            <AnimatedCheckIcon />
+            <AnimatedCheckIcon/>
           ) : (
             <button
               type="button"
-              className="hover:border-white border-white/40 border-[1.5px] inline-flex p-1 rounded-full bg-transparent text-gray-400 hover:text-white transition"
-            >
-              <PlusIcon className="w-3.5 h-3.5" />
+              className="hover:border-gray-400 border-white border-[1px] sm:border-[2px] inline-flex p-0.5 rounded-full bg-transparent text-gray-400 hover:text-white">
+              <PlusIcon className="w-6 sm:w-4 h-6 sm:h-4"/>
             </button>
           )}
         </div>
       </div>
 
-      {/* کنترل‌های پلیر */}
-      <div className="flex items-center flex-col justify-center">
-        <div className="flex items-center gap-x-4 sm:gap-x-6">
+      {/* بخش وسط */}
+      <div className="flex items-center flex-col">
+        <div className="flex items-center gap-x-3.5 lg:gap-x-5 child:hidden md:child:block">
           <BackWardBtn
             onClick={(e) => {
               e.stopPropagation();
               playPrevious();
             }}
-            className="fill-[#999999] hover:fill-white transition-colors w-5 h-5 sm:w-6 sm:h-6 cursor-pointer hidden sm:block"
+            className="fill-[#999999] hover:fill-white transition-colors w-7 h-7 cursor-pointer"
           />
-          <button
-            type="button"
+          <div
             onClick={(e) => {
               e.stopPropagation();
               togglePlay();
             }}
-            className="p-2 sm:p-2.5 rounded-full bg-white hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-lg text-black"
+            className="p-1 rounded-full bg-white hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-md"
           >
             {isPlaying ? (
-              <PauseBtn className="fill-black w-5 h-5 sm:w-6 sm:h-6" />
+              <PauseBtn className="fill-black w-7 h-7" />
             ) : (
-              <PlayBtn className="fill-black w-5 h-5 sm:w-6 sm:h-6 translate-x-0.5" />
+              <PlayBtn className="fill-black w-7 h-7" />
             )}
-          </button>
+          </div>
           <ForwardBtn
             onClick={(e) => {
               e.stopPropagation();
               playNext();
             }}
-            className="fill-[#999999] hover:fill-white transition-colors w-5 h-5 sm:w-6 sm:h-6 cursor-pointer hidden sm:block"
+            className="fill-[#999999] hover:fill-white transition-colors w-7 h-7 cursor-pointer"
           />
         </div>
-        <div className="hidden md:block w-full">
+        <div className="hidden md:block">
           <AudioPlay />
         </div>
       </div>
 
-      {/* بخش اسلایدر صدا */}
-      <div className="hidden sm:flex items-center justify-end w-48 sm:w-60">
-        <RangeSlider />
-      </div>
+      {/* بخش سمت راست */}
+      <RangeSlider />
     </div>
   );
 }

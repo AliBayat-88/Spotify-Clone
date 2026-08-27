@@ -16,7 +16,7 @@ function AuthRequiredModal({ isOpen, onClose }) {
         className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
       />
 
-      <div className="relative w-full max-w-sm bg-[#181818] border border-[#282828] rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.8)] overflow-hidden transform transition-all select-none font-sans">
+      <div className="relative w-full max-w-sm bg-[#181818] border border-[#282828] rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.8)] overflow-hidden transform transition-all select-none ">
         <div className="absolute -top-16 -left-16 w-32 h-32 bg-[#1ed760]/10 blur-[50px] rounded-full pointer-events-none" />
 
         <button
