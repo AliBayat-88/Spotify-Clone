@@ -1,4 +1,3 @@
-// src/components/BrowseAlbum.jsx
 import React, { useState } from 'react';
 
 const COLOR_PALETTES = [
@@ -24,13 +23,13 @@ function BrowseAlbum({ colorIndex = 0, img, name, onClick }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-white/10 pointer-events-none" />
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
 
-      <h3 className="relative font-extrabold text-lg sm:text-2xl text-white tracking-tight leading-snug drop-shadow-md z-10 line-clamp-2 max-w-[70%]">
+      <h3 className="relative font-extrabold text-xl sm:text-2xl text-white tracking-tight leading-snug drop-shadow-md z-10 line-clamp-2 max-w-[70%]">
         {name}
       </h3>
 
       <div className="absolute -right-3 -bottom-3 sm:-right-4 sm:-bottom-4 rotate-[25deg] transition-transform duration-500 ease-out group-hover:rotate-[32deg] group-hover:scale-110">
 
-        <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-xl bg-black/20 shadow-[-4px_4px_25px_rgba(0,0,0,0.6)] overflow-hidden">
+        <div className="relative w-32 h-36 sm:w-28 sm:h-32 rounded-xl bg-black/20 shadow-[-4px_4px_25px_rgba(0,0,0,0.6)] overflow-hidden">
           <img
             loading="lazy"
             src={img}

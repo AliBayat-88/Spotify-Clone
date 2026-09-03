@@ -90,7 +90,6 @@ export async function trackSongPlayApi(songId) {
   if (error) console.error('Error logging play:', error.message);
 }
 
-// 🟢 ۲. دریافت ۵ آهنگ برتر بر اساس بیشترین پخش
 export async function getPopularSongsApi() {
   const { data, error } = await supabase
     .from('songs')

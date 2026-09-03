@@ -1,6 +1,6 @@
 function TickIcon({size , iconSize}) {
   return (
-    <div className={`flex items-center justify-center bg-[#1ed760] rounded-full text-black shadow-lg shadow-[#1ed760]/20 animate-pop ${size} shrink-0`}>
+    <div className={`flex items-center justify-center bg-spotify-green rounded-full text-black shadow-lg shadow-spotify-green/20 animate-pop ${size} shrink-0`}>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="3.5" stroke="currentColor" className={iconSize}>
         <path
           strokeLinecap="round"

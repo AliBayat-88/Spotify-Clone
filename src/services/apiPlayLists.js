@@ -37,10 +37,9 @@ export async function getPublicPlaylistApi(publicPlaylistId) {
     throw new Error("Could not load public playlist");
   }
 
-  // 🟢 مپ کردن داده‌ها برای اینکه خروجی تمیز و یک‌دست به UI بدهی
   const formattedSongs = data?.section_items
     ?.map((item) => item.songs)
-    .filter(Boolean); // حذف مقادیر null احتمالی
+    .filter(Boolean);
 
   return {
     ...data,
@@ -145,9 +144,7 @@ export async function deletePlaylistApi(id) {
 export async function updatePlaylistApi(id , obj , imageFile) {
   let coverUrl = obj.cover_url;
 
-  // 1️⃣ اگر کاربر عکس جدیدی انتخاب کرده بود، ابتدا آن را آپلود می‌کنیم
   if (imageFile) {
-    // ایجاد یک نام یکتا برای فایل تا روی عکس‌های قبلی بازنویسی نشود
     const fileName = `${id}-${Date.now()}-${imageFile.name}`;
 
     const {  error: storageError } = await supabase
@@ -160,7 +157,6 @@ export async function updatePlaylistApi(id , obj , imageFile) {
 
     if (storageError) throw new Error(`Storage Error: ${storageError.message}`);
 
-    // دریافت URL عمومی فایل آپلود شده
     const { data: { publicUrl } } = supabase
       .storage
       .from('playlists')

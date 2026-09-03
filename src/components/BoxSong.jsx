@@ -69,12 +69,12 @@ function BoxSong({ info, isArtist, onClick, isPlaylist }) {
           }}
         />
 
-        {!isArtist && (
+        {!isArtist && !isPlaylist && (
           <button
             type="button"
             onClick={handlePlayClick}
             aria-label={isThisPlaying ? 'Pause' : 'Play'}
-            className={`absolute bottom-2 right-2 sm:bottom-3 sm:right-3 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#1ed760] text-black flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.6)] active:scale-95 sm:hover:scale-110 sm:hover:bg-[#1fdf64] transition-all duration-300 ease-out cursor-pointer z-10 ${
+            className={`absolute bottom-2 right-2 sm:bottom-3 sm:right-3 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-spotify-green text-black flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.6)] active:scale-95 sm:hover:scale-110 sm:hover:bg-spotify-green-hover transition-all duration-300 ease-out cursor-pointer z-10 ${
               isThisPlaying
                 ? 'opacity-100 translate-y-0 shadow-[0_0_16px_rgba(30,215,96,0.5)]'
                 : 'opacity-90 sm:opacity-0 sm:translate-y-2 sm:group-hover:opacity-100 sm:group-hover:translate-y-0'
@@ -92,18 +92,18 @@ function BoxSong({ info, isArtist, onClick, isPlaylist }) {
       <div className="relative flex flex-col flex-grow pt-2.5 sm:pt-3.5 min-w-0 z-10">
         <h5
           className={`text-xs sm:text-base font-bold truncate leading-snug transition-colors duration-200 ${
-            isCurrentTrack && !isArtist ? 'text-[#1ed760]' : 'text-white'
+            isCurrentTrack && !isArtist ? 'text-spotify-green' : 'text-white'
           }`}
         >
           {displayName}
         </h5>
 
         {isPlaylist ? (
-          <p className="text-[#a7a7a7] text-[11px] sm:text-xs mt-0.5 sm:mt-1 line-clamp-2 leading-tight sm:leading-relaxed">
+          <p className="text-spotify-muted text-[11px] sm:text-xs mt-0.5 sm:mt-1 line-clamp-2 leading-tight sm:leading-relaxed">
             {info.description || 'Public Playlist'}
           </p>
         ) : (
-          <p className="text-[#a7a7a7] text-[11px] sm:text-sm truncate mt-0.5 sm:mt-1 font-medium">
+          <p className="text-spotify-muted text-[11px] sm:text-sm truncate mt-0.5 sm:mt-1 font-medium">
             {artistName}
           </p>
         )}

@@ -10,7 +10,7 @@ function TableActions({ onEdit, onDelete , editTitle = "Edit", deleteTitle = "De
         <button
           type="button"
           onClick={onEdit}
-          className="p-2 text-gray-400 hover:text-[#1ed760] active:scale-90 rounded-full hover:bg-white/5 transition-all duration-150 shrink-0 cursor-pointer"
+          className="p-2 text-gray-400 hover:text-spotify-green active:scale-90 rounded-full hover:bg-white/5 transition-all duration-150 shrink-0 cursor-pointer"
           title={editTitle}
         >
           <svg

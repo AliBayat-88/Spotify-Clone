@@ -4,14 +4,18 @@ import { useOutsideClick } from '../hooks/useOutsideClick.js';
 import Modal from './Modal.jsx';
 import { useLogOut } from '../features/useLogOut.js';
 import { useUserInfo } from '../features/useUserInfo.js';
+import { useNavigate } from 'react-router-dom'
 
 function Profile() {
   const { avatarUrl } = useUserInfo();
+  const navigate = useNavigate();
 
   const [isOpen, setOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { logOut, isLoginOut } = useLogOut(() => {
     setIsLogoutModalOpen(false);
+    navigate('/', { replace: true })
+
   });
   const profileRef = useRef(null);
 
@@ -27,7 +31,7 @@ function Profile() {
         aria-label="User Profile"
       >
         <div
-          className={`absolute inset-0 rounded-full bg-gradient-to-tr from-[#1ed760]/40 via-emerald-400/20 to-transparent blur-md transition-opacity duration-300 ${
+          className={`absolute inset-0 rounded-full bg-gradient-to-tr from-spotify-green/40 via-emerald-400/20 to-transparent blur-md transition-opacity duration-300 ${
             isOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
           }`}
         />
@@ -35,14 +39,14 @@ function Profile() {
         <div
           className={`relative p-[3px] rounded-full transition-all duration-300 ${
             isOpen
-              ? 'bg-gradient-to-r from-[#1ed760] via-white/80 to-[#1ed760] shadow-[0_0_15px_rgba(30,215,96,0.35)]'
-              : 'bg-[#282828] group-hover:bg-gradient-to-tr group-hover:from-[#1ed760] group-hover:to-white/40'
+              ? 'bg-gradient-to-r from-spotify-green via-white/80 to-spotify-green shadow-[0_0_15px_rgba(30,215,96,0.35)]'
+              : 'bg-[#282828] group-hover:bg-gradient-to-tr group-hover:from-spotify-green group-hover:to-white/40'
           }`}
         >
           {/* ۳. عکس پروفایل با بردر مشکی داخلی جهت تفکیک لایه‌ها */}
           <img
             loading="lazy"
-            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover bg-[#121212] border-2 border-black/80 transition-all duration-300"
+            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover bg-spotify-base border-2 border-black/80 transition-all duration-300"
             src={avatarUrl || "/profileImg.png"}
             alt="Profile"
             onError={(e) => {
@@ -52,7 +56,7 @@ function Profile() {
           />
         </div>
 
-        <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#1ed760] border-2 border-[#121212] rounded-full shadow-sm flex items-center justify-center">
+        <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-spotify-green border-2 border-spotify-base rounded-full shadow-sm flex items-center justify-center">
           <span className="w-1 h-1 bg-white rounded-full opacity-80" />
         </span>
       </button>

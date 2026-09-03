@@ -104,8 +104,8 @@ function DashboardSongs() {
       </div>
 
       {/* فرم افزودن آهنگ */}
-      <div className="w-full bg-[#181818] border border-[#262626] rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#1ed760]/10 blur-[80px] rounded-full pointer-events-none" />
+      <div className="w-full bg-spotify-surface border border-spotify-card rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-48 h-48 bg-spotify-green/10 blur-[80px] rounded-full pointer-events-none" />
 
         <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5 relative">
 
@@ -122,7 +122,7 @@ function DashboardSongs() {
               className={`w-full bg-black text-white px-4 py-3.5 rounded-xl border outline-none placeholder:text-gray-600 transition-all text-sm font-medium ${
                 errors.name
                   ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                  : "border-[#262626] focus:border-white focus:ring-1 focus:ring-white"
+                  : "border-spotify-card focus:border-white focus:ring-1 focus:ring-white"
               }`}
             />
             {errors.name && (
@@ -160,7 +160,7 @@ function DashboardSongs() {
                   Duration (Auto-detected)
                 </label>
                 {autoDuration > 0 && (
-                  <span className="text-xs text-[#1ed760] font-bold">
+                  <span className="text-xs text-spotify-green font-bold">
                     {formatDuration(autoDuration)} ({autoDuration}s)
                   </span>
                 )}
@@ -177,7 +177,7 @@ function DashboardSongs() {
                       ? `${formatDuration(autoDuration)} (${autoDuration} seconds)`
                       : "Upload an audio file to auto-detect"
                 }
-                className="w-full bg-black/60 text-gray-300 px-4 py-3.5 rounded-xl border border-[#262626] outline-none text-sm font-medium cursor-not-allowed"
+                className="w-full bg-black/60 text-gray-300 px-4 py-3.5 rounded-xl border border-spotify-card outline-none text-sm font-medium cursor-not-allowed"
               />
 
               {/* اینپوت مخفی برای ولیدیشن مدت زمان در React Hook Form */}
@@ -202,7 +202,7 @@ function DashboardSongs() {
             {/* Cover Uploader */}
             <div>
               <label className={`group cursor-pointer flex flex-col items-center justify-center min-h-36 rounded-xl border border-dashed transition-all p-4 ${
-                errors.cover ? 'border-red-500 bg-red-500/5' : 'border-[#383838] bg-black hover:border-[#1ed760] hover:bg-[#1ed760]/5'
+                errors.cover ? 'border-red-500 bg-red-500/5' : 'border-[#383838] bg-black hover:border-spotify-green hover:bg-spotify-green/5'
               }`}>
                 <input
                   type="file"
@@ -214,7 +214,7 @@ function DashboardSongs() {
                   type="hidden"
                   {...register("cover", { required: "Cover image is required" })}
                 />
-                <div className="w-10 h-10 rounded-full bg-[#222] group-hover:bg-[#1ed760] group-hover:text-black text-gray-400 flex items-center justify-center transition-all mb-2">
+                <div className="w-10 h-10 rounded-full bg-[#222] group-hover:bg-spotify-green group-hover:text-black text-gray-400 flex items-center justify-center transition-all mb-2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5V7.75A2.75 2.75 0 015.75 5h12.5A2.75 2.75 0 0121 7.75v8.5A2.75 2.75 0 0118.25 19H5.75A2.75 2.75 0 013 16.5Z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="m3 15 4.5-4.5 3.5 3.5 2.5-2.5L21 18" />
@@ -235,7 +235,7 @@ function DashboardSongs() {
             {/* Audio Uploader */}
             <div>
               <label className={`group cursor-pointer flex flex-col items-center justify-center min-h-36 rounded-xl border border-dashed transition-all p-4 ${
-                errors.audio ? 'border-red-500 bg-red-500/5' : 'border-[#383838] bg-black hover:border-[#1ed760] hover:bg-[#1ed760]/5'
+                errors.audio ? 'border-red-500 bg-red-500/5' : 'border-[#383838] bg-black hover:border-spotify-green hover:bg-spotify-green/5'
               }`}>
                 <input
                   type="file"
@@ -247,7 +247,7 @@ function DashboardSongs() {
                   type="hidden"
                   {...register("audio", { required: "Audio file is required" })}
                 />
-                <div className="w-10 h-10 rounded-full bg-[#222] group-hover:bg-[#1ed760] group-hover:text-black text-gray-400 flex items-center justify-center transition-all mb-2">
+                <div className="w-10 h-10 rounded-full bg-[#222] group-hover:bg-spotify-green group-hover:text-black text-gray-400 flex items-center justify-center transition-all mb-2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 18V5l10-2v13" />
                     <circle cx="6" cy="18" r="3" />
@@ -274,7 +274,7 @@ function DashboardSongs() {
               {...register("lyrics")}
               placeholder="Enter song lyrics..."
               rows={4}
-              className="w-full bg-black text-white px-4 py-3 rounded-xl border border-[#262626] outline-none resize-none placeholder:text-gray-600 focus:border-white focus:ring-1 focus:ring-white transition-all text-sm leading-relaxed"
+              className="w-full bg-black text-white px-4 py-3 rounded-xl border border-spotify-card outline-none resize-none placeholder:text-gray-600 focus:border-white focus:ring-1 focus:ring-white transition-all text-sm leading-relaxed"
             />
           </div>
 
@@ -295,7 +295,7 @@ function DashboardSongs() {
               type="submit"
               disabled={isSubmitting || isReadingAudio || isInserting}
               title={isInserting ? "Adding..." : "Add Song"}
-              className="bg-[#1ed760] text-black font-bold px-7 py-2.5 text-sm cursor-pointer disabled:opacity-50"
+              className="bg-spotify-green text-black font-bold px-7 py-2.5 text-sm cursor-pointer disabled:opacity-50"
             />
           </div>
         </form>

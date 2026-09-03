@@ -24,7 +24,7 @@ function ContentOverview() {
   ]
 
   return (
-    <div className="bg-[#181818] border border-[#262626] rounded-2xl p-5 sm:p-6">
+    <div className="bg-spotify-surface border border-spotify-card rounded-2xl p-5 sm:p-6">
 
       <div className="mb-6">
 
@@ -63,7 +63,7 @@ function ContentOverview() {
               <div
                 className="
                   h-full
-                  bg-[#1ed760]
+                  bg-spotify-green
                   rounded-full
                   transition-all
                 "

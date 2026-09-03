@@ -45,9 +45,8 @@ function PasswordStepForm() {
             Password
           </label>
           <input
-            {...register("password")}
+            {...register("password", { required: true })}
             id="inputpass"
-            value={createPassword}
             type="password"
             autoComplete="new-password"
             className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-[#282828] focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium"

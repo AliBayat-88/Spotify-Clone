@@ -24,7 +24,6 @@ function PlayListContainer() {
   const [isHeaderMenuOpen, setHeaderMenuOpen] = useState(false);
   const headerMenuRef = useRef(null);
 
-  // استیت‌های فیلتر و سورت
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('recent');
 
@@ -48,7 +47,6 @@ function PlayListContainer() {
     added_at: item.created_at,
   })) || [];
 
-  // منطق فیلتر و مرتب‌سازی
   const processedSongs = useMemo(() => {
     if (!isLikedSongsPage) return rawSongs;
 
@@ -102,33 +100,33 @@ function PlayListContainer() {
   }
 
   return (
-    <div className="text-white w-full child:p-4 sm:child:pb-16 lg:child:pb-24 relative select-none">
+    <div className="w-full text-white bg-[#121212] rounded-xl overflow-hidden select-none relative min-h-full pb-20">
       <TrackHero
-        type="playlist"
+        type="Playlist"
         songName={pageTitle || 'Playlist'}
         singer={`Ali bayat • ${rawSongs?.length} songs`}
         songPoster={pagePoster}
         songs={rawSongs}
       />
 
-      <div className="bg-[#171717]/70 min-h-[60vh] backdrop-blur-xl border-t border-white/10 rounded-t-2xl absolute sm:top-[230px] lg:top-[275px] w-full">
-        {/* نوار اکشن‌ها */}
+      <div className="relative px-4 sm:px-8 py-6 flex flex-col gap-y-6 z-10">
         <div className="flex items-center justify-between gap-1 sm:gap-4">
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-center gap-x-3">
             <button
+              type="button"
               onClick={handlePlay}
-              className="p-2.5 sm:p-4 rounded-full bg-[#1ed760] hover:bg-[#1fdf64] hover:scale-105 active:scale-95 transition-all inline-flex justify-center items-center cursor-pointer shadow-[0_8px_20px_rgba(30,215,96,0.3)]"
+              className="p-3 sm:p-4 rounded-full bg-spotify-green hover:bg-spotify-green-hover hover:scale-105 active:scale-95 transition-all inline-flex justify-center items-center cursor-pointer shadow-[0_8px_20px_rgba(30,215,96,0.3)] text-black"
             >
               {isCurrentPlaylistPlaying && isPlaying ? (
-                <PauseBtn className="w-7 h-7 text-black" color="#000000" />
+                <PauseBtn className="w-6 h-6 text-black" color="#000000" />
               ) : (
-                <PlayButton className="w-7 h-7 text-black" color="#000000" />
+                <PlayButton className="w-6 h-6 text-black translate-x-0.5" color="#000000" />
               )}
             </button>
 
             {isLikedSongsPage && (
-              <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-purple-500/10 to-[#1ed760]/10 border border-white/10 px-3.5 py-1.5 rounded-full">
-                <span className="w-2 h-2 rounded-full bg-[#1ed760] animate-pulse" />
+              <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-purple-500/10 to-spotify-green/10 border border-white/10 px-3.5 py-1.5 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-spotify-green animate-pulse" />
                 <span className="text-xs font-bold tracking-wide text-gray-200">
                   {rawSongs.length} Liked Tracks
                 </span>
@@ -138,8 +136,9 @@ function PlayListContainer() {
             {!isLikedSongsPage && (
               <div ref={headerMenuRef} className="relative">
                 <button
+                  type="button"
                   onClick={() => setHeaderMenuOpen(!isHeaderMenuOpen)}
-                  className="text-gray-400 hover:text-white text-3xl font-bold tracking-widest bg-transparent border-none outline-none cursor-pointer p-2 transition-colors"
+                  className="text-gray-400 hover:text-white text-3xl font-bold tracking-widest bg-transparent border-none outline-none cursor-pointer p-2 transition-colors leading-none"
                 >
                   ...
                 </button>
@@ -158,7 +157,6 @@ function PlayListContainer() {
             )}
           </div>
 
-          {/* 🟢 بخش فیلترها (فقط برای Liked Songs) */}
           {isLikedSongsPage && rawSongs.length > 0 && (
             <PlaylistFilters
               searchQuery={searchQuery}
@@ -169,31 +167,28 @@ function PlayListContainer() {
           )}
         </div>
 
-        {/* هدر جدول دسکتاپ */}
-        <div className="hidden lg:grid grid-cols-[40px_minmax(0,4fr)_2fr_2fr_120px] items-center gap-x-4 px-4 mt-8 pb-2 border-b border-white/10 text-sm text-gray-400 font-medium">
+        <div className="hidden lg:grid grid-cols-[40px_minmax(0,4fr)_2fr_2fr_120px] items-center gap-x-4 px-3 pb-2 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-[#a7a7a7]">
           <span className="text-center">#</span>
           <span>Title</span>
           <span>Album</span>
           <span>Date added</span>
           <div className="flex justify-end">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
           </div>
         </div>
 
-        {/* هدر جدول موبایل */}
-        <div className="flex mt-4 lg:hidden items-center justify-between px-3 pb-1.5 mx-2 border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-gray-400">
+        <div className="flex lg:hidden items-center justify-between px-3 pb-2 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-[#a7a7a7]">
           <span>Title</span>
           <div className="flex items-center gap-x-2 pr-1">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
           </div>
         </div>
 
-        {/* لیست آهنگ‌ها */}
-        <div className="mt-4 px-2 mb-20">
+        <div className="flex flex-col gap-y-1">
           {processedSongs.length > 0 ? (
             processedSongs.map((song, index) => (
               <SongRow
@@ -210,7 +205,7 @@ function PlayListContainer() {
               />
             ))
           ) : (
-            <EmptyPlaylist />
+            <EmptyPlaylist type="user" />
           )}
         </div>
       </div>

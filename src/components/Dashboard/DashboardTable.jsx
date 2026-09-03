@@ -4,7 +4,7 @@ function DashboardTable({
   title = 'Items',
   count,
   isLoading,
-  columns = [], // مثال: ['Song', 'Artist', 'Duration', { label: 'Actions', align: 'right' }]
+  columns = [],
   data = [],
   renderRow,
   emptyError= "there is no items.",
@@ -14,7 +14,7 @@ function DashboardTable({
   const totalCount = count !== undefined ? count : data.length;
 
   return (
-    <div className="mt-10 bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden shadow-xl">
+    <div className="mt-10 bg-spotify-surface border border-spotify-card rounded-2xl overflow-hidden shadow-xl">
       {/* هدر جدول */}
       <div className="p-5 sm:p-6 border-b border-white/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
@@ -22,7 +22,7 @@ function DashboardTable({
           <p className="text-xs text-gray-400 mt-0.5">Manage {title.toLowerCase()} in your library</p>
         </div>
 
-        <span className="text-xs font-bold text-gray-400 bg-black border border-[#262626] px-3.5 py-1.5 rounded-full self-start sm:self-auto">
+        <span className="text-xs font-bold text-gray-400 bg-black border border-spotify-card px-3.5 py-1.5 rounded-full self-start sm:self-auto">
           {totalCount} {title}
         </span>
       </div>

@@ -68,8 +68,8 @@ function StatCard({
   return (
     <div
       className="
-        bg-[#181818]
-        border border-[#262626]
+        bg-spotify-surface
+        border border-spotify-card
         rounded-2xl
         p-4 sm:p-5
         hover:border-[#353535]
@@ -93,8 +93,8 @@ function StatCard({
           className="
             w-10 h-10
             rounded-xl
-            bg-[#1ed760]/10
-            text-[#1ed760]
+            bg-spotify-green/10
+            text-spotify-green
             flex items-center justify-center
           "
         >

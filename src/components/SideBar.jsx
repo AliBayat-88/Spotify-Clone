@@ -46,7 +46,7 @@ function SideBar({ onOpenModal }) {
         <div className="flex items-center gap-x-1 shrink-0">
           <button
             onClick={() => setIsCollapsed((prev) => !prev)}
-            className={`${!isCollapsed && "invisible"} group-hover:visible transition-opacity duration-200 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-[#262626] cursor-pointer bg-transparent border-none outline-none flex items-center justify-center`}
+            className={`${!isCollapsed && "invisible"} group-hover:visible transition-opacity duration-200 p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-spotify-card cursor-pointer bg-transparent border-none outline-none flex items-center justify-center`}
             title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           >
             <svg
@@ -81,7 +81,7 @@ function SideBar({ onOpenModal }) {
 
       <div
         onClick={() => navigate("/playList/likedSongs")}
-        className={`p-2 hover:bg-[#262626] transition-colors  rounded-xl flex items-center cursor-pointer w-full mb-0.5 ${
+        className={`p-2 hover:bg-spotify-card transition-colors  rounded-xl flex items-center cursor-pointer w-full mb-0.5 ${
           isCollapsed ? 'justify-center' : 'justify-between'
         }`}
         title={isCollapsed ? "Liked Songs" : ""}
@@ -133,7 +133,7 @@ function SideBar({ onOpenModal }) {
                   isCollapsed={isCollapsed}
                   item={item}
                   onUnsavePublic={unsavePublicPlaylist}
-                  isUnsaving={isUnsaving} // 🟢 پاس دادن لودینگ حذف
+                  isUnsaving={isUnsaving}
                   user={user}
                 />
               ))}

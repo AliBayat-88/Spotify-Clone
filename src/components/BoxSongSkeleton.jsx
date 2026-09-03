@@ -2,7 +2,7 @@ import React from 'react';
 
 function BoxSongSkeleton({ isArtist }) {
   return (
-    <div className="p-3 rounded-xl bg-[#181818]/40 w-full flex flex-col h-full animate-pulse">
+    <div className="p-3 rounded-xl bg-spotify-surface/40 w-full flex flex-col h-full animate-pulse">
 
       <div className={`w-full aspect-square bg-[#282828] shrink-0 ${isArtist ? "rounded-full" : "rounded-lg"}`} />
 

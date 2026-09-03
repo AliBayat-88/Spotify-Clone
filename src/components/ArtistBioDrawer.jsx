@@ -15,7 +15,7 @@ function ArtistBioDrawer({ artist, isOpen, onClose }) {
       />
 
       <aside
-        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[#121212] border-l border-white/10 z-50 p-6 overflow-y-auto shadow-2xl transition-transform duration-300 ease-in-out flex flex-col justify-between ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-spotify-base border-l border-white/10 z-50 p-6 overflow-y-auto shadow-2xl transition-transform duration-300 ease-in-out flex flex-col justify-between ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

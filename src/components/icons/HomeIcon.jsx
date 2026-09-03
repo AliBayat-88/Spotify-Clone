@@ -4,19 +4,18 @@ function HomeButton() {
   return (
     <NavLink
       to="/"
-      end // 👈 حیاتی: برای اینکه فقط دقیقاً در آدرس "/" فعال باشد نه در همه زیرمسیرها
+      end
       className={({ isActive }) =>
         `p-2.5 sm:p-3 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer ${
           isActive
-            ? 'bg-[#262626] text-white hover:scale-105'
-            : 'bg-[#181818] text-gray-400 hover:text-white hover:bg-[#222222] hover:scale-105'
+            ? 'bg-spotify-card text-white hover:scale-105'
+            : 'bg-spotify-surface text-gray-400 hover:text-white hover:bg-[#222222] hover:scale-105'
         }`
       }
       aria-label="Home"
     >
       {({ isActive }) =>
         isActive ? (
-          /* 🟢 آیکون توپُر (Solid / Active) */
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

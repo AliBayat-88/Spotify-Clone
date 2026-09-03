@@ -1,4 +1,3 @@
-// src/components/TrackContainer.jsx
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSong } from '../features/useSong.js';
@@ -23,7 +22,7 @@ function TrackContainer() {
 
   if (isLoading || isLoadingArtistSongs) {
     return (
-      <div className="w-full py-32 flex justify-center items-center">
+      <div className="w-full min-h-[90vh] flex justify-center items-center">
         <LoadingSpinner />
       </div>
     );
@@ -35,16 +34,16 @@ function TrackContainer() {
     return exists ? songsByArtist : [song, ...songsByArtist];
   })();
 
-  const displayedTracks = !isExpanded
+  const displayedTracks = isExpanded
     ? songsByArtist
-    : songsByArtist?.slice(0, 3);
+    : songsByArtist?.slice(0, 5);
 
   const moreSongs = songsByArtist?.filter(
     (artistSong) => Number(artistSong.id) !== Number(song?.id)
   );
 
   return (
-    <div className="w-full text-white bg-[#121212] rounded-xl overflow-hidden">
+    <div className="w-full text-white bg-spotify-base rounded-xl overflow-hidden select-none">
       <TrackHero
         songName={song?.name}
         songPoster={song?.cover_url}
@@ -55,8 +54,7 @@ function TrackContainer() {
         type="Song"
       />
 
-      <div className="relative bg-gradient-to-b from-[#161616] via-[#131313] to-[#121212] px-4 sm:px-8 py-6 flex flex-col gap-y-8 border-t border-white/[0.08] shadow-[0_-16px_36px_rgba(0,0,0,0.6)] z-20">
-
+      <div className="relative px-4 sm:px-8 py-6 flex flex-col gap-y-8 z-10">
         <TrackActions queue={trackQueue} audioUrl={song?.audio_url} song={song} />
 
         {song?.lyrics && <LyricsSection lyrics={song?.lyrics} />}
@@ -70,7 +68,7 @@ function TrackContainer() {
 
         <div className="flex flex-col gap-y-3">
           <div>
-            <span className="text-xs font-bold text-[#b3b3b3] uppercase tracking-wider">
+            <span className="text-xs font-bold text-spotify-subtext uppercase tracking-wider">
               Popular Tracks by
             </span>
             <h3 className="text-xl sm:text-2xl font-black text-white mt-1">
@@ -90,7 +88,7 @@ function TrackContainer() {
             ))}
           </div>
 
-          {songsByArtist?.length > 3 && (
+          {songsByArtist?.length > 5 && (
             <div className="pt-2 flex justify-start">
               <SeeMore
                 isExpanded={isExpanded}

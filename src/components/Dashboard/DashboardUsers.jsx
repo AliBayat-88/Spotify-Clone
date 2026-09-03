@@ -51,7 +51,7 @@ function DashboardUsers() {
 
       {/* ۱. کارت‌های آماری سریع */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-[#181818] border border-[#262626] rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div className="bg-spotify-surface border border-spotify-card rounded-2xl p-5 shadow-lg relative overflow-hidden">
           <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Accounts</span>
           <p className="text-3xl font-black text-white mt-2">{totalUsersCount}</p>
           <div className="absolute right-4 top-5 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400">
@@ -61,17 +61,17 @@ function DashboardUsers() {
           </div>
         </div>
 
-        <div className="bg-[#181818] border border-[#262626] rounded-2xl p-5 shadow-lg relative overflow-hidden">
-          <span className="text-xs font-bold text-[#1ed760] uppercase tracking-wider">Platform Admins</span>
+        <div className="bg-spotify-surface border border-spotify-card rounded-2xl p-5 shadow-lg relative overflow-hidden">
+          <span className="text-xs font-bold text-spotify-green uppercase tracking-wider">Platform Admins</span>
           <p className="text-3xl font-black text-white mt-2">{adminCount}</p>
-          <div className="absolute right-4 top-5 w-10 h-10 rounded-full bg-[#1ed760]/10 text-[#1ed760] flex items-center justify-center">
+          <div className="absolute right-4 top-5 w-10 h-10 rounded-full bg-spotify-green/10 text-spotify-green flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
             </svg>
           </div>
         </div>
 
-        <div className="bg-[#181818] border border-[#262626] rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div className="bg-spotify-surface border border-spotify-card rounded-2xl p-5 shadow-lg relative overflow-hidden">
           <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Standard Listeners</span>
           <p className="text-3xl font-black text-white mt-2">{regularCount}</p>
           <div className="absolute right-4 top-5 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400">
@@ -85,7 +85,7 @@ function DashboardUsers() {
       {/* ۲. تولبار فیلتر و جستجو */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5">
         {/* تب‌های فیلتر نقش */}
-        <div className="flex items-center bg-[#181818] border border-[#262626] p-1 rounded-xl self-start">
+        <div className="flex items-center bg-spotify-surface border border-spotify-card p-1 rounded-xl self-start">
           {[
             { id: 'all', label: 'All' },
             { id: 'admin', label: 'Admins' },
@@ -123,7 +123,7 @@ function DashboardUsers() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search username or ID..."
-            className="w-full bg-[#181818] text-white pl-10 pr-4 py-2 rounded-xl border border-[#262626] focus:border-white focus:ring-1 focus:ring-white outline-none text-xs font-medium placeholder-gray-600 transition-all"
+            className="w-full bg-spotify-surface text-white pl-10 pr-4 py-2 rounded-xl border border-spotify-card focus:border-white focus:ring-1 focus:ring-white outline-none text-xs font-medium placeholder-gray-600 transition-all"
           />
         </div>
       </div>
@@ -155,7 +155,7 @@ function DashboardUsers() {
                       }}
                     />
                     {isAdmin && (
-                      <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-[#1ed760] border-2 border-[#181818] rounded-full shadow" />
+                      <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-spotify-green border-2 border-spotify-surface rounded-full shadow" />
                     )}
                   </div>
                   <div className="min-w-0">
@@ -173,11 +173,11 @@ function DashboardUsers() {
                 <span
                   className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
                     isAdmin
-                      ? 'bg-[#1ed760]/10 text-[#1ed760] border-[#1ed760]/30 shadow-[0_0_10px_rgba(30,215,96,0.15)]'
+                      ? 'bg-spotify-green/10 text-spotify-green border-spotify-green/30 shadow-[0_0_10px_rgba(30,215,96,0.15)]'
                       : 'bg-white/5 text-gray-300 border-white/10'
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${isAdmin ? 'bg-[#1ed760]' : 'bg-gray-400'}`} />
+                  <span className={`w-1.5 h-1.5 rounded-full ${isAdmin ? 'bg-spotify-green' : 'bg-gray-400'}`} />
                   {isAdmin ? 'ADMINISTRATOR' : 'USER'}
                 </span>
               </td>

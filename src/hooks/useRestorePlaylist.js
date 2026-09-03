@@ -11,7 +11,6 @@ export function useRestorePlaylist() {
     onSuccess: () => {
       showToast("Playlist restored successfully!", "", "success");
 
-      // اینولید کردن کش لیست حذف‌شده‌ها و پلی‌لیست‌های اصلی کاربر
       queryClient.invalidateQueries({ queryKey: ["deleted-playlists"] });
       queryClient.invalidateQueries({ queryKey: ["playlists"] });
     },

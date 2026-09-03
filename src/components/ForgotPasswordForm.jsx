@@ -13,8 +13,8 @@ function ForgotPasswordForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] flex items-center justify-center p-6 select-none">
-      <div className="w-full max-w-lg bg-[#181818] border border-[#282828] rounded-2xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+    <div className="min-h-screen bg-spotify-base flex items-center justify-center p-6 select-none">
+      <div className="w-full max-w-lg bg-spotify-surface border border-[#282828] rounded-2xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
         <BackBtn />
 
         <h1 className="text-white text-2xl font-extrabold tracking-tight mb-2">
@@ -54,7 +54,7 @@ function ForgotPasswordForm() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full mt-2 bg-[#1ed760] text-black font-bold py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full mt-2 bg-spotify-green text-black font-bold py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2 cursor-pointer"
           >
             {isPending ? (
               <ButtonLoader/>

@@ -1,4 +1,3 @@
-// components/EditSectionModal.jsx
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import ModalLayout from './ModalLayout.jsx';
@@ -30,6 +29,7 @@ function EditSectionModal({ isOpen, onClose, section }) {
     formState: { errors },
   } = useForm();
 
+
   const { updateSection, isUpdating } = useUpdateSection(() => {
     onClose();
   });
@@ -59,7 +59,6 @@ function EditSectionModal({ isOpen, onClose, section }) {
   return (
     <ModalLayout isOpen={isOpen} onClose={onClose} title="Edit Section">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
-        {/* Title */}
         <div className="flex flex-col gap-y-1.5">
           <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">
             Section Title
@@ -83,7 +82,6 @@ function EditSectionModal({ isOpen, onClose, section }) {
           )}
         </div>
 
-        {/* Display Location */}
         <div className="flex flex-col gap-y-1.5">
           <CustomSelect
             label="Display Location"
@@ -94,7 +92,6 @@ function EditSectionModal({ isOpen, onClose, section }) {
           />
         </div>
 
-        {/* Content Type */}
         <div className="flex flex-col gap-y-1.5">
           <CustomSelect
             label="Content Type"
@@ -105,7 +102,6 @@ function EditSectionModal({ isOpen, onClose, section }) {
           />
         </div>
 
-        {/* Actions */}
         <div className="flex justify-end gap-3 pt-3 mt-2 border-t border-white/5">
           <button
             type="button"
@@ -118,7 +114,7 @@ function EditSectionModal({ isOpen, onClose, section }) {
           <button
             type="submit"
             disabled={isUpdating}
-            className="px-6 py-2.5 rounded-full bg-[#1ed760] text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full bg-spotify-green text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
           >
             {isUpdating ? <ButtonLoader /> : 'Save Changes'}
           </button>

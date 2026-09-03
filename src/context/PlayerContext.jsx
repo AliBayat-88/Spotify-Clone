@@ -192,6 +192,18 @@ function PlayerContextProvider({ children }) {
     }
   };
 
+  function resetPlayer() {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.src = '';
+    }
+    setIsPlaying(false);
+    setCurrentSong(null);
+    setQueue([]);
+    localStorage.removeItem('spotify_last_track');
+  }
+
   return (
     <PlayerContext.Provider
       value={{
@@ -215,6 +227,7 @@ function PlayerContextProvider({ children }) {
         playPrevious,
         queue,
         openAuthModal: () => setIsAuthModalOpen(true),
+        resetPlayer
       }}
     >
       {children}

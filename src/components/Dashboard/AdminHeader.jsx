@@ -47,8 +47,8 @@ function AdminHeader({ onMenuClick }) {
         {/* ۱. نشان وضعیت اتصال سیستم */}
         <div className="hidden md:flex items-center gap-2 bg-black/40 border border-white/5 px-3 py-1.5 rounded-full shadow-inner">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1ed760] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1ed760]" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-spotify-green opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-spotify-green" />
           </span>
           <span className="text-[11px] font-bold text-gray-300 tracking-wide">
             Live Database
@@ -67,7 +67,7 @@ function AdminHeader({ onMenuClick }) {
             viewBox="0 0 24 24"
             strokeWidth="2"
             stroke="currentColor"
-            className="w-3.5 h-3.5 text-[#1ed760] group-hover:scale-110 transition-transform"
+            className="w-3.5 h-3.5 text-spotify-green group-hover:scale-110 transition-transform"
           >
             <path
               strokeLinecap="round"

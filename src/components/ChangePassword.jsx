@@ -45,8 +45,8 @@ function ChangePassword() {
           <h1 className="text-2xl font-black text-white mt-5">Change Password</h1>
         </div>
 
-        <div className="bg-[#181818] border border-[#262626] rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col gap-y-5 relative overflow-hidden">
-          <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#1ed760]/10 blur-[80px] rounded-full pointer-events-none" />
+        <div className="bg-spotify-surface border border-spotify-card rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col gap-y-5 relative overflow-hidden">
+          <div className="absolute -top-24 -left-24 w-48 h-48 bg-spotify-green/10 blur-[80px] rounded-full pointer-events-none" />
 
           <p className="text-gray-400 text-sm leading-relaxed mb-2">
             To set a new password, please enter your current password first.
@@ -67,7 +67,7 @@ function ChangePassword() {
                 {...register("currentPassword", {
                   required: "Current password is required",
                 })}
-                className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-[#262626] focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium disabled:opacity-50"
+                className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-spotify-card focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium disabled:opacity-50"
               />
               {errors.currentPassword && (
                 <span className="text-xs text-red-400 font-semibold px-1">
@@ -89,7 +89,7 @@ function ChangePassword() {
                 {...register("newPassword", {
                   required: "New password is required",
                 })}
-                className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-[#262626] focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium disabled:opacity-50"
+                className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-spotify-card focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium disabled:opacity-50"
               />
             </div>
 
@@ -125,7 +125,7 @@ function ChangePassword() {
                   required: "Please confirm your password",
                   validate: (val) => val === newPassword || "Passwords do not match",
                 })}
-                className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-[#262626] focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium disabled:opacity-50"
+                className="w-full bg-black text-white px-4 py-3.5 rounded-xl outline-none border border-spotify-card focus:border-white focus:ring-1 focus:ring-white transition-all duration-200 placeholder-gray-600 text-sm font-medium disabled:opacity-50"
               />
               {errors.confirmPassword && (
                 <span className="text-xs text-red-400 font-semibold px-1">
@@ -139,7 +139,7 @@ function ChangePassword() {
               type="submit"
               disabled={!isValidPassword || isPending}
               title={isPending ? "Updating..." : "Update password"}
-              className="w-full mt-4 bg-[#1ed760] text-black font-bold py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+              className="w-full mt-4 bg-spotify-green text-black font-bold py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
             />
           </form>
         </div>

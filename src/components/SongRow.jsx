@@ -99,7 +99,7 @@ function SongRow({
 
           {isCurrentSong && !isPlaying && (
             <>
-              <span className="group-hover:hidden font-semibold text-sm text-[#1ed760]">{index}</span>
+              <span className="group-hover:hidden font-semibold text-sm text-spotify-green">{index}</span>
               <span className="hidden group-hover:flex justify-center">
                 <PlayBtn color={"#ffffff"} />
               </span>
@@ -118,7 +118,7 @@ function SongRow({
               }
             }}
             className={`truncate cursor-pointer text-sm sm:text-base font-semibold ${
-              isCurrentSong ? 'text-[#1ed760]' : 'text-white hover:underline'
+              isCurrentSong ? 'text-spotify-green' : 'text-white hover:underline'
             }`}
           >
             {song?.name}

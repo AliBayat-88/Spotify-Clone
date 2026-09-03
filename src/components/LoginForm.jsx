@@ -10,7 +10,6 @@ import { useLoginByGoogle } from '../features/useLoginByGoogle.js'
 function LoginForm() {
   const navigate = useNavigate();
 
-  // 🟢 ۱. گرفتن errors از formState برای مدیریت پیام‌های خطا
   const {
     register,
     handleSubmit,

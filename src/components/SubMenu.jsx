@@ -12,9 +12,9 @@ function SubMenu({ setSubOpen, isSubLeft, playlists, onOpenCreatePlaylist, onSel
     >
       <div
         onClick={() => onOpenCreatePlaylist()}
-        className="flex items-center gap-2.5 py-2 px-2.5 hover:bg-gray-600/40 text-xs text-[#1ed760] font-bold rounded-lg transition-colors border-b border-gray-700/40 mb-1 cursor-pointer"
+        className="flex items-center gap-2.5 py-2 px-2.5 hover:bg-gray-600/40 text-xs text-spotify-green font-bold rounded-lg transition-colors border-b border-gray-700/40 mb-1 cursor-pointer"
       >
-        <div className="border-[#1ed760] border-[1.5px] inline-flex p-0.5 rounded-full">
+        <div className="border-spotify-green border-[1.5px] inline-flex p-0.5 rounded-full">
           <PlusIcon className="w-2.5 h-2.5" />
         </div>
         Create New Playlist

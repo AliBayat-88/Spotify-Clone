@@ -16,12 +16,10 @@ function MobilePlayer() {
   const { isLiked, toggleLike } = useToggleLikeSong(currentSong);
 
 
-  // 🟢 ۱. گرفتن آی‌دی خواننده در صورت وجود
   const artistId = currentSong?.artist_id || currentSong?.artists?.id;
   const { artist, isLoading } = useArtist(artistId);
   const {isFollowed , handleFollowToggle} = useArtistFollow(artistId)
 
-  // 🟢 ۲. استخراج هوشمند اطلاعات (اول هوک -> بعد خود currentSong -> بعد مقدار پیش‌فرض)
   const artistName = artist?.name || currentSong?.artists?.name || "Unknown Artist";
   const artistBio = artist?.bio || currentSong?.artists?.bio || "No biography available for this artist.";
   const artistImage = artist?.image_url || currentSong?.artists?.image_url || currentSong?.cover_url;
@@ -35,7 +33,7 @@ function MobilePlayer() {
   return (
     <div
       className={`
-        fixed inset-0 bg-[#121212] bg-[linear-gradient(to_bottom,rgba(45,45,45,0.6)_0%,#121212_100%)] z-50 md:hidden 
+        fixed inset-0 bg-spotify-base bg-[linear-gradient(to_bottom,rgba(45,45,45,0.6)_0%,#121212_100%)] z-50 md:hidden 
         flex flex-col select-none overflow-y-auto scrollbar-none pb-8
         transform transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]
         ${isExpanded ? "translate-y-0" : "translate-y-full"}
@@ -43,9 +41,9 @@ function MobilePlayer() {
     >
       <div className="sticky top-0 z-30 flex justify-between items-center w-full px-6 py-5 bg-[#1e1e1e]/10 backdrop-blur-md border-b border-white/5">
         <div onClick={() => setIsExpanded(false)} className="p-1 active:scale-95 transition-transform">
-          <ChevronDown className="w-7 h-7 text-[#b3b3b3] cursor-pointer hover:text-white transition-colors" />
+          <ChevronDown className="w-7 h-7 text-spotify-subtext cursor-pointer hover:text-white transition-colors" />
         </div>
-        <p className="text-xs uppercase tracking-widest font-bold text-[#b3b3b3]">Now Playing</p>
+        <p className="text-xs uppercase tracking-widest font-bold text-spotify-subtext">Now Playing</p>
         <div className="w-7 h-7"></div>
       </div>
 
@@ -60,7 +58,7 @@ function MobilePlayer() {
           <div className="flex justify-between items-center w-full px-1">
             <div className="flex flex-col gap-y-1">
               <h1 className="text-2xl font-bold text-white tracking-tight leading-tight">{currentSong?.name}</h1>
-              <p className="text-sm font-medium text-[#b3b3b3] hover:text-white transition-colors cursor-pointer">
+              <p className="text-sm font-medium text-spotify-subtext hover:text-white transition-colors cursor-pointer">
                 {artistName}
               </p>
             </div>
@@ -72,24 +70,23 @@ function MobilePlayer() {
           </div>
 
           <div className="flex items-center justify-center gap-x-8 mt-2">
-            <button className="bg-transparent border-none p-2 text-[#b3b3b3] hover:text-white active:scale-90 transition-all focus:outline-none">
+            <button className="bg-transparent border-none p-2 text-spotify-subtext hover:text-white active:scale-90 transition-all focus:outline-none">
               <BackWardBtn onClick={playPrevious} className="fill-current w-8 h-8" />
             </button>
             <div
               onClick={togglePlay}
-              className="w-16 h-16 rounded-full bg-[#1ed760] flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              className="w-16 h-16 rounded-full bg-spotify-green flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
             >
               {whichIcon}
             </div>
-            <button className="bg-transparent border-none p-2 text-[#b3b3b3] hover:text-white active:scale-90 transition-all focus:outline-none">
+            <button className="bg-transparent border-none p-2 text-spotify-subtext hover:text-white active:scale-90 transition-all focus:outline-none">
               <ForwardBtn onClick={playNext} className="fill-current w-8 h-8" />
             </button>
           </div>
         </div>
 
-        {/* بخش درباره خواننده */}
         <div className="relative overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-2xl p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] mt-6">
-          <div className="absolute -top-16 -right-16 w-34 h-34 bg-[#1ed760]/15 blur-[60px] rounded-full pointer-events-none"></div>
+          <div className="absolute -top-16 -right-16 w-34 h-34 bg-spotify-green/15 blur-[60px] rounded-full pointer-events-none"></div>
 
           <div className="relative z-10 flex flex-col gap-5">
             <div className="flex items-center justify-between">
@@ -112,7 +109,6 @@ function MobilePlayer() {
                          } />
             </div>
 
-            {/* 🟢 نمایش بایو با استفاده از متغیر هوشمند artistBio */}
             <p className="text-[#c7c7c7] text-sm leading-relaxed font-normal text-justify">
               {isLoading && !currentSong?.artists?.bio ? "Loading artist info..." : artistBio}
             </p>

@@ -1,4 +1,3 @@
-// features/useCategoriesManager.js
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   insertCategoryApi,

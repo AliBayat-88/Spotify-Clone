@@ -102,13 +102,13 @@ function AdminSidebar({ isOpen, onClose }) {
       />
 
       <aside
-        className={`fixed lg:sticky top-0 bottom-0 left-0 z-50 lg:z-auto w-[265px] h-screen shrink-0 bg-[#121212] border-r border-[#262626] flex flex-col justify-between select-none transform transition-transform duration-300 ease-in-out overflow-y-auto ${
+        className={`fixed lg:sticky top-0 bottom-0 left-0 z-50 lg:z-auto w-[265px] h-screen shrink-0 bg-spotify-base border-r border-spotify-card flex flex-col justify-between select-none transform transition-transform duration-300 ease-in-out overflow-y-auto ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         <div className="py-6">
           <div className="px-6 mb-7 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-[#1ed760] flex items-center justify-center text-black font-black text-sm shadow-[0_0_15px_rgba(30,215,96,0.35)]">
+            <div className="w-8 h-8 rounded-xl bg-spotify-green flex items-center justify-center text-black font-black text-sm shadow-[0_0_15px_rgba(30,215,96,0.35)]">
               SP
             </div>
             <div className="flex flex-col">
@@ -140,7 +140,7 @@ function AdminSidebar({ isOpen, onClose }) {
                         group relative flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer
                         ${
                         isActive
-                          ? 'bg-[#1ed760]/10 text-[#1ed760] shadow-[inset_0_0_12px_rgba(30,215,96,0.08)]'
+                          ? 'bg-spotify-green/10 text-spotify-green shadow-[inset_0_0_12px_rgba(30,215,96,0.08)]'
                           : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
                       }
                       `}
@@ -148,11 +148,11 @@ function AdminSidebar({ isOpen, onClose }) {
                       {({ isActive }) => (
                         <>
                           {isActive && (
-                            <span className="absolute left-0 top-2.5 bottom-2.5 w-1 bg-[#1ed760] rounded-r-full shadow-[0_0_8px_#1ed760]" />
+                            <span className="absolute left-0 top-2.5 bottom-2.5 w-1 bg-spotify-green rounded-r-full shadow-[0_0_8px_#1ed760]" />
                           )}
                           <span
                             className={`shrink-0 transition-transform duration-200 group-hover:scale-110 ${
-                              isActive ? 'text-[#1ed760]' : 'text-gray-400 group-hover:text-white'
+                              isActive ? 'text-spotify-green' : 'text-gray-400 group-hover:text-white'
                             }`}
                           >
                             {item.icon}

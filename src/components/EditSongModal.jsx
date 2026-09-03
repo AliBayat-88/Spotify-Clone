@@ -1,16 +1,14 @@
-// components/EditSongModal.jsx
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import CustomSelect from './CustomSelect.jsx';
 import ButtonLoader from './ButtonLoader.jsx';
 import { useArtists } from '../features/useArtists.js';
 import { useUpdateSong } from '../features/useUpdateSong.js';
 import ModalLayout from './Dashboard/ModalLayout.jsx'
+import { useImagePreview } from '../hooks/useImagePreview.js'
 
 function EditSongModal({ isOpen, onClose, song }) {
   const fileInputRef = useRef(null);
-  const [coverFile, setCoverFile] = useState(null);
-  const [coverPreview, setCoverPreview] = useState('');
 
   const { artists = [] } = useArtists();
 
@@ -22,6 +20,13 @@ function EditSongModal({ isOpen, onClose, song }) {
     reset,
     formState: { errors },
   } = useForm();
+
+  const {
+    file: imageFile,
+    previewUrl: imagePreview,
+    handleFileChange,
+    reset: resetImage,
+  } = useImagePreview(song?.cover_url || '/profileImg.png');
 
   const { updateSong, isUpdating } = useUpdateSong(() => {
     onClose();
@@ -37,18 +42,10 @@ function EditSongModal({ isOpen, onClose, song }) {
         artistId: song.artist_id || song.artists?.id || '',
         lyrics: song.lyrics || '',
       });
-      setCoverPreview(song.cover_url || '/profileImg.png');
-      setCoverFile(null);
+      resetImage(song.cover_url || '/profileImg.png');
     }
-  }, [isOpen, song, reset]);
+  }, [isOpen, song, reset , resetImage]);
 
-  function handleFileChange(e) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setCoverFile(file);
-    setCoverPreview(URL.createObjectURL(file));
-  }
 
   function onSubmit(data) {
     updateSong({
@@ -56,7 +53,7 @@ function EditSongModal({ isOpen, onClose, song }) {
       name: data.name.trim(),
       artistId: data.artistId,
       lyrics: data.lyrics,
-      coverFile,
+      coverFile:imageFile,
       currentCoverUrl: song.cover_url,
     });
   }
@@ -73,7 +70,7 @@ function EditSongModal({ isOpen, onClose, song }) {
           >
             <img
               loading="lazy"
-              src={coverPreview}
+              src={imagePreview}
               alt="Cover preview"
               className="w-full h-full object-cover group-hover:opacity-40 transition-opacity"
             />
@@ -164,7 +161,7 @@ function EditSongModal({ isOpen, onClose, song }) {
           <button
             type="submit"
             disabled={isUpdating}
-            className="px-6 py-2.5 rounded-full bg-[#1ed760] text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full bg-spotify-green text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
           >
             {isUpdating ? <ButtonLoader /> : 'Save Changes'}
           </button>

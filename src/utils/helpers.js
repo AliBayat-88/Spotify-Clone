@@ -88,7 +88,6 @@ export function formatDaysAgo(dateString) {
   });
 }
 
-// src/utils/helpers.js
 
 export function calculateTotalDuration(songs = []) {
   if (!Array.isArray(songs) || songs.length === 0) return '0 min';
@@ -121,7 +120,6 @@ export function getSavedPlayback() {
 
     const { song, queue, savedAt } = JSON.parse(rawData);
 
-    // بررسی اینکه آیا ۲۴ ساعت گذشته است یا خیر
     const isExpired = Date.now() - savedAt > EXPIRATION_TIME;
 
     if (isExpired) {

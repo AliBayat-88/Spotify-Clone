@@ -28,7 +28,7 @@ function RecentActivity() {
   ]
 
   return (
-    <div className="bg-[#181818] border border-[#262626] rounded-2xl p-5 sm:p-6">
+    <div className="bg-spotify-surface border border-spotify-card rounded-2xl p-5 sm:p-6">
 
       <div className="mb-5">
 
@@ -63,7 +63,7 @@ function RecentActivity() {
                 rounded-full
                 bg-[#222]
                 flex items-center justify-center
-                text-[#1ed760]
+                text-spotify-green
                 shrink-0
               "
             >

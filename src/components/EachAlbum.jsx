@@ -21,7 +21,7 @@ function EachAlbum({ headingText, infos, isArtist, variant , onClick , isLoading
         {sectionId && (
           <NavLink
             to={`/section/${sectionId}`}
-            className="text-xs sm:text-sm transition-all hover:underline font-bold text-[#b3b3b3] hover:text-white"
+            className="text-xs sm:text-sm transition-all hover:underline font-bold text-spotify-subtext hover:text-white"
           >
             Show all
           </NavLink>
@@ -39,8 +39,9 @@ function EachAlbum({ headingText, infos, isArtist, variant , onClick , isLoading
             480: { slidesPerView: 2.5 },
             640: { slidesPerView: 3.2 },
             768: { slidesPerView: 4.2 },
-            1024: { slidesPerView: 5 },
-            1280: { slidesPerView: 6 },
+            1024: { slidesPerView: 4 },
+            1280: { slidesPerView: 5 },
+            1450: { slidesPerView: 6 },
           }}
         >
           {isLoading
@@ -58,18 +59,17 @@ function EachAlbum({ headingText, infos, isArtist, variant , onClick , isLoading
         </Swiper>
       )}
 
-      {/* 🟢 حالت گرید خالص (بدون دستکاری پیکسلی و کاملاً واکنش‌گرا) */}
       {variant === "grid" && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 px-4">
           {infos?.map(info => (
-            <SwiperSlide className="h-auto pt-1 flex" key={info.id}>
+            <div className="h-auto pt-1 flex" key={info.id}>
               <BoxSong
                 info={info}
                 isArtist={isArtist}
                 isPlaylist={isPlaylist}
                 onClick={() => onClick?.(info.id)}
               />
-            </SwiperSlide>
+            </div>
           ))}
         </div>
       )}

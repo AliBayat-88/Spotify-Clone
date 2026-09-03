@@ -41,7 +41,7 @@ function LibraryMobile() {
           <>
             <div
               onClick={() => navigate('/playList/likedSongs')}
-              className="group flex items-center justify-between p-2.5 rounded-xl hover:bg-[#262626]/50 active:bg-[#262626] transition-all duration-200 cursor-pointer active:scale-[0.99]"
+              className="group flex items-center justify-between p-2.5 rounded-xl hover:bg-spotify-card/50 active:bg-spotify-card transition-all duration-200 cursor-pointer active:scale-[0.99]"
             >
               <div className="flex items-center gap-3.5 min-w-0 flex-1">
                 <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-[#450af5] via-[#8c11f7] to-[#c411f7] shrink-0 flex items-center justify-center shadow-lg">
@@ -52,9 +52,9 @@ function LibraryMobile() {
                   <h2 className="text-base font-bold text-white tracking-tight">
                     Liked Songs
                   </h2>
-                  <p className="text-[#1ed760] text-xs font-semibold flex items-center gap-1.5">
+                  <p className="text-spotify-green text-xs font-semibold flex items-center gap-1.5">
                     <span>Playlist</span>
-                    <span className="w-1 h-1 bg-[#1ed760]/60 rounded-full inline-block"></span>
+                    <span className="w-1 h-1 bg-spotify-green/60 rounded-full inline-block"></span>
                     <span>{likedSongs?.length || 0} songs</span>
                   </p>
                 </div>
@@ -74,7 +74,7 @@ function LibraryMobile() {
               </div>
             </div>
 
-            <div className="my-3 mx-2 border-t border-[#262626] opacity-60" />
+            <div className="my-3 mx-2 border-t border-spotify-card opacity-60" />
           </>
         )}
 

@@ -13,23 +13,23 @@ function RecoveryPlayLists() {
       <Header />
 
       <div className="max-w-4xl mx-auto px-4 mt-6">
-        <div className="flex items-center justify-between border-b border-[#262626] pb-4">
+        <div className="flex items-center justify-between border-b border-spotify-card pb-4">
           <BackBtn />
           <h1 className="text-lg sm:text-3xl font-bold tracking-tight">Recover Playlists</h1>
           <div className="w-10"></div>
         </div>
 
-        <div className="bg-[#181818] border border-[#262626] rounded-2xl p-4 sm:p-5 mt-6 shadow-lg">
+        <div className="bg-spotify-surface border border-spotify-card rounded-2xl p-4 sm:p-5 mt-6 shadow-lg">
           <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
-            If you deleted a playlist within the last <span className="text-white font-semibold">90 days</span>, you can get it back. Find the playlist you want to recover below and click <span className="text-[#1ed760] font-semibold">Restore</span>.
+            If you deleted a playlist within the last <span className="text-white font-semibold">90 days</span>, you can get it back. Find the playlist you want to recover below and click <span className="text-spotify-green font-semibold">Restore</span>.
           </p>
         </div>
 
         {/* کانتینر جدول */}
-        <div className="mt-8 bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden shadow-xl">
+        <div className="mt-8 bg-spotify-surface border border-spotify-card rounded-2xl overflow-hidden shadow-xl">
           {isLoading ? (
             <div className="flex justify-center py-12">
-              <div className="w-6 h-6 border-2 border-[#1ed760] border-t-transparent rounded-full animate-spin" />
+              <div className="w-6 h-6 border-2 border-spotify-green border-t-transparent rounded-full animate-spin" />
             </div>
           ) : deletedPlaylists.length === 0 ? (
             <div className="text-center flex justify-center py-12 flex-col items-center">
@@ -42,16 +42,16 @@ function RecoveryPlayLists() {
               <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
-                  <tr className="border-b border-[#262626] text-gray-400 font-bold uppercase text-[11px] tracking-wider">
+                  <tr className="border-b border-spotify-card text-gray-400 font-bold uppercase text-[11px] tracking-wider">
                     <th className="py-4 px-6">Title</th>
                     <th className="py-4 px-6">Deleted Date</th>
                     <th className="py-4 px-6">Songs</th>
                     <th className="py-4 px-6 text-right">Action</th>
                   </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#262626]/50">
+                  <tbody className="divide-y divide-spotify-card/50">
                   {deletedPlaylists.map((playlist) => (
-                    <tr key={playlist.id} className="hover:bg-[#262626]/30 transition-colors group">
+                    <tr key={playlist.id} className="hover:bg-spotify-card/30 transition-colors group">
                       <td className="py-4 px-6 font-semibold text-white tracking-tight">{playlist.title}</td>
                       <td className="py-4 px-6 text-gray-400">{playlist.deletedDate}</td>
                       <td className="py-4 px-6 text-gray-400">{playlist.songsCount} songs</td>
@@ -70,7 +70,7 @@ function RecoveryPlayLists() {
               </div>
 
               {/* موبایل */}
-              <div className="block md:hidden divide-y divide-[#262626]/50">
+              <div className="block md:hidden divide-y divide-spotify-card/50">
                 {deletedPlaylists.map((playlist) => (
                   <div key={playlist.id} className="p-4 flex flex-col gap-y-3">
                     <div className="flex justify-between items-start">
@@ -78,14 +78,14 @@ function RecoveryPlayLists() {
                         <h3 className="font-bold text-white text-base tracking-tight">{playlist.title}</h3>
                         <p className="text-gray-400 text-xs">{playlist.songsCount} songs</p>
                       </div>
-                      <span className="text-[11px] bg-[#262626] text-gray-400 px-2 py-0.5 rounded-md border border-[#3e3e3e]">
+                      <span className="text-[11px] bg-spotify-card text-gray-400 px-2 py-0.5 rounded-md border border-[#3e3e3e]">
                         {playlist.deletedDate}
                       </span>
                     </div>
                     <button
                       disabled={isRestoring}
                       onClick={() => restorePlaylist(playlist.id)}
-                      className="w-full bg-[#262626] border border-[#3e3e3e] text-white active:bg-white active:text-black text-xs font-bold py-2.5 rounded-xl transition-all active:scale-[0.98] cursor-pointer disabled:opacity-50"
+                      className="w-full bg-spotify-card border border-[#3e3e3e] text-white active:bg-white active:text-black text-xs font-bold py-2.5 rounded-xl transition-all active:scale-[0.98] cursor-pointer disabled:opacity-50"
                     >
                       Restore Playlist
                     </button>

@@ -8,7 +8,7 @@ function AnimatedCheckIcon({ size }) {
   return (
     <div
       className={`
-        flex items-center justify-center cursor-pointer bg-[#1ed760] rounded-full text-black shadow-lg shadow-[#1ed760]/20
+        flex items-center justify-center cursor-pointer bg-spotify-green rounded-full text-black shadow-lg shadow-spotify-green/20
         animate-[pop_0.3s_cubic-bezier(0.175,0.885,0.32,1.275)]
         ${paddingClass}
       `}

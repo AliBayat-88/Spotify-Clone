@@ -31,7 +31,7 @@ function AdminSearch() {
           className="
             w-full
             h-10
-            bg-[#181818]
+            bg-spotify-surface
             border border-white/[0.07]
             rounded-full
             pl-11 pr-4

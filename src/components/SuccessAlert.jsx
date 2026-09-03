@@ -60,7 +60,7 @@ function SuccessAlert({
       }
       `}
     >
-      <div className={`flex justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#181818]/95 backdrop-blur-md border border-[#282828] shadow-2xl ${
+      <div className={`flex justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-spotify-surface/95 backdrop-blur-md border border-[#282828] shadow-2xl ${
         hasDescription ? 'items-start' : 'items-center'
       }`}>
 

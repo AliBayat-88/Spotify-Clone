@@ -74,8 +74,8 @@ function DashboardArtists() {
       </div>
 
       {/* فرم افزودن خواننده */}
-      <div className="w-full bg-[#181818] border border-[#262626] rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#1ed760]/10 blur-[80px] rounded-full pointer-events-none" />
+      <div className="w-full bg-spotify-surface border border-spotify-card rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-48 h-48 bg-spotify-green/10 blur-[80px] rounded-full pointer-events-none" />
 
         <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5 relative">
 
@@ -92,7 +92,7 @@ function DashboardArtists() {
               className={`w-full bg-black text-white px-4 py-3.5 rounded-xl border outline-none placeholder:text-gray-600 transition-all text-sm font-medium ${
                 errors.name
                   ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                  : "border-[#262626] focus:border-white focus:ring-1 focus:ring-white"
+                  : "border-spotify-card focus:border-white focus:ring-1 focus:ring-white"
               }`}
             />
             {errors.name && (
@@ -106,7 +106,7 @@ function DashboardArtists() {
           <div className="flex flex-col gap-y-2">
             <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-0.5">Artist Photo</label>
             <label className={`group cursor-pointer flex flex-col items-center justify-center min-h-40 rounded-xl border border-dashed transition-all p-4 overflow-hidden ${
-              errors.cover ? 'border-red-500 bg-red-500/5' : 'border-[#383838] bg-black hover:border-[#1ed760] hover:bg-[#1ed760]/5'
+              errors.cover ? 'border-red-500 bg-red-500/5' : 'border-[#383838] bg-black hover:border-spotify-green hover:bg-spotify-green/5'
             }`}>
               <input
                 type="file"
@@ -131,7 +131,7 @@ function DashboardArtists() {
                 </div>
               ) : (
                 <>
-                  <div className="w-10 h-10 rounded-full bg-[#222] group-hover:bg-[#1ed760] group-hover:text-black text-gray-400 flex items-center justify-center transition-all mb-2">
+                  <div className="w-10 h-10 rounded-full bg-[#222] group-hover:bg-spotify-green group-hover:text-black text-gray-400 flex items-center justify-center transition-all mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
@@ -161,7 +161,7 @@ function DashboardArtists() {
               className={`w-full bg-black text-white px-4 py-3 rounded-xl border outline-none resize-none placeholder:text-gray-600 transition-all text-sm leading-relaxed ${
                 errors.biography
                   ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                  : "border-[#262626] focus:border-white focus:ring-1 focus:ring-white"
+                  : "border-spotify-card focus:border-white focus:ring-1 focus:ring-white"
               }`}
             />
             {/* 🟢 اصلاح فیلد نمایش خطا به errors.biography */}
@@ -185,7 +185,7 @@ function DashboardArtists() {
               type="submit"
               disabled={isInserting}
               title={isInserting ? "Adding..." : "Add Artist"}
-              className="bg-[#1ed760] text-black font-bold px-7 py-2.5 text-sm cursor-pointer disabled:opacity-50"
+              className="bg-spotify-green text-black font-bold px-7 py-2.5 text-sm cursor-pointer disabled:opacity-50"
             />
           </div>
         </form>

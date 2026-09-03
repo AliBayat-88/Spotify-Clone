@@ -28,28 +28,24 @@ export async function getDashboardStatsApi() {
 //songApis
 
 export async function insertSongApi({ name, artistId, duration, lyrics, cover, audio }) {
-  // 🟢 ۱. ساخت نام‌های یکتا برای فایل‌ها جهت جلوگیری از تداخل (Overwriting)
   const fileExtCover = cover.name.split('.').pop();
   const fileExtAudio = audio.name.split('.').pop();
 
   const coverFileName = `cover-${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExtCover}`;
   const audioFileName = `audio-${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExtAudio}`;
 
-  // 🟢 ۲. آپلود فایل کاور در باکت covers (یا songs-covers)
   const { error: coverUploadError } = await supabase.storage
     .from('songs_avatar')
     .upload(coverFileName, cover);
 
   if (coverUploadError) throw new Error(`Cover upload failed: ${coverUploadError.message}`);
 
-  // 🟢 ۳. آپلود فایل صوتی در باکت songs (یا songs-audio)
   const { error: audioUploadError } = await supabase.storage
     .from('songs')
     .upload(audioFileName, audio);
 
   if (audioUploadError) throw new Error(`Audio upload failed: ${audioUploadError.message}`);
 
-  // 🟢 ۴. دریافت Public URL هر دو فایل
   const { data: { publicUrl: coverUrl } } = supabase.storage
     .from('songs_avatar')
     .getPublicUrl(coverFileName);
@@ -58,7 +54,6 @@ export async function insertSongApi({ name, artistId, duration, lyrics, cover, a
     .from('songs')
     .getPublicUrl(audioFileName);
 
-  // 🟢 ۵. ثبت رکورد نهایی در جدول songs
   const { data, error } = await supabase
     .from('songs')
     .insert([
@@ -92,13 +87,13 @@ export async function updateSongApi({ songId, name, artistId, lyrics, coverFile,
     const fileName = `cover-${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('covers')
+      .from('songs_avatar')
       .upload(fileName, coverFile);
 
     if (uploadError) throw new Error(`Cover upload failed: ${uploadError.message}`);
 
     const { data: { publicUrl } } = supabase.storage
-      .from('covers')
+      .from('songs_avatar')
       .getPublicUrl(fileName);
 
     coverUrl = publicUrl;
@@ -134,13 +129,11 @@ export async function insertArtistApi({ name, cover , bio }) {
 
   if (coverUploadError) throw new Error(`Cover upload failed: ${coverUploadError.message}`);
 
-  // 🟢 ۴. دریافت Public URL هر دو فایل
   const { data: { publicUrl: coverUrl } } = supabase.storage
     .from('artists_profile')
     .getPublicUrl(coverFileName);
 
 
-  // 🟢 ۵. ثبت رکورد نهایی در جدول songs
   const { data, error } = await supabase
     .from('artists')
     .insert([
@@ -231,7 +224,6 @@ export async function getDashboardPublicPlaylistsApi() {
 export async function insertPublicPlaylistApi({ title, description, sectionId, coverFile }) {
   if (!coverFile) throw new Error('Cover image is required');
 
-  // ۱. آپلود کاور در Storage Bucket
   const fileExt = coverFile.name.split('.').pop();
   const fileName = `playlist-${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
 
@@ -245,7 +237,6 @@ export async function insertPublicPlaylistApi({ title, description, sectionId, c
     .from('public_playLists')
     .getPublicUrl(fileName);
 
-  // ۲. درج در جدول public_playLists
   const { data, error } = await supabase
     .from('public_playLists')
     .insert([
@@ -346,7 +337,6 @@ export async function createSectionApi({ title, type, categoryId }) {
       {
         title,
         type,
-        // اگر "home" انتخاب شده باشد مقدار null ذخیره می‌شود
         category_id: categoryId === 'home' || !categoryId ? null : Number(categoryId),
       },
     ])
@@ -483,7 +473,6 @@ export async function updateCategoryApi({ categoryId, name, coverFile, currentIm
   return data;
 }
 
-// 🟢 ۳. حذف دسته‌بندی
 export async function deleteCategoryApi(categoryId) {
   if (!categoryId) throw new Error('Category ID is required');
 

@@ -1,4 +1,3 @@
-// src/components/ArtistHero.jsx
 import React from 'react';
 
 function ArtistHero({ artistName, artistBackImg, isVerified = true }) {
@@ -6,21 +5,16 @@ function ArtistHero({ artistName, artistBackImg, isVerified = true }) {
 
   return (
     <div className="relative w-full overflow-hidden rounded-t-2xl p-6 sm:p-8 lg:p-10 select-none">
-      {/* 🟢 ۱. بک‌گراند نوری داینامیک با بلور سنگین (پنهان‌کننده هرگونه افت کیفیت) */}
       <div
         className="absolute inset-0 bg-cover bg-center scale-150 blur-3xl opacity-35 pointer-events-none transform-gpu"
         style={{ backgroundImage: `url(${imgSrc})` }}
       />
 
-      {/* ۲. لایه تاریک‌کننده و تلفیق با تم دارک سایت */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-[#121212]/85 to-[#121212] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-spotify-base/85 to-spotify-base pointer-events-none" />
 
-      {/* ۳. محتوای هیرو: آواتار دایره‌ای شارپ + متادیتا */}
       <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-end gap-6 pt-4 sm:pt-6">
 
-        {/* تصویر پروفایل دایره‌ای شارپ با هاله نوری و سایه عمیق */}
         <div className="relative shrink-0 group">
-          {/* هاله پشت آواتار */}
           <div
             className="absolute -inset-1.5 rounded-full bg-cover bg-center blur-md opacity-40 group-hover:opacity-70 transition duration-500"
             style={{ backgroundImage: `url(${imgSrc})` }}

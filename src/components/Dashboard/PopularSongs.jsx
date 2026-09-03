@@ -8,7 +8,7 @@ function PopularSongs() {
 
 
   return (
-    <div className="bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden">
+    <div className="bg-spotify-surface border border-spotify-card rounded-2xl overflow-hidden">
 
       <div className="p-5 sm:p-6 border-b border-white/5">
 

@@ -27,10 +27,10 @@ function FollowedArtist({ artistData, isCollapsed, onUnfollow, isUnfollowing, is
     return (
       <div
         onClick={() => navigate(`/artist/${artistId}`)}
-        className="group relative bg-neutral-900 flex items-center justify-between p-2.5 rounded-xl hover:bg-[#262626]/50 active:bg-[#262626] transition-all duration-200 cursor-pointer active:scale-[0.99] my-0.5"
+        className="group relative bg-neutral-900 flex items-center justify-between p-2.5 rounded-xl hover:bg-spotify-card/50 active:bg-spotify-card transition-all duration-200 cursor-pointer active:scale-[0.99] my-0.5"
       >
         <div className="flex items-center gap-3.5 min-w-0 flex-1">
-          <div className="w-14 h-14 rounded-full overflow-hidden shrink-0 bg-[#262626] shadow-md border border-white/10">
+          <div className="w-14 h-14 rounded-full overflow-hidden shrink-0 bg-spotify-card shadow-md border border-white/10">
             <img loading="lazy" className="w-full h-full object-cover" src={artistImage} alt={artistName} />
           </div>
 
@@ -87,7 +87,7 @@ function FollowedArtist({ artistData, isCollapsed, onUnfollow, isUnfollowing, is
   return (
     <div
       onClick={() => navigate(`/artist/${artistId}`)}
-      className={`p-2 mt-0.5 hover:bg-[#262626] transition-colors rounded-xl flex items-center cursor-pointer w-full group/item ${
+      className={`p-2 mt-0.5 hover:bg-spotify-card transition-colors rounded-xl flex items-center cursor-pointer w-full group/item ${
         isCollapsed ? 'justify-center' : 'justify-between'
       }`}
       title={isCollapsed ? artistName : ""}
@@ -116,7 +116,7 @@ function FollowedArtist({ artistData, isCollapsed, onUnfollow, isUnfollowing, is
             e.stopPropagation();
             setIsModalDeleteOpen(true);
           }}
-          className="opacity-0 group-hover/item:opacity-100 p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-white/10 active:scale-90 transition-all shrink-0 border-none bg-transparent outline-none cursor-pointer"
+          className="opacity-0  group-hover/item:opacity-100 p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-white/10 active:scale-90 transition-all shrink-0 border-none bg-transparent outline-none cursor-pointer"
           title="Unfollow Artist"
         >
           <svg

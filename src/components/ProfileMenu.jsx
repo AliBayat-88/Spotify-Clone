@@ -30,18 +30,18 @@ function ProfileMenu({ onLogoutClick, onClose }) {
             className={({ isActive }) =>
               `group flex items-center justify-between p-2.5 rounded-xl transition-all cursor-pointer ${
                 isActive && !isInDashboard
-                  ? 'bg-[#1ed760] text-black font-bold'
-                  : 'bg-white/[0.04] text-white hover:bg-[#1ed760]/15 hover:text-[#1ed760] border border-white/5'
+                  ? 'bg-spotify-green text-black font-bold'
+                  : 'bg-white/[0.04] text-white hover:bg-spotify-green/15 hover:text-spotify-green border border-white/5'
               }`
             }
           >
             <div className="flex items-center gap-2">
               {isInDashboard ? (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4 text-[#1ed760]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4 text-spotify-green">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2Zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2ZM9 10l12-3" />
                 </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[#1ed760]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-spotify-green">
                   <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                   <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                 </svg>

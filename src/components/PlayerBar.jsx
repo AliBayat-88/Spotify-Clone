@@ -22,15 +22,15 @@ function PlayerBar() {
   return (
     <div
       onClick={() => setIsExpanded(true)}
-      className={`bg-[#121212]/95 backdrop-blur-xl border-t border-white/10 fixed ${
+      className={`bg-spotify-base/95 backdrop-blur-xl border-t border-white/10 fixed ${
         currentSong ? "translate-y-0 opacity-100 flex" : 'translate-y-20 opacity-0 hidden'
       } bottom-0 right-0 left-0 w-full h-20 p-4 text-white items-center justify-between z-50 cursor-pointer md:cursor-default overflow-hidden transition-all duration-300 shadow-[0_-10px_30px_rgba(0,0,0,0.8)]`}
     >
       {isPlaying && (
         <>
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#1ed760]/40 to-transparent pointer-events-none" />
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-spotify-green/40 to-transparent pointer-events-none" />
           <div className="absolute top-0 left-0 right-0 h-[2px] overflow-hidden pointer-events-none z-10">
-            <div className="w-full h-full bg-gradient-to-r from-transparent via-[#1ed760] to-transparent animate-border-beam opacity-90" />
+            <div className="w-full h-full bg-gradient-to-r from-transparent via-spotify-green to-transparent animate-border-beam opacity-90" />
           </div>
         </>
       )}

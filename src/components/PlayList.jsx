@@ -11,17 +11,17 @@ function PlayList({ playlist, isLoading, isCollapsed, isPublic = false, item, us
     return (
       <div className={`p-2 mt-0.5 rounded-xl flex items-center animate-pulse w-full ${isCollapsed ? 'justify-center' : 'justify-between'}`}>
         <div className="flex gap-3 items-center">
-          <div className="w-11 h-11 rounded-md bg-[#2a2a2a] shrink-0" />
+          <div className="w-11 h-11 rounded-md bg-spotify-highlight shrink-0" />
 
           {!isCollapsed && (
             <div className="flex flex-col gap-2">
-              <div className="h-4 w-28 rounded bg-[#2a2a2a]" />
+              <div className="h-4 w-28 rounded bg-spotify-highlight" />
               <div className="h-3 w-20 rounded bg-[#222222]" />
             </div>
           )}
         </div>
 
-        {!isCollapsed && <div className="w-5 h-5 rounded-full bg-[#2a2a2a]" />}
+        {!isCollapsed && <div className="w-5 h-5 rounded-full bg-spotify-highlight" />}
       </div>
     );
   }
@@ -44,7 +44,7 @@ function PlayList({ playlist, isLoading, isCollapsed, isPublic = false, item, us
   return (
     <div
       onClick={handleNavigate}
-      className={`p-2 mt-0.5 hover:bg-[#262626] transition-colors rounded-xl flex items-center cursor-pointer w-full group/item ${
+      className={`p-2 mt-0.5 hover:bg-spotify-card transition-colors rounded-xl flex items-center cursor-pointer w-full group/item ${
         isCollapsed ? 'justify-center' : 'justify-between'
       }`}
       title={isCollapsed ? (playlist?.name || playlist?.title) : ""}
@@ -73,7 +73,7 @@ function PlayList({ playlist, isLoading, isCollapsed, isPublic = false, item, us
       {!isCollapsed && isPublic && (
         <button
           onClick={(e) => {
-            e.stopPropagation(); // جلوگیری از نویگیت شدن موقع کلیک روی حذف
+            e.stopPropagation();
             setIsModalDeleteOpen(true);
           }}
           className="opacity-0 group-hover/item:opacity-100 p-1.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-white/10 active:scale-90 transition-all shrink-0 border-none bg-transparent outline-none cursor-pointer"
@@ -86,7 +86,7 @@ function PlayList({ playlist, isLoading, isCollapsed, isPublic = false, item, us
       )}
 
       <Modal
-        isLoading={isUnsaving} // 🟢 پاس دادن وضعیت لودینگ صحیح
+        isLoading={isUnsaving}
         onClose={() => setIsModalDeleteOpen(false)}
         onConfirm={handleUnsave}
         btnColor="bg-red-500 hover:bg-red-600"

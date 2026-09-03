@@ -28,7 +28,7 @@ function PlaylistFilters({ searchQuery, setSearchQuery, sortBy, setSortBy }) {
     <div className="flex items-center gap-1.5 sm:gap-3 select-none">
       <div
         onClick={handleToggleSearch}
-        className={`flex items-center bg-[#242424] hover:bg-[#2a2a2a] border transition-all duration-300 rounded-full h-9 px-2.5 ${
+        className={`flex items-center bg-spotify-elevated hover:bg-spotify-highlight border transition-all duration-300 rounded-full h-9 px-2.5 ${
           isSearchExpanded || searchQuery
             ? 'w-28 sm:w-56 border-white/20 bg-[#282828]'
             : 'w-9 border-transparent cursor-pointer justify-center'
@@ -87,7 +87,7 @@ function PlaylistFilters({ searchQuery, setSearchQuery, sortBy, setSortBy }) {
           className={`p-2 sm:px-3.5 rounded-full border text-[10px] font-black flex items-center gap-1 sm:gap-2 transition-all cursor-pointer ${
             isSortOpen
               ? 'bg-[#282828] border-white/30 text-white'
-              : 'bg-[#242424] hover:bg-[#2a2a2a] border-white/5 text-gray-300 hover:text-white'
+              : 'bg-spotify-elevated hover:bg-spotify-highlight border-white/5 text-gray-300 hover:text-white'
           }`}
         >
           <span className="text-gray-400 font-normal hidden sm:inline">Sort:</span>
@@ -123,7 +123,7 @@ function PlaylistFilters({ searchQuery, setSearchQuery, sortBy, setSortBy }) {
                   }}
                   className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-xl transition-colors text-left cursor-pointer ${
                     isSelected
-                      ? 'bg-white/10 text-[#1ed760] font-bold'
+                      ? 'bg-white/10 text-spotify-green font-bold'
                       : 'text-gray-300 hover:bg-white/5 hover:text-white font-medium'
                   }`}
                 >
@@ -133,7 +133,7 @@ function PlaylistFilters({ searchQuery, setSearchQuery, sortBy, setSortBy }) {
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
-                      className="w-3.5 h-3.5 text-[#1ed760]"
+                      className="w-3.5 h-3.5 text-spotify-green"
                     >
                       <path
                         fillRule="evenodd"

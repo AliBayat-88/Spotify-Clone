@@ -113,7 +113,7 @@ function CreateSectionModal({ isOpen, onClose }) {
           <button
             type="submit"
             disabled={isCreating}
-            className="px-6 py-2.5 rounded-full bg-[#1ed760] text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full bg-spotify-green text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
           >
             {isCreating ? <ButtonLoader /> : 'Create Section'}
           </button>

@@ -8,7 +8,7 @@ import { useOtp } from '../features/useOtp.js';
 
 function OtpForm() {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState(['', '', '', '', '', '']); // 🟢 ۶ باکس برای کُد ۶ رقمی
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(59);
   const inputRefs = useRef([]);
   const { verify, isPending } = useVerifyOtp();
@@ -30,7 +30,6 @@ function OtpForm() {
       newOtp[index] = value;
       setOtp(newOtp);
 
-      // 🟢 تصحیح فوکوس تا خانه ۵ (اینکس ششم)
       if (value !== '' && index < 5) {
         inputRefs.current[index + 1].focus();
       }
@@ -51,13 +50,11 @@ function OtpForm() {
     if (e.key === 'ArrowLeft' && index > 0) {
       inputRefs.current[index - 1].focus();
     }
-    // 🟢 تصحیح حرکت کلید جهت‌نما تا باکس آخر
     if (e.key === 'ArrowRight' && index < 5) {
       inputRefs.current[index + 1].focus();
     }
   };
 
-  // 🟢 پشتیبانی کامل از کپی/پیست کد ۶ رقمی
   const handlePaste = (e) => {
     e.preventDefault();
     const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
@@ -83,7 +80,6 @@ function OtpForm() {
   const handleSubmit = () => {
     const code = otp.join("");
 
-    // 🟢 شرط طول کُد تغییر به ۶ رقم
     if (code.length === 6 && !isPending) {
       verify({
         email,
@@ -101,11 +97,9 @@ function OtpForm() {
 
         <div className="flex flex-col justify-center items-center text-center mb-6 w-full">
           <TitleLogin>Enter your code</TitleLogin>
-          {/* 🟢 اصلاح متن راهنما */}
           <p className="text-gray-400 text-sm mt-2 leading-relaxed">We sent a 6-digit code to your email.</p>
         </div>
 
-        {/* باکس‌های دریافت کد OTP هماهنگ با دیزاین جدید */}
         <div className="flex justify-between gap-2 w-full mb-6">
           {otp.map((digit, index) => (
             <input
@@ -124,7 +118,6 @@ function OtpForm() {
           ))}
         </div>
 
-        {/* دکمه ارسال مجدد کد */}
         <div className="text-sm mb-6 text-center w-full">
           {timer > 0 ? (
             <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
@@ -133,7 +126,7 @@ function OtpForm() {
           ) : (
             <button
               onClick={handleResend}
-              className="text-[#1ED760] hover:underline font-bold text-sm transition-all"
+              className="text-spotify-green hover:underline font-bold text-sm transition-all"
             >
               Resend code
             </button>
@@ -143,7 +136,7 @@ function OtpForm() {
         <button
           onClick={handleSubmit}
           disabled={otp.includes('') || isPending}
-          className="w-full bg-[#1ED760] disabled:opacity-40 text-black font-bold py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all mb-6 flex items-center justify-center gap-2"
+          className="w-full bg-spotify-green disabled:opacity-40 text-black font-bold py-3.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all mb-6 flex items-center justify-center gap-2"
         >
           {isPending ? (
             <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
@@ -156,7 +149,7 @@ function OtpForm() {
           <p className="text-gray-400 text-xs font-medium">Remember your password?</p>
           <button
             onClick={() => navigate('/login')}
-            className="text-white hover:text-[#1ED760] text-sm font-bold tracking-tight underline decoration-gray-600 hover:decoration-[#1ED760] transition-colors mt-1.5"
+            className="text-white hover:text-spotify-green text-sm font-bold tracking-tight underline decoration-gray-600 hover:decoration-spotify-green transition-colors mt-1.5"
           >
             Log in with password
           </button>

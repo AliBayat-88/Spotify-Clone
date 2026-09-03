@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import ModalLayout from './ModalLayout.jsx';
 import ButtonLoader from '../ButtonLoader.jsx';
 import { useUpdateArtist } from '../../features/useUpdateArtist.js'
+import { useImagePreview } from '../../hooks/useImagePreview.js'
 
 function EditArtistModal({ isOpen, onClose, artist }) {
   const fileInputRef = useRef(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
 
   const {
     register,
@@ -15,6 +14,13 @@ function EditArtistModal({ isOpen, onClose, artist }) {
     reset,
     formState: { errors },
   } = useForm();
+
+  const {
+    file: imageFile,
+    previewUrl: imagePreview,
+    handleFileChange,
+    reset: resetImage,
+  } = useImagePreview(artist?.image_url || '/profileImg.png');
 
   const { updateArtist, isUpdating } = useUpdateArtist(() => {
     onClose();
@@ -26,25 +32,16 @@ function EditArtistModal({ isOpen, onClose, artist }) {
         name: artist.name || '',
         biography: artist.bio || artist.biography || '',
       });
-      setImagePreview(artist.image_url || artist.image || '/profileImg.png');
-      setImageFile(null);
+      resetImage(artist.image_url || '/profileImg.png');
     }
-  }, [isOpen, artist, reset]);
-
-  function handleImageChange(e) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-  }
+  }, [isOpen, artist, reset , resetImage]);
 
   function onSubmit(data) {
     updateArtist({
       artistId: artist.id,
       name: data.name.trim(),
       bio: data.biography.trim(),
-      imageFile,
+      coverFile:imageFile,
       currentImageUrl: artist.image_url || artist.image,
     });
   }
@@ -53,7 +50,6 @@ function EditArtistModal({ isOpen, onClose, artist }) {
     <ModalLayout isOpen={isOpen} onClose={onClose} title="Edit Artist">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
 
-        {/* عکس پروفایل خواننده */}
         <div className="flex items-center gap-x-4">
           <div
             onClick={() => fileInputRef.current?.click()}
@@ -73,12 +69,11 @@ function EditArtistModal({ isOpen, onClose, artist }) {
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={handleImageChange}
+              onChange={handleFileChange}
             />
           </div>
         </div>
 
-        {/* نام خواننده */}
         <div className="flex flex-col gap-y-1.5">
           <label className="text-xs font-bold text-gray-400 uppercase">Artist Name</label>
           <input
@@ -92,7 +87,6 @@ function EditArtistModal({ isOpen, onClose, artist }) {
           {errors.name && <span className="text-xs text-red-400">{errors.name.message}</span>}
         </div>
 
-        {/* بیوگرافی */}
         <div className="flex flex-col gap-y-1.5">
           <label className="text-xs font-bold text-gray-400 uppercase">Biography</label>
           <textarea
@@ -106,7 +100,6 @@ function EditArtistModal({ isOpen, onClose, artist }) {
           {errors.biography && <span className="text-xs text-red-400">{errors.biography.message}</span>}
         </div>
 
-        {/* دکمه‌ها */}
         <div className="flex justify-end gap-3 pt-3 mt-2 border-t border-white/5">
           <button
             type="button"
@@ -119,7 +112,7 @@ function EditArtistModal({ isOpen, onClose, artist }) {
           <button
             type="submit"
             disabled={isUpdating}
-            className="px-6 py-2.5 rounded-full bg-[#1ed760] text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full bg-spotify-green text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
           >
             {isUpdating ? <ButtonLoader /> : 'Save Changes'}
           </button>

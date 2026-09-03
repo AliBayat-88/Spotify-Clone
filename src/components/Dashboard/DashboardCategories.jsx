@@ -91,8 +91,8 @@ function DashboardCategories() {
       </div>
 
       {/* فرم ایجاد دسته‌بندی جدید */}
-      <div className="w-full bg-[#181818] border border-[#262626] rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#1ed760]/10 blur-[80px] rounded-full pointer-events-none" />
+      <div className="w-full bg-spotify-surface border border-spotify-card rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-48 h-48 bg-spotify-green/10 blur-[80px] rounded-full pointer-events-none" />
 
         <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5 relative">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -111,7 +111,7 @@ function DashboardCategories() {
                 className={`w-full min-h-[50px] bg-black text-white px-4 rounded-xl py-2.5 border outline-none text-sm font-medium ${
                   errors.name
                     ? 'border-red-500 focus:ring-1 focus:ring-red-500'
-                    : 'border-[#262626] focus:border-white focus:ring-1 focus:ring-white'
+                    : 'border-spotify-card focus:border-white focus:ring-1 focus:ring-white'
                 }`}
               />
               {errors.name && (
@@ -130,7 +130,7 @@ function DashboardCategories() {
                 className={`group cursor-pointer flex items-center gap-4 min-h-[50px] rounded-xl border border-dashed transition-all p-2.5 px-4 ${
                   errors.cover
                     ? 'border-red-500 bg-red-500/5'
-                    : 'border-[#383838] bg-black hover:border-[#1ed760] hover:bg-[#1ed760]/5'
+                    : 'border-[#383838] bg-black hover:border-spotify-green hover:bg-spotify-green/5'
                 }`}
               >
                 <input
@@ -144,7 +144,7 @@ function DashboardCategories() {
                   {...register('cover', { required: 'Category cover image is required' })}
                 />
 
-                <div className="w-10 h-10 rounded-lg bg-[#222] group-hover:bg-[#1ed760] group-hover:text-black text-gray-400 flex items-center justify-center transition-all shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-[#222] group-hover:bg-spotify-green group-hover:text-black text-gray-400 flex items-center justify-center transition-all shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                   </svg>
@@ -178,7 +178,7 @@ function DashboardCategories() {
               type="submit"
               disabled={isInserting}
               title={isInserting ? 'Adding...' : 'Add Category'}
-              className="bg-[#1ed760] text-black font-bold px-7 py-2.5 text-sm cursor-pointer hover:scale-105 transition-all disabled:opacity-50"
+              className="bg-spotify-green text-black font-bold px-7 py-2.5 text-sm cursor-pointer hover:scale-105 transition-all disabled:opacity-50"
             />
           </div>
         </form>
@@ -222,7 +222,7 @@ function DashboardCategories() {
             </td>
 
             <td className="px-5 py-4">
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#1ed760]/10 border border-[#1ed760]/20 text-xs font-bold text-[#1ed760]">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-spotify-green/10 border border-spotify-green/20 text-xs font-bold text-spotify-green">
                 {category.sections_count} {category.sections_count === 1 ? 'Section' : 'Sections'}
               </span>
             </td>

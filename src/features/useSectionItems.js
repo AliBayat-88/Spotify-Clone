@@ -1,4 +1,3 @@
-// features/useSectionItems.js
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getSectionItemsApi, addSectionItemApi, removeSectionItemApi } from '../services/apiDashboard.js';
 import { useToaster } from '../context/ToastContext.jsx';
@@ -28,7 +27,6 @@ export function useToggleSectionItem(sectionId) {
     },
   });
 
-  // حذف آیتم
   const { mutate: removeItem, isPending: isRemoving } = useMutation({
     mutationFn: removeSectionItemApi,
     onSuccess: () => {

@@ -3,7 +3,7 @@ import GoogleLoginBtn from './GoogleLoginBtn.jsx'
 import HaveAccount from './HaveAccount.jsx'
 import TitleLogin from './TitleLogin.jsx'
 import AuthLayout from './AuthLayout.jsx'
-import { useNavigate } from 'react-router-dom' // 🟢 استفاده از react-router-dom
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useLoginByGoogle } from '../features/useLoginByGoogle.js'
 

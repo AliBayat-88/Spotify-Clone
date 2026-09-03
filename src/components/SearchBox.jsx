@@ -13,7 +13,6 @@ function SearchBox() {
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
-  // 🟢 ۱. ساخت ref برای کنترل مستقیم عنصر input در DOM
   const inputRef = useRef(null);
   const searchContainerRef = useRef(null);
 
@@ -31,10 +30,9 @@ function SearchBox() {
     setIsFocused(false);
   };
 
-  // 🟢 ۲. پاک کردن متن + انتقال فوکوس نیتیو مرورگر به داخل اینپوت
   const handleClear = (e) => {
     e.stopPropagation();
-    e.preventDefault(); // جلوگیری از رفتار پیش‌فرض کلیک
+    e.preventDefault();
     setQuery('');
     setIsFocused(true);
 
@@ -72,7 +70,7 @@ function SearchBox() {
             onKeyDown={handleKeyDown}
             placeholder="Search for songs, artists ..."
             className="
-              bg-[#181818]
+              bg-spotify-surface
               rounded-2xl
               p-2.5 pl-11 pr-24
               text-white placeholder-gray-400
@@ -127,7 +125,7 @@ function SearchBox() {
 
           {/* تک دراپ‌داون یکپارچه */}
           {isFocused && (
-            <div className="absolute top-[115%] left-0 w-full bg-[#181818] rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.85)] border border-[#282828] max-h-[65vh] overflow-y-auto scrollbar-hide z-50 p-2.5 animate-[fadeIn_.15s_ease-out]">
+            <div className="absolute top-[115%] left-0 w-full bg-spotify-surface rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.85)] border border-[#282828] max-h-[65vh] overflow-y-auto scrollbar-hide z-50 p-2.5 animate-[fadeIn_.15s_ease-out]">
 
               {/* گزینه همیشه ثابت بالا: Browse All Genres */}
               <div
@@ -135,7 +133,7 @@ function SearchBox() {
                 className="flex items-center justify-between p-3 rounded-xl hover:bg-white/10 active:bg-white/15 transition-colors cursor-pointer group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#1ed760]/10 text-[#1ed760] group-hover:bg-[#1ed760] group-hover:text-black transition-colors flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-spotify-green/10 text-spotify-green group-hover:bg-spotify-green group-hover:text-black transition-colors flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 0110.5 15.75v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V15.75zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
                     </svg>
@@ -165,7 +163,7 @@ function SearchBox() {
                     <div className="flex flex-col gap-4 mt-1">
                       {results.songs.length > 0 && (
                         <div>
-                          <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-2">
+                          <h3 className="text-spotify-muted font-bold text-xs uppercase tracking-wider px-2 mb-2">
                             Songs
                           </h3>
                           {results.songs.map((song) => (
@@ -181,10 +179,10 @@ function SearchBox() {
                                 className="w-10 h-10 object-cover rounded-md shadow-md shrink-0"
                               />
                               <div className="flex flex-col overflow-hidden">
-                                <span className="text-white text-sm font-medium truncate group-hover:text-[#1ed760] transition-colors">
+                                <span className="text-white text-sm font-medium truncate group-hover:text-spotify-green transition-colors">
                                   {song.name}
                                 </span>
-                                <span className="text-[#a7a7a7] text-xs truncate">
+                                <span className="text-spotify-muted text-xs truncate">
                                   {song.artists?.name}
                                 </span>
                               </div>
@@ -195,7 +193,7 @@ function SearchBox() {
 
                       {results.artists.length > 0 && (
                         <div>
-                          <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-2">
+                          <h3 className="text-spotify-muted font-bold text-xs uppercase tracking-wider px-2 mb-2">
                             Artists
                           </h3>
                           {results.artists.map((artist) => (
@@ -211,10 +209,10 @@ function SearchBox() {
                                 className="w-10 h-10 object-cover rounded-full shadow-md shrink-0"
                               />
                               <div className="flex flex-col overflow-hidden">
-                                <span className="text-white text-sm font-medium truncate group-hover:text-[#1ed760] transition-colors">
+                                <span className="text-white text-sm font-medium truncate group-hover:text-spotify-green transition-colors">
                                   {artist.name}
                                 </span>
-                                <span className="text-[#a7a7a7] text-xs truncate">Artist</span>
+                                <span className="text-spotify-muted text-xs truncate">Artist</span>
                               </div>
                             </div>
                           ))}
@@ -223,7 +221,7 @@ function SearchBox() {
 
                       {results.playlists.length > 0 && (
                         <div>
-                          <h3 className="text-[#a7a7a7] font-bold text-xs uppercase tracking-wider px-2 mb-2">
+                          <h3 className="text-spotify-muted font-bold text-xs uppercase tracking-wider px-2 mb-2">
                             Playlists
                           </h3>
                           {results.playlists.map((playlist) => (
@@ -239,10 +237,10 @@ function SearchBox() {
                                 className="w-10 h-10 object-cover rounded-md shadow-md shrink-0"
                               />
                               <div className="flex flex-col overflow-hidden">
-                                <span className="text-white text-sm font-medium truncate group-hover:text-[#1ed760] transition-colors">
+                                <span className="text-white text-sm font-medium truncate group-hover:text-spotify-green transition-colors">
                                   {playlist.title}
                                 </span>
-                                <span className="text-[#a7a7a7] text-xs truncate">Playlist</span>
+                                <span className="text-spotify-muted text-xs truncate">Playlist</span>
                               </div>
                             </div>
                           ))}
@@ -258,7 +256,7 @@ function SearchBox() {
       </div>
 
       {isAuthLoading ? (
-        <div className="w-12 h-10 rounded-xl bg-[#262626] animate-pulse shrink-0" />
+        <div className="w-12 h-10 rounded-xl bg-spotify-card animate-pulse shrink-0" />
       ) : user ? (
         <Profile />
       ) : (

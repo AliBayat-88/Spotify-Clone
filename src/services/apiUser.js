@@ -1,7 +1,5 @@
-// services/apiUser.js
 import supabase from "./supabase.js";
 
-// 🟢 ۱. اصلاح تابع گرفتن اطلاعات کاربر (اضافه شدن return و maybeSingle)
 export async function getUserInfoApi(userId) {
   if (!userId) return null;
 
@@ -18,7 +16,6 @@ export async function getUserInfoApi(userId) {
   return data;
 }
 
-// 🟢 ۲. تابع آپدیت پروفایل با استفاده از متد استاندارد getPublicUrl
 export async function updateProfileApi({ userId, displayName, avatarFile }) {
   if (!userId) throw new Error("User ID is required");
 
@@ -39,7 +36,6 @@ export async function updateProfileApi({ userId, displayName, avatarFile }) {
       throw new Error(uploadError.message);
     }
 
-    // دریافت لینک عمومی به روش استاندارد Supabase
     const { data: publicUrlData } = supabase.storage
       .from("profile")
       .getPublicUrl(fileName);
@@ -52,7 +48,6 @@ export async function updateProfileApi({ userId, displayName, avatarFile }) {
     ...(avatarUrl && { avatar_url: avatarUrl }),
   };
 
-  // بررسی وجود سطر قبلی
   const { data: existingProfile, error: fetchError } = await supabase
     .from("profiles")
     .select("id")
@@ -86,7 +81,6 @@ export async function updateProfileApi({ userId, displayName, avatarFile }) {
     resultData = data;
   }
 
-  // همگام‌سازی با متادیتای Auth
   const { error: authError } = await supabase.auth.updateUser({
     data: {
       ...(displayName && { display_name: displayName }),
@@ -103,11 +97,9 @@ export async function updateProfileApi({ userId, displayName, avatarFile }) {
 
 
 export async function changePasswordApi({ currentPassword, newPassword }) {
-  // ۱. دریافت اطلاعات کاربر لاگین‌شده
   const { data: { user }, error: userError } = await supabase.auth.getUser();
   if (userError || !user) throw new Error("User not authenticated");
 
-  // ۲. بررسی صحت رمز عبور فعلی (Re-authentication)
   const { error: authError } = await supabase.auth.signInWithPassword({
     email: user.email,
     password: currentPassword,
@@ -117,7 +109,6 @@ export async function changePasswordApi({ currentPassword, newPassword }) {
     throw new Error("Current password is incorrect");
   }
 
-  // ۳. ثبت رمز عبور جدید
   const { data, error: updateError } = await supabase.auth.updateUser({
     password: newPassword,
   });

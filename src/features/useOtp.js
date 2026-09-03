@@ -12,6 +12,8 @@ export function useOtp() {
       navigate("/login/otp-login", {
         state: { email },
       });
+
+
     }
   });
 

@@ -1,8 +1,7 @@
 import React from 'react';
 
 function Equalizer({ isPlaying }) {
-  // حذف کلاس‌های ترنزیشن مزاحم برای اجرای روان انیمیشن
-  const barClass = "w-[3px] h-full bg-[#1ed760] rounded-full origin-bottom";
+  const barClass = "w-[3px] h-full bg-spotify-green rounded-full origin-bottom";
 
   return (
     <div className="flex items-end justify-center gap-[3px] w-5 h-5">

@@ -3,7 +3,6 @@ import { usePlayer } from "../context/PlayerContext";
 function AudioPlay() {
   const { currentTime, duration, seek } = usePlayer();
 
-  // تبدیل ثانیه به فرمت 00:00
   const formatTime = (time) => {
     if (isNaN(time)) return "0:00";
     const minutes = Math.floor(time / 60);
@@ -11,20 +10,19 @@ function AudioPlay() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  // محاسبه درصد پیشرفت برای استایل CSS
   const progressPercent = (currentTime / duration) * 100 || 0;
 
   const handleProgressClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left; // جایی که کلیک شده
-    const width = rect.width; // کل عرض نوار
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
     const newTime = (clickX / width) * duration;
     seek(newTime);
   };
 
   return (
     <div className="w-full flex items-center gap-x-3 select-none">
-      <span className="text-xs font-medium text-[#b3b3b3] w-9 text-right font-mono">
+      <span className="text-xs font-medium text-spotify-subtext w-9 text-right font-mono">
     {formatTime(currentTime)}
   </span>
       <div
@@ -33,7 +31,7 @@ function AudioPlay() {
       >
         <div className="w-full h-1 bg-[#4d4d4d] rounded-full overflow-hidden">
           <div
-            className="h-full bg-white group-hover:bg-[#1db954] rounded-full transition-colors duration-150"
+            className="h-full bg-white group-hover:bg-spotify-green-dark rounded-full transition-colors duration-150"
             style={{ width: `${progressPercent}%` }}
           ></div>
         </div>
@@ -45,7 +43,7 @@ function AudioPlay() {
           }}
         ></div>
       </div>
-      <span className="text-xs font-medium text-[#b3b3b3] w-9 font-mono">
+      <span className="text-xs font-medium text-spotify-subtext w-9 font-mono">
     {formatTime(duration)}
   </span>
     </div>

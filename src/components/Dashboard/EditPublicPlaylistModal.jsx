@@ -1,14 +1,12 @@
-// components/EditPublicPlaylistModal.jsx
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import ModalLayout from './ModalLayout.jsx';
 import ButtonLoader from '../ButtonLoader.jsx';
 import { useUpdatePublicPlaylist } from '../../features/useUpdatePublicPlaylist.js'
+import { useImagePreview } from '../../hooks/useImagePreview.js'
 
 function EditPublicPlaylistModal({ isOpen, onClose, playlist }) {
   const fileInputRef = useRef(null);
-  const [coverFile, setCoverFile] = useState(null);
-  const [coverPreview, setCoverPreview] = useState('');
 
   const {
     register,
@@ -17,36 +15,34 @@ function EditPublicPlaylistModal({ isOpen, onClose, playlist }) {
     formState: { errors },
   } = useForm();
 
+  const {
+    file: imageFile,
+    previewUrl: imagePreview,
+    handleFileChange,
+    reset: resetImage,
+  } = useImagePreview(playlist?.cover_url || '/profileImg.png');
+
   const { updatePublicPlaylist, isUpdating } = useUpdatePublicPlaylist(() => {
     onClose()
   });
 
-  // مقداردهی اولیه فرم با باز شدن مودال
   useEffect(() => {
     if (isOpen && playlist) {
       reset({
         title: playlist.title || '',
         description: playlist.description || '',
       });
-      setCoverPreview(playlist.cover_url || '/playlistImg.webp');
-      setCoverFile(null);
+      resetImage(playlist.cover_url || '/profileImg.png');
     }
-  }, [isOpen, playlist, reset]);
+  }, [isOpen, playlist, reset , resetImage]);
 
-  function handleCoverChange(e) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setCoverFile(file);
-    setCoverPreview(URL.createObjectURL(file));
-  }
 
   function onSubmit(data) {
     updatePublicPlaylist({
       playlistId: playlist.id,
       title: data.title.trim(),
       description: data.description?.trim(),
-      coverFile,
+      coverFile : imageFile,
       currentCoverUrl: playlist.cover_url,
     });
   }
@@ -63,7 +59,7 @@ function EditPublicPlaylistModal({ isOpen, onClose, playlist }) {
           >
             <img
               loading="lazy"
-              src={coverPreview}
+              src={imagePreview}
               alt="Playlist cover"
               className="w-full h-full object-cover group-hover:opacity-40 transition-opacity"
             />
@@ -80,7 +76,7 @@ function EditPublicPlaylistModal({ isOpen, onClose, playlist }) {
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={handleCoverChange}
+              onChange={handleFileChange}
             />
           </div>
         </div>
@@ -135,7 +131,7 @@ function EditPublicPlaylistModal({ isOpen, onClose, playlist }) {
           <button
             type="submit"
             disabled={isUpdating}
-            className="px-6 py-2.5 rounded-full bg-[#1ed760] text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full bg-spotify-green text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
           >
             {isUpdating ? <ButtonLoader /> : 'Save Changes'}
           </button>

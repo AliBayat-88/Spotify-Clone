@@ -59,7 +59,7 @@ function DashboardSections() {
 
         <ActionBtn
           title="+ Create Section"
-          className="bg-[#1ed760] text-black font-bold px-6 py-2.5 text-sm self-start sm:self-auto shrink-0 shadow-lg cursor-pointer hover:scale-105 transition-all"
+          className="bg-spotify-green text-black font-bold px-6 py-2.5 text-sm self-start sm:self-auto shrink-0 shadow-lg cursor-pointer hover:scale-105 transition-all"
           onClick={() => setIsCreateModalOpen(true)}
         />
       </div>
@@ -67,20 +67,20 @@ function DashboardSections() {
       {/* لیست سکشن‌های گروه‌بندی‌شده */}
       <div className="flex flex-col gap-y-6">
         {groupedSections.length === 0 ? (
-          <div className="text-center py-16 bg-[#181818] rounded-2xl border border-[#262626] text-gray-400 text-sm">
+          <div className="text-center py-16 bg-spotify-surface rounded-2xl border border-spotify-card text-gray-400 text-sm">
             No sections found. Click + Create Section to create your first content row.
           </div>
         ) : (
           groupedSections.map((group) => (
             <div
               key={group.id}
-              className="bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden shadow-xl"
+              className="bg-spotify-surface border border-spotify-card rounded-2xl overflow-hidden shadow-xl"
             >
               <div className="px-6 py-4 bg-black/40 border-b border-white/5 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <span
                     className={`w-2.5 h-2.5 rounded-full ${
-                      group.isHome ? 'bg-purple-400 shadow-[0_0_8px_#c084fc]' : 'bg-[#1ed760]'
+                      group.isHome ? 'bg-purple-400 shadow-[0_0_8px_#c084fc]' : 'bg-spotify-green'
                     }`}
                   />
                   <h2 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider">
@@ -109,7 +109,7 @@ function DashboardSections() {
                           {section.type}
                         </span>
 
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-[#1ed760]/10 text-[#1ed760] border border-[#1ed760]/20">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-spotify-green/10 text-spotify-green border border-spotify-green/20">
                           {section.itemCount} Items
                         </span>
                       </div>
@@ -123,7 +123,7 @@ function DashboardSections() {
                           onClick={() => setManagingSection(section)}
                           className="px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-gray-200 hover:text-white transition-all cursor-pointer flex items-center gap-1.5"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-3.5 h-3.5 text-[#1ed760]">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-3.5 h-3.5 text-spotify-green">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                           </svg>
                           Manage Items

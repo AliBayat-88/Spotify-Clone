@@ -13,6 +13,7 @@ export default {
           'green-dark': '#1db954',
           base: '#121212',
           surface: '#181818',
+          card: '#262626',
           elevated: '#242424',
           highlight: '#2a2a2a',
           muted: '#a7a7a7',
@@ -29,7 +30,7 @@ export default {
           '100%': { transform: 'translateX(100%)' },
         },
         draw: {
-          'to': { strokeDashoffset: '0' },
+          to: { strokeDashoffset: '0' },
         },
         ripple: {
           '0%': { width: '0', height: '0', opacity: '1' },

@@ -1,4 +1,3 @@
-// components/ModalLayout.jsx
 import { createPortal } from 'react-dom';
 
 function ModalLayout({ isOpen, onClose, title, children, maxWidth = "max-w-lg" }) {
@@ -16,8 +15,8 @@ function ModalLayout({ isOpen, onClose, title, children, maxWidth = "max-w-lg" }
       />
 
       {/* باکس اصلی مودال */}
-      <div className={`relative w-full ${maxWidth} bg-[#181818] border border-[#282828] rounded-2xl p-6 sm:p-7 shadow-2xl`}>
-        <div className="absolute -top-20 -left-20 w-40 h-40 bg-[#1ed760]/10 blur-[60px] rounded-full pointer-events-none" />
+      <div className={`relative w-full ${maxWidth} bg-spotify-surface border border-[#282828] rounded-2xl p-6 sm:p-7 shadow-2xl`}>
+        <div className="absolute -top-20 -left-20 w-40 h-40 bg-spotify-green/10 blur-[60px] rounded-full pointer-events-none" />
 
         {/* هدر مودال */}
         <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/5 relative z-10">

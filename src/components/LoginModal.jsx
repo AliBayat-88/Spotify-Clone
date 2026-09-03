@@ -11,7 +11,7 @@ function Modal({ isOpen, onClose }) {
         className="absolute inset-0 bg-black/70  transition-opacity"
       />
 
-      <div className="relative w-[90%] max-w-md bg-[#181818] rounded-xl p-6 shadow-2xl animate-[fadeIn_.2s_ease-out]">
+      <div className="relative w-[90%] max-w-md bg-spotify-surface rounded-xl p-6 shadow-2xl animate-[fadeIn_.2s_ease-out]">
 
         <h2 className="text-white text-lg font-black mb-6">
           You need to login first

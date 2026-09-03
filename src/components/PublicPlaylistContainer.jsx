@@ -123,7 +123,7 @@ function PublicPlaylistContainer() {
         <div className="flex items-center gap-x-4 mb-6">
           <button
             onClick={handlePlay}
-            className="p-3 sm:p-3.5 rounded-full bg-[#1ed760] hover:bg-[#1fdf64] hover:scale-105 active:scale-95 transition-all inline-flex justify-center items-center cursor-pointer shadow-lg"
+            className="p-3 sm:p-3.5 rounded-full bg-spotify-green hover:bg-spotify-green-hover hover:scale-105 active:scale-95 transition-all inline-flex justify-center items-center cursor-pointer shadow-lg"
           >
             {isCurrentPlaylistPlaying && isPlaying ? (
               <PauseBtn className="w-7 h-7 text-black" color="#000000" />
@@ -195,7 +195,7 @@ function PublicPlaylistContainer() {
               />
             ))
           ) : (
-            <EmptyPlaylist />
+            <EmptyPlaylist type="public" />
           )}
         </div>
       </div>

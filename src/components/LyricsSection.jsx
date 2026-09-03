@@ -16,14 +16,14 @@ function LyricsSection({ lyrics }) {
 
       <div className="relative group transition-all duration-300">
         <p
-          className={`text-[#a7a7a7] text-base font-bold whitespace-pre-line leading-relaxed transition-all duration-500 ease-out 
+          className={`text-spotify-muted text-base font-bold whitespace-pre-line leading-relaxed transition-all duration-500 ease-out 
           ${!expand && isTooLong ? 'line-clamp-6' : 'line-clamp-none'}`}
         >
           {lyrics}
         </p>
 
         {!expand && isTooLong && (
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#121212] via-[#121212]/90 to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-spotify-base via-spotify-base/90 to-transparent pointer-events-none" />
         )}
       </div>
 

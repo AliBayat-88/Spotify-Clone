@@ -24,21 +24,21 @@ function Account() {
       <div className="max-w-xl mx-auto px-4 mt-6 flex flex-col gap-y-6">
 
         {/* کارت پروفایل کاربر */}
-        <div className="bg-[#181818] border border-[#262626] rounded-2xl p-5 flex items-center gap-4 shadow-xl">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0 bg-[#262626] border-2 border-[#3e3e3e] shadow-md">
+        <div className="bg-spotify-surface border border-spotify-card rounded-2xl p-5 flex items-center gap-4 shadow-xl">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0 bg-spotify-card border-2 border-[#3e3e3e] shadow-md">
             <img
               loading="lazy"
               className="w-full h-full object-cover"
               src={avatarUrl || "/profileImg.png"}
               alt="Profile"
               onError={(e) => {
-                e.currentTarget.onerror = null; // جلوگیری از حلقه بی‌نهایت اگر عکس پیش‌فرض هم موجود نبود
+                e.currentTarget.onerror = null;
                 e.currentTarget.src = "/profileImg.png";
               }}
             />
           </div>
           <div className="flex flex-col min-w-0">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#1ed760] mb-0.5">Free Account</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-spotify-green mb-0.5">Free Account</span>
             <h1 className="text-xl sm:text-2xl font-black text-white truncate tracking-tight">{displayName}</h1>
             <p className="text-gray-400 text-xs sm:text-sm truncate mt-0.5">{email}</p>
           </div>
@@ -48,8 +48,8 @@ function Account() {
         <div className="flex flex-col gap-y-2">
           <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider px-1">Account Management</h2>
 
-          <div className="bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden shadow-lg">
-            <NavLink to="edit-info" className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
+          <div className="bg-spotify-surface border border-spotify-card rounded-2xl overflow-hidden shadow-lg">
+            <NavLink to="edit-info" className="flex items-center justify-between p-4 hover:bg-spotify-card/50 active:bg-spotify-card transition-colors cursor-pointer group active:scale-[0.995]">
               <div className="flex items-center gap-3">
                 <div className="text-gray-400 group-hover:text-white transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
@@ -63,9 +63,9 @@ function Account() {
               </svg>
             </NavLink>
 
-            <div className="border-t border-[#262626]" />
+            <div className="border-t border-spotify-card" />
 
-            <NavLink to="recovery-playlists" className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
+            <NavLink to="recovery-playlists" className="flex items-center justify-between p-4 hover:bg-spotify-card/50 active:bg-spotify-card transition-colors cursor-pointer group active:scale-[0.995]">
               <div className="flex items-center gap-3">
                 <div className="text-gray-400 group-hover:text-white transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
@@ -81,14 +81,12 @@ function Account() {
           </div>
         </div>
 
-        {/* بخش Security & Privacy */}
         <div className="flex flex-col gap-y-2">
           <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider px-1">Security & Privacy</h2>
 
-          <div className="bg-[#181818] border border-[#262626] rounded-2xl overflow-hidden shadow-lg">
+          <div className="bg-spotify-surface border border-spotify-card rounded-2xl overflow-hidden shadow-lg">
 
-            {/* 🟢 گزینه جدید: Change Password */}
-            <NavLink to="change-password" className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]">
+            <NavLink to="change-password" className="flex items-center justify-between p-4 hover:bg-spotify-card/50 active:bg-spotify-card transition-colors cursor-pointer group active:scale-[0.995]">
               <div className="flex items-center gap-3">
                 <div className="text-gray-400 group-hover:text-white transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
@@ -102,12 +100,12 @@ function Account() {
               </svg>
             </NavLink>
 
-            <div className="border-t border-[#262626]" />
+            <div className="border-t border-spotify-card" />
 
             {/* Sign out everywhere */}
             <div
               onClick={() => setIsSignOutModalOpen(true)}
-              className="flex items-center justify-between p-4 hover:bg-[#262626]/50 active:bg-[#262626] transition-colors cursor-pointer group active:scale-[0.995]"
+              className="flex items-center justify-between p-4 hover:bg-spotify-card/50 active:bg-spotify-card transition-colors cursor-pointer group active:scale-[0.995]"
             >
               <div className="flex items-center gap-3">
                 <div className="text-gray-400 group-hover:text-white transition-colors">
@@ -122,7 +120,7 @@ function Account() {
               </svg>
             </div>
 
-            <div className="border-t border-[#262626]" />
+            <div className="border-t border-spotify-card" />
 
             {/* Delete Account */}
             <div

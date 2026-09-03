@@ -4,13 +4,18 @@ import { useLogOut } from '../../features/useLogOut.js';
 import { useOutsideClick } from '../../hooks/useOutsideClick.js';
 import ProfileMenu from '../ProfileMenu.jsx';
 import Modal from '../Modal.jsx';
+import { useNavigate } from 'react-router-dom'
 
 function AdminProfile() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const { displayName, avatarUrl } = useUserInfo();
-  const { logOut, isLoginOut } = useLogOut(() => setIsLogoutModalOpen(false));
+  const { logOut, isLoginOut } = useLogOut(() => {
+    setIsLogoutModalOpen(false)
+    navigate('/', { replace: true })
+  });
 
   const profileRef = useRef(null);
   useOutsideClick(profileRef, isOpen, () => setIsOpen(false));
@@ -33,12 +38,12 @@ function AdminProfile() {
               e.currentTarget.src = '/profileImg.png';
             }}
           />
-          <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-[#1ed760] border-2 border-[#121212] rounded-full" />
+          <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-spotify-green border-2 border-spotify-base rounded-full" />
         </div>
 
         <div className="hidden lg:flex flex-col items-start leading-tight text-left">
           <span className="text-white text-xs font-bold truncate max-w-[110px]">{displayName}</span>
-          <span className="text-[10px] text-[#1ed760] font-semibold">Admin</span>
+          <span className="text-[10px] text-spotify-green font-semibold">Admin</span>
         </div>
 
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={`w-3.5 h-3.5 text-gray-500 group-hover:text-white transition-transform duration-200 ${isOpen ? 'rotate-180 text-white' : ''}`}>

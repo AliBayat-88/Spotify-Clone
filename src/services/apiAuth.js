@@ -2,16 +2,16 @@ import supabase from './supabase.js'
 
 export async function signUpApi({ email, password }) {
   const { data, error } = await supabase.auth.signUp({
-    email,
+    email: email.trim().toLowerCase(),
     password,
     options: {
       emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   });
 
-
-
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return data;
 }

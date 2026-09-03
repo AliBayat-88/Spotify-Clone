@@ -47,7 +47,6 @@ function DashboardPublicPlaylists() {
   const selectedCategoryId = watch('categoryId', '');
   const selectedSectionId = watch('sectionId', '');
 
-  // 🟢 فیلتر هوشمند سکشن‌ها بر اساس Category انتخاب‌شده و نوع 'playlist'
   const isCategorySelected = Boolean(selectedCategoryId);
 
   const availableSections = sections.filter((sec) => {
@@ -90,8 +89,8 @@ function DashboardPublicPlaylists() {
       </div>
 
       {/* فرم ایجاد پلی‌لیست عمومی */}
-      <div className="w-full bg-[#181818] border border-[#262626] rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#1ed760]/10 blur-[80px] rounded-full pointer-events-none" />
+      <div className="w-full bg-spotify-surface border border-spotify-card rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-48 h-48 bg-spotify-green/10 blur-[80px] rounded-full pointer-events-none" />
 
         <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5 relative">
 
@@ -110,7 +109,7 @@ function DashboardPublicPlaylists() {
               className={`w-full bg-black text-white px-4 py-3.5 rounded-xl border outline-none text-sm font-medium ${
                 errors.title
                   ? 'border-red-500 focus:ring-1 focus:ring-red-500'
-                  : 'border-[#262626] focus:border-white focus:ring-1 focus:ring-white'
+                  : 'border-spotify-card focus:border-white focus:ring-1 focus:ring-white'
               }`}
             />
             {errors.title && (
@@ -135,10 +134,10 @@ function DashboardPublicPlaylists() {
                 }
               })}
               placeholder="Describe this playlist..."
-              className={`w-full bg-black text-white px-4 py-3 rounded-xl border border-[#262626] outline-none resize-none placeholder-gray-600 focus:border-white focus:ring-1 focus:ring-white text-sm leading-relaxed ${
+              className={`w-full bg-black text-white px-4 py-3 rounded-xl border border-spotify-card outline-none resize-none placeholder-gray-600 focus:border-white focus:ring-1 focus:ring-white text-sm leading-relaxed ${
                 errors.description
                   ? 'border-red-500 focus:ring-1 focus:ring-red-500'
-                  : 'border-[#262626] focus:border-white focus:ring-1 focus:ring-white'
+                  : 'border-spotify-card focus:border-white focus:ring-1 focus:ring-white'
               }`}
             />
 
@@ -159,7 +158,7 @@ function DashboardPublicPlaylists() {
                 value={selectedCategoryId}
                 onChange={(val) => {
                   setValue('categoryId', val, { shouldValidate: true });
-                  setValue('sectionId', ''); // پاک کردن سکشن قبلی هنگام تغییر دسته‌بندی
+                  setValue('sectionId', '');
                 }}
               />
             </div>
@@ -197,7 +196,7 @@ function DashboardPublicPlaylists() {
               Playlist Cover
             </label>
             <label className={`group cursor-pointer flex flex-col items-center justify-center min-h-36 rounded-xl border border-dashed transition-all p-4 ${
-              errors.cover ? 'border-red-500 bg-red-500/5' : 'border-[#383838] bg-black hover:border-[#1ed760] hover:bg-[#1ed760]/5'
+              errors.cover ? 'border-red-500 bg-red-500/5' : 'border-[#383838] bg-black hover:border-spotify-green hover:bg-spotify-green/5'
             }`}>
               <input
                 type="file"
@@ -209,7 +208,7 @@ function DashboardPublicPlaylists() {
                 type="hidden"
                 {...register('cover', { required: 'Cover image is required' })}
               />
-              <div className="w-10 h-10 rounded-full bg-[#222] group-hover:bg-[#1ed760] group-hover:text-black text-gray-400 flex items-center justify-center transition-all mb-2">
+              <div className="w-10 h-10 rounded-full bg-[#222] group-hover:bg-spotify-green group-hover:text-black text-gray-400 flex items-center justify-center transition-all mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5V7.75A2.75 2.75 0 015.75 5h12.5A2.75 2.75 0 0121 7.75v8.5A2.75 2.75 0 0118.25 19H5.75A2.75 2.75 0 013 16.5Z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="m3 15 4.5-4.5 3.5 3.5 2.5-2.5L21 18" />
@@ -243,7 +242,7 @@ function DashboardPublicPlaylists() {
               type="submit"
               disabled={isPending}
               title={isPending ? 'Creating...' : 'Create Playlist'}
-              className="bg-[#1ed760] text-black font-bold px-7 py-2.5 text-sm cursor-pointer disabled:opacity-50"
+              className="bg-spotify-green text-black font-bold px-7 py-2.5 text-sm cursor-pointer disabled:opacity-50"
             />
           </div>
         </form>

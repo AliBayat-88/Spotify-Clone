@@ -1,4 +1,3 @@
-// components/ManageSectionItemsModal.jsx
 import { useState, useMemo } from 'react';
 import ModalLayout from './ModalLayout.jsx';
 import LoadingSpinner from '../LoadingSpinner.jsx';
@@ -9,11 +8,9 @@ import { useSectionItems, useToggleSectionItem } from '../../features/useSection
 function ManageSectionItemsModal({ isOpen, onClose, section }) {
   const [searchQuery, setSearchQuery] = useState('');
 
-  // دریافت لیست کامل آهنگ‌ها یا خواننده‌ها بسته به تایپ سکشن
   const { songs = [], isLoading: isLoadingSongs } = useSongs();
   const { artists = [], isLoading: isLoadingArtists } = useArtists();
 
-  // دریافت آیتم‌های ثبت‌شده در این سکشن
   const { sectionItems = [], isLoading: isLoadingItems } = useSectionItems(section?.id);
   const { addItem, removeItem, isProcessing } = useToggleSectionItem(section?.id);
 
@@ -25,7 +22,7 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
     const map = new Map();
     sectionItems.forEach((item) => {
       const targetId = isSongType ? item.song_id : item.artist_id;
-      if (targetId) map.set(targetId, item.id); // کلید: شناسه آهنگ/آرتیست، مقدار: شناسه رکورد section_items
+      if (targetId) map.set(targetId, item.id);
     });
     return map;
   }, [sectionItems, isSongType]);
@@ -104,7 +101,7 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
                   key={item.id}
                   className={`flex items-center justify-between p-2.5 rounded-xl border transition-all ${
                     isAttached
-                      ? 'bg-[#1ed760]/5 border-[#1ed760]/30'
+                      ? 'bg-spotify-green/5 border-spotify-green/30'
                       : 'bg-black/40 border-white/5 hover:border-white/10 hover:bg-white/[0.02]'
                   }`}
                 >
@@ -133,7 +130,7 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
                     onClick={() => handleToggle(item.id)}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                       isAttached
-                        ? 'bg-[#1ed760] text-black hover:bg-red-500 hover:text-white shadow-[0_0_10px_rgba(30,215,96,0.3)]'
+                        ? 'bg-spotify-green text-black hover:bg-red-500 hover:text-white shadow-[0_0_10px_rgba(30,215,96,0.3)]'
                         : 'bg-white/10 text-gray-300 hover:bg-white hover:text-black'
                     }`}
                   >

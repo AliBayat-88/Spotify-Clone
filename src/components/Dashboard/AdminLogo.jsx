@@ -2,7 +2,7 @@ function AdminLogo() {
   return (
     <div className="flex items-center gap-2.5 select-none">
 
-      <div className="w-9 h-9 rounded-lg bg-[#1ed760] flex items-center justify-center shadow-[0_0_20px_rgba(30,215,96,0.12)]">
+      <div className="w-9 h-9 rounded-lg bg-spotify-green flex items-center justify-center shadow-[0_0_20px_rgba(30,215,96,0.12)]">
         <svg
           viewBox="0 0 24 24"
           fill="none"

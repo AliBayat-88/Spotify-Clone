@@ -30,7 +30,7 @@ function AdminNotifications() {
       </svg>
 
       {/* notification dot */}
-      <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#1ed760]" />
+      <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-spotify-green" />
 
     </button>
   )

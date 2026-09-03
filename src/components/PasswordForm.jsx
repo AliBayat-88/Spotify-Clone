@@ -45,7 +45,6 @@ function PasswordForm() {
       { email, password: data.password },
       {
         onError: (err) => {
-          // 🟢 نمایش پیغام خطا در صورت اشتباه بودن پسورد یا ایمیل
           showToast(
             "Incorrect credentials",
             err?.message || "Invalid email or password. Please try again.",
@@ -100,7 +99,6 @@ function PasswordForm() {
             </span>
             )}
 
-            {/* 🟢 آیکون‌های SVG استاندارد برای نمایش/مخفی کردن پسورد */}
             <button
               type="button"
               onClick={() => setShow((prev) => !prev)}
@@ -108,12 +106,10 @@ function PasswordForm() {
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors cursor-pointer bg-transparent border-none outline-none p-1"
             >
               {show ? (
-                /* آیکون چشم خط‌خورده (مخفی) */
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
                 </svg>
               ) : (
-                /* آیکون چشم باز */
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12c1.274 4.057 5.065 7 9.542 7 4.477 0 8.268-2.943 9.542-7-1.274-4.057-5.064-7-9.542-7-4.477 0-8.268 2.943-9.542 7Z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -128,7 +124,7 @@ function PasswordForm() {
         <button
           type="button"
           onClick={() => navigate(`/login/forgot-password`, { state: { email } })}
-          className="text-[#1ED760] text-xs font-bold tracking-wide hover:underline uppercase block mb-6 px-0.5 bg-transparent border-none outline-none cursor-pointer"
+          className="text-spotify-green text-xs font-bold tracking-wide hover:underline uppercase block mb-6 px-0.5 bg-transparent border-none outline-none cursor-pointer"
         >
           Forgot password?
         </button>
@@ -142,7 +138,7 @@ function PasswordForm() {
             type="button"
             onClick={handleOtpClick}
             disabled={isSendingOtp}
-            className="text-sm font-bold text-gray-400 hover:text-[#1ED760] transition-colors hover:underline bg-transparent border-none outline-none cursor-pointer disabled:opacity-50"
+            className="text-sm font-bold text-gray-400 hover:text-spotify-green transition-colors hover:underline bg-transparent border-none outline-none cursor-pointer disabled:opacity-50"
           >
             {isSendingOtp ? "Sending code..." : "Log in with a one-time code"}
           </button>

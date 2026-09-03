@@ -15,7 +15,7 @@ function MainMusicContainer() {
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-0">
         {/* گوی سبز نئونی در گوشه چپ بالا */}
-        <div className="absolute -top-24 -left-20 w-96 h-96 bg-[#1ed760]/20 rounded-full blur-[100px] animate-pulse transition-all duration-1000" />
+        <div className="absolute -top-24 -left-20 w-96 h-96 bg-spotify-green/20 rounded-full blur-[100px] animate-pulse transition-all duration-1000" />
         {/* گوی بنفش/ایندیگو در سمت راست */}
         <div className="absolute top-10 right-0 w-80 h-80 bg-purple-900/25 rounded-full blur-[110px] animate-pulse delay-700" />
         {/* بازتاب نوری ملایم در مرکز */}

@@ -6,7 +6,7 @@ function MobileActions({
   onCreatePlaylist,
 }) {
   return (
-    <div className="fixed right-9 bottom-16 z-40 md:hidden flex flex-col items-end gap-4 select-none pointer-events-none isolate">
+    <div className="fixed right-9 bottom-24 z-40 md:hidden flex flex-col items-end gap-4 select-none pointer-events-none isolate">
       <div
         className={`
           flex flex-col gap-1.5 items-end
@@ -23,11 +23,11 @@ function MobileActions({
           onClick={onCreatePlaylist}
           className="flex items-center gap-2 cursor-pointer group active:scale-95 transition-transform bg-transparent border-none outline-none"
         >
-          <span className="bg-[#262626] text-white font-bold px-3 py-2 rounded-md shadow-md border border-[#3e3e3e]">
+          <span className="bg-spotify-card text-white font-bold px-3 py-2 rounded-md shadow-md border border-[#3e3e3e]">
             Create Playlist
           </span>
 
-          <div className="w-12 h-12 bg-[#262626] border border-[#3e3e3e] group-hover:border-[#535353] rounded-full flex items-center justify-center shadow-lg text-white transition-colors">
+          <div className="w-12 h-12 bg-spotify-card border border-[#3e3e3e] group-hover:border-[#535353] rounded-full flex items-center justify-center shadow-lg text-white transition-colors">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -59,7 +59,7 @@ function MobileActions({
           [backface-visibility:hidden] [transform:translateZ(0)]
           ${
           isOpen
-            ? "bg-[#262626] text-white border border-[#3e3e3e] rotate-90"
+            ? "bg-spotify-card text-white border border-[#3e3e3e] rotate-90"
             : "border-4 border-green-600 text-black"
         }
         `}

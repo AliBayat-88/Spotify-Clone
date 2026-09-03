@@ -33,7 +33,7 @@ function ArtistContainer() {
     : songsByArtist?.slice(0, 3);
 
   return (
-    <div className="w-full text-white bg-[#121212] rounded-xl overflow-hidden select-none">
+    <div className="w-full text-white bg-spotify-base rounded-xl overflow-hidden select-none">
       {/* بخش هیرو */}
       <ArtistHero
         artistName={artist?.name}
@@ -42,7 +42,7 @@ function ArtistContainer() {
       />
 
       {/* بدنه محتوا با تفکیک نرم و سایه */}
-      <div className="relative bg-gradient-to-b from-[#161616] via-[#131313] to-[#121212] px-4 sm:px-8 py-6 flex flex-col gap-y-6 border-t border-white/[0.08] shadow-[0_-16px_36px_rgba(0,0,0,0.6)] z-20">
+      <div className="relative bg-gradient-to-b from-[#161616] via-[#131313] to-spotify-base px-4 sm:px-8 py-6 flex flex-col gap-y-6 border-t border-white/[0.08] shadow-[0_-16px_36px_rgba(0,0,0,0.6)] z-20">
 
         {/* نوار دکمه پلی بزرگ، فالو و باز کردن بیو */}
         <ArtistActions

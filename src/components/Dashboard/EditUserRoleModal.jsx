@@ -1,4 +1,3 @@
-// components/EditUserRoleModal.jsx
 import { useState } from 'react';
 import ModalLayout from './ModalLayout.jsx';
 import ButtonLoader from '../ButtonLoader.jsx';
@@ -76,13 +75,13 @@ function EditUserRoleModal({ isOpen, onClose, user }) {
               onClick={() => setSelectedRole('admin')}
               className={`p-4 rounded-xl border transition-all cursor-pointer flex flex-col gap-1.5 ${
                 selectedRole === 'admin'
-                  ? 'bg-[#1ed760]/10 border-[#1ed760] text-[#1ed760] shadow-[0_0_15px_rgba(30,215,96,0.15)]'
+                  ? 'bg-spotify-green/10 border-spotify-green text-spotify-green shadow-[0_0_15px_rgba(30,215,96,0.15)]'
                   : 'bg-black/40 border-[#282828] text-gray-400 hover:border-white/20'
               }`}
             >
               <div className="flex items-center justify-between">
                 <span className="text-sm font-bold">Admin</span>
-                {selectedRole === 'admin' && <span className="w-2 h-2 rounded-full bg-[#1ed760]" />}
+                {selectedRole === 'admin' && <span className="w-2 h-2 rounded-full bg-spotify-green" />}
               </div>
               <span className="text-[11px] text-gray-400 leading-tight">
                 Full CMS control: upload, edit and delete catalog.
@@ -116,7 +115,7 @@ function EditUserRoleModal({ isOpen, onClose, user }) {
           <button
             type="submit"
             disabled={isUpdatingRole}
-            className="px-6 py-2.5 rounded-full bg-[#1ed760] text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full bg-spotify-green text-black font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
           >
             {isUpdatingRole ? <ButtonLoader /> : 'Apply Role'}
           </button>

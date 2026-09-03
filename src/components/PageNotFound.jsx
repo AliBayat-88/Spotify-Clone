@@ -9,7 +9,7 @@ function PageNotFound() {
 
       <div className="relative z-20 w-full max-w-lg bg-[#141414]/85 backdrop-blur-2xl border border-white/10 rounded-3xl p-6 sm:p-10 flex flex-col items-center text-center shadow-[0_25px_60px_rgba(0,0,0,0.9)] animate-[fadeIn_.3s_ease-out]">
 
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-36 h-36 bg-[#1ed760]/20 blur-[60px] rounded-full pointer-events-none" />
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-36 h-36 bg-spotify-green/20 blur-[60px] rounded-full pointer-events-none" />
 
         <div className="w-48 sm:w-64 max-h-48 flex items-center justify-center mb-6 relative">
           <img
@@ -24,8 +24,8 @@ function PageNotFound() {
         </div>
 
         {/* بج خطا */}
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1ed760]/10 border border-[#1ed760]/25 text-[#1ed760] text-[11px] font-black uppercase tracking-widest mb-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#1ed760] animate-ping" />
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-spotify-green/10 border border-spotify-green/25 text-spotify-green text-[11px] font-black uppercase tracking-widest mb-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-spotify-green animate-ping" />
           Lost in Track
         </span>
 
@@ -42,7 +42,7 @@ function PageNotFound() {
         {/* دکمه اکشن بازگشت به خانه */}
         <Link
           to="/"
-          className="mt-8 px-8 py-3.5 rounded-full bg-[#1ed760] hover:bg-[#1fdf64] text-black font-extrabold text-xs sm:text-sm tracking-wide uppercase shadow-[0_0_25px_rgba(30,215,96,0.35)] hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center gap-2"
+          className="mt-8 px-8 py-3.5 rounded-full bg-spotify-green hover:bg-spotify-green-hover text-black font-extrabold text-xs sm:text-sm tracking-wide uppercase shadow-[0_0_25px_rgba(30,215,96,0.35)] hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center gap-2"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
             <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
