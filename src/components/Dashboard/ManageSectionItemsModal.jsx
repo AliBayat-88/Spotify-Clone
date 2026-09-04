@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import ModalLayout from './ModalLayout.jsx';
 import LoadingSpinner from '../LoadingSpinner.jsx';
 import { useSongs } from '../../features/useSongs.js';
@@ -22,7 +22,7 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
     const map = new Map();
     sectionItems.forEach((item) => {
       const targetId = isSongType ? item.song_id : item.artist_id;
-      if (targetId) map.set(targetId, item.id);
+      if (targetId) map.set(Number(targetId), item.id);
     });
     return map;
   }, [sectionItems, isSongType]);
@@ -38,15 +38,16 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
   function handleToggle(entityId) {
     if (isProcessing) return;
 
-    const existingSectionItemId = attachedMap.get(entityId);
+    const numericId = Number(entityId);
+    const existingSectionItemId = attachedMap.get(numericId);
 
     if (existingSectionItemId) {
       removeItem(existingSectionItemId);
     } else {
       addItem({
         sectionId: section.id,
-        songId: isSongType ? entityId : null,
-        artistId: isArtistType ? entityId : null,
+        songId: isSongType ? numericId : null,
+        artistId: isArtistType ? numericId : null,
       });
     }
   }
@@ -55,43 +56,42 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
     <ModalLayout
       isOpen={isOpen}
       onClose={onClose}
-      title={`Manage ${section?.title} (${section?.type?.toUpperCase()}S)`}
+      title={`Manage ${section?.title || ''} (${section?.type?.toUpperCase() || ''}S)`}
       maxWidth="max-w-xl"
     >
-      <div className="flex flex-col gap-y-4 max-h-[70vh]">
-
+      <div className="flex flex-col gap-y-4 font-sans text-white select-none">
         <div className="relative">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={`Search ${isSongType ? 'tracks or artists' : 'artists'}...`}
+            className="w-full bg-black text-white pl-10 pr-4 py-2.5 rounded-xl border border-[#282828] focus:border-white outline-none text-sm transition-colors placeholder:text-gray-500"
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="2"
             stroke="currentColor"
-            className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"
+            className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={`Search ${isSongType ? 'songs' : 'artists'} to add...`}
-            className="w-full bg-black text-white pl-10 pr-4 py-2.5 rounded-xl border border-[#282828] focus:border-white focus:ring-1 focus:ring-white outline-none text-xs font-medium"
-          />
         </div>
 
-        <div className="overflow-y-auto pr-1 flex flex-col gap-y-1.5 min-h-[250px] max-h-[360px]">
+        <div className="max-h-80 overflow-y-auto flex flex-col gap-y-2 pr-1 scrollbar-hide">
           {isLoading ? (
             <div className="py-12 flex justify-center items-center">
               <LoadingSpinner />
             </div>
           ) : availableList.length === 0 ? (
-            <div className="text-center py-12 text-xs text-gray-500">
-              No items match your search.
-            </div>
+            <p className="text-center text-sm text-gray-500 py-8">
+              No {isSongType ? 'tracks' : 'artists'} found.
+            </p>
           ) : (
             availableList.map((item) => {
-              const isAttached = attachedMap.has(item.id);
+              const isAttached = attachedMap.has(Number(item.id));
               const poster = isSongType
                 ? item.cover_url
                 : item.image_url || item.image || '/profileImg.png';
@@ -99,27 +99,23 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
               return (
                 <div
                   key={item.id}
-                  className={`flex items-center justify-between p-2.5 rounded-xl border transition-all ${
-                    isAttached
-                      ? 'bg-spotify-green/5 border-spotify-green/30'
-                      : 'bg-black/40 border-white/5 hover:border-white/10 hover:bg-white/[0.02]'
-                  }`}
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-spotify-surface hover:bg-spotify-card transition border border-transparent hover:border-white/5"
                 >
-                  <div className="flex items-center gap-3 min-w-0">
+                  <div className="flex items-center gap-x-3 min-w-0 pr-2">
                     <img
                       loading="lazy"
                       src={poster}
                       alt={item.name}
-                      className={`w-10 h-10 object-cover bg-[#222] shrink-0 shadow-sm ${
-                        isSongType ? 'rounded-lg' : 'rounded-full'
+                      className={`w-10 h-10 object-cover shrink-0 bg-black shadow-sm ${
+                        isSongType ? 'rounded-md' : 'rounded-full'
                       }`}
                     />
                     <div className="flex flex-col min-w-0">
-                      <span className="text-xs font-bold text-white truncate max-w-[200px] sm:max-w-[280px]">
+                      <span className="text-sm font-semibold truncate text-white">
                         {item.name}
                       </span>
-                      <span className="text-[11px] text-gray-400 truncate">
-                        {isSongType ? item.artists?.name : `ID: ${item.id}`}
+                      <span className="text-xs text-spotify-subtext truncate">
+                        {isSongType ? item.artists?.name || 'Unknown Artist' : 'Artist'}
                       </span>
                     </div>
                   </div>
@@ -128,23 +124,41 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
                     type="button"
                     disabled={isProcessing}
                     onClick={() => handleToggle(item.id)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer shrink-0 flex items-center gap-1.5 active:scale-95 disabled:opacity-50 ${
                       isAttached
-                        ? 'bg-spotify-green text-black hover:bg-red-500 hover:text-white shadow-[0_0_10px_rgba(30,215,96,0.3)]'
-                        : 'bg-white/10 text-gray-300 hover:bg-white hover:text-black'
+                        ? 'bg-spotify-green text-black hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 border border-transparent group'
+                        : 'bg-white text-black hover:scale-105'
                     }`}
                   >
                     {isAttached ? (
                       <>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
-                          <path fillRule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clipRule="evenodd" />
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          className="w-3.5 h-3.5 group-hover:hidden"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+                            clipRule="evenodd"
+                          />
                         </svg>
-                        <span>Added</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="2.5"
+                          stroke="currentColor"
+                          className="w-3.5 h-3.5 hidden group-hover:inline"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                        <span className="group-hover:hidden">Added</span>
+                        <span className="hidden group-hover:inline">Remove</span>
                       </>
                     ) : (
-                      <>
-                        <span>+ Add</span>
-                      </>
+                      <span>+ Add</span>
                     )}
                   </button>
                 </div>
@@ -153,17 +167,16 @@ function ManageSectionItemsModal({ isOpen, onClose, section }) {
           )}
         </div>
 
-        <div className="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-gray-400">
-          <span>{attachedMap.size} items currently selected</span>
+        <div className="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-spotify-subtext">
+          <span>{attachedMap.size} items selected</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-full bg-white text-black font-bold text-xs hover:scale-105 transition-transform cursor-pointer"
+            className="px-6 py-2 rounded-full bg-white text-black font-bold text-xs hover:scale-105 active:scale-95 transition cursor-pointer"
           >
             Done
           </button>
         </div>
-
       </div>
     </ModalLayout>
   );

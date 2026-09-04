@@ -301,6 +301,32 @@ export async function updatePublicPlaylistApi({ playlistId, title, coverFile, cu
   return data;
 }
 
+export async function addSongToPublicPlaylistApi({ playlistId, songId }) {
+  const { data, error } = await supabase
+    .from('section_items')
+    .insert([
+      {
+        public_playLists: Number(playlistId),
+        song_id: Number(songId),
+      },
+    ])
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+export async function removeSongFromPublicPlaylistApi({ playlistId, songId }) {
+  const { data, error } = await supabase
+    .from('section_items')
+    .delete()
+    .eq('public_playLists', Number(playlistId))
+    .eq('song_id', Number(songId));
+
+  if (error) throw new Error(error.message);
+  return data;
+}
+
 
 // manage sections
 

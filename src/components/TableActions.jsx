@@ -1,10 +1,38 @@
-// components/TableActions.jsx
+import React from 'react';
 
-
-function TableActions({ onEdit, onDelete , editTitle = "Edit", deleteTitle = "Delete" }) {
+function TableActions({
+  onEdit,
+  onDelete,
+  onManage,
+  editTitle = 'Edit',
+  deleteTitle = 'Delete',
+  manageTitle = 'Manage tracks',
+}) {
   return (
-    <div className="flex items-center justify-end gap-1">
-
+    <div className="flex items-center justify-end gap-1 select-none">
+      {onManage && (
+        <button
+          type="button"
+          onClick={onManage}
+          className="p-2 text-gray-400 hover:text-spotify-green active:scale-90 rounded-full hover:bg-white/5 transition-all duration-150 shrink-0 cursor-pointer"
+          title={manageTitle}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.8"
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m9 9 10.5-3m0 0v12m0-12A10.5 10.5 0 0 1 9 15m0 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM9 15a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
+          </svg>
+        </button>
+      )}
 
       {onEdit && (
         <button

@@ -11,11 +11,13 @@ import { useDashboardPublicPlayLists } from '../../features/useDashboardPublicPl
 import Modal from '../Modal.jsx'
 import { useDeletePublicPlaylist } from '../../features/useDeletePublicPlaylist.js'
 import EditPublicPlaylistModal from './EditPublicPlaylistModal.jsx'
+import AddSongsToPublicPlaylistModal from './AddSongsToPublicPlaylistModal.jsx'
 
 function DashboardPublicPlaylists() {
   const [coverFile, setCoverFile] = useState(null);
   const [publicPlaylistToDelete , setPublicPlaylistToDelete] = useState(null);
   const [publicPlaylistToEdit , setPublicPlaylistToEdit] = useState(null);
+  const [publicPlaylistToManage, setPublicPlaylistToManage] = useState(null);
 
   const {deletePublicPlaylist , isDeleting} = useDeletePublicPlaylist(() => {
     setPublicPlaylistToDelete(null);
@@ -281,6 +283,7 @@ function DashboardPublicPlaylists() {
 
             <td className="px-5 py-4">
               <TableActions
+                onManage={() => setPublicPlaylistToManage(playlist)}
                 onEdit={() => setPublicPlaylistToEdit(playlist)}
                 onDelete={() => setPublicPlaylistToDelete(playlist)}
               />
@@ -308,6 +311,14 @@ function DashboardPublicPlaylists() {
           artist={publicPlaylistToEdit}
           onClose={() => setPublicPlaylistToEdit(null)}
           playlist={publicPlaylistToEdit}
+        />
+      )}
+
+      {publicPlaylistToManage && (
+        <AddSongsToPublicPlaylistModal
+          isOpen={Boolean(publicPlaylistToManage)}
+          onClose={() => setPublicPlaylistToManage(null)}
+          playlistId={publicPlaylistToManage.id}
         />
       )}
     </div>

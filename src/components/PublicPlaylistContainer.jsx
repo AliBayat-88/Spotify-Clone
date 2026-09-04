@@ -118,7 +118,7 @@ function PublicPlaylistContainer() {
         </div>
       </div>
 
-      <div className="bg-[#171717]/80 min-h-[50vh] backdrop-blur-xl border-t border-white/10 rounded-t-2xl -mt-6 sm:-mt-8 relative z-20 p-4 sm:p-6 pb-24">
+      <div className="bg-[#171717]/80 min-h-[70vh] backdrop-blur-xl border-t border-white/10 rounded-t-2xl -mt-6 sm:-mt-8 relative z-20 p-4 sm:p-6 pb-24">
 
         <div className="flex items-center gap-x-4 mb-6">
           <button
@@ -154,20 +154,29 @@ function PublicPlaylistContainer() {
           </div>
         </div>
 
-        {/* 🟢 ۳. هدر جدول نسخه دسکتاپ */}
-        <div className="hidden lg:grid grid-cols-[40px_minmax(0,4fr)_2fr_2fr_120px] items-center gap-x-4 px-3 pb-2 mb-2 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-gray-400">
-          <span className="text-center">#</span>
-          <span>Title</span>
+        {/* 🟢 هدر جدول نسخه دسکتاپ (دقیقاً هماهنگ با ۴ ستون SongRow) */}
+        <div className="hidden lg:grid grid-cols-[5fr_3fr_2fr_120px] items-center p-2 sm:p-3 mb-1 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-gray-400">
+
+          {/* ستون ۱ (5fr): هماهنگ با بخش پلی، شماره و تایتل ردیف */}
+          <div className="flex items-center gap-x-4 sm:gap-x-3.5">
+            <span className="w-5 text-center shrink-0">#</span>
+            <span>Title</span>
+          </div>
+
+          {/* ستون ۲ (3fr): هماهنگ با نام آلبوم */}
           <span>Album</span>
+
+          {/* ستون ۳ (2fr): هماهنگ با تاریخ اضافه شدن */}
           <span>Date added</span>
-          <div className="flex justify-end">
+
+          {/* ستون ۴ (120px): هماهنگ با ساعت و دکمه‌ها */}
+          <div className="flex justify-end pr-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
           </div>
         </div>
 
-        {/* 🟢 ۴. اضافه شدن هدر جدول نسخه موبایل (که قبلاً نداشت!) */}
         <div className="flex lg:hidden items-center justify-between px-3 pb-2 mb-2 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-gray-400">
           <span>Title</span>
           <div className="flex items-center gap-x-2 pr-1">

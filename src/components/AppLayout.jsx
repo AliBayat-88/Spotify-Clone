@@ -41,7 +41,7 @@ function AppLayout() {
     <div className="h-[100dvh] max-h-[100dvh] w-full flex flex-col bg-black overflow-hidden select-none ">
       <Header />
 
-      <main className="flex flex-1 gap-2 text-white overflow-hidden min-h-0 relative px-2 sm:px-0">
+      <main className="flex flex-1 gap-2 text-white overflow-hidden min-h-0 relative px-1 sm:px-0">
         <SideBar playlists={playlists} onOpenModal={handleOpenCreatePlaylist} />
 
         <div className={`flex-1 overflow-y-auto overflow-x-hidden rounded-xl scrollbar-hide ${currentSong ? 'pb-24 sm:pb-28' : 'pb-6'}`}>
